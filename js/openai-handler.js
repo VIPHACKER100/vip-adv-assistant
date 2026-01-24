@@ -3,7 +3,7 @@
  * Processes natural language commands using OpenAI's API
  */
 
-const OPENAI_API_KEY = localStorage.getItem('openai_api_key') || "";
+const OPENAI_API_KEY = localStorage.getItem('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') || "";
 
 // Process user input using OpenAI
 async function processWithOpenAI(userInput) {
@@ -127,3 +127,4 @@ function getOpenAIToolsDefinition() {
 
     return tools;
 }
+
