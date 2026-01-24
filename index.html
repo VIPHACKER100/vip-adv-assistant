@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Advanced Mobile Control AI Assistant - Premium web interface for comprehensive mobile device control with AI-powered features">
+  <meta name="theme-color" content="#7C3AED">
+  <title>VIP Advanced Mobile AI Assistant</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VIP AI">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/voice-access.css">
+
+  <style>
+    /* Main Layout Styles */
+    .container {
+      max-width: var(--container-2xl);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    /* Animated Background */
+    .app-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: var(--bg-primary);
+      overflow: hidden;
+    }
+
+    .app-background::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--color-accent-600) 0%, transparent 70%);
+      opacity: 0.1;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .app-background::after {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--color-secondary-600) 0%, transparent 70%);
+      opacity: 0.1;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(var(--glass-blur-strong));
+      -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+      border-bottom: 1px solid var(--glass-border);
+      padding: var(--space-4) 0;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-family: var(--font-family-display);
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+      text-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-icon {
+      font-size: var(--font-size-3xl);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: var(--space-20) 0 var(--space-16);
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-family-display);
+      font-size: var(--font-size-5xl);
+      font-weight: var(--font-weight-extrabold);
+      line-height: var(--line-height-tight);
+      margin-bottom: var(--space-6);
+      background: var(--gradient-vibrant);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+    }
+
+    .hero-subtitle {
+      font-size: var(--font-size-xl);
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto var(--space-8);
+      line-height: var(--line-height-relaxed);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Context Panel */
+    .context-panel {
+      position: fixed;
+      top: 100px;
+      right: var(--space-6);
+      width: 320px;
+      z-index: var(--z-dropdown);
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    .context-card {
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(var(--glass-blur-strong));
+      -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      margin-bottom: var(--space-4);
+    }
+
+    .context-title {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-3);
+    }
+
+    .context-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-2) 0;
+    }
+
+    .context-stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .context-stat-value {
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+
+    /* Quick Actions Grid */
+    .quick-actions {
+      padding: var(--space-12) 0;
+    }
+
+    .section-title {
+      font-family: var(--font-family-display);
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      margin-bottom: var(--space-2);
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-8);
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+
+    /* Function Categories */
+    .categories {
+      padding: var(--space-12) 0;
+    }
+
+    .category-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-3xl);
+    }
+
+    .functions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-4);
+    }
+
+    /* Footer */
+    .footer {
+      padding: var(--space-12) 0;
+      border-top: 1px solid var(--border-primary);
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1280px) {
+      .context-panel {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: var(--font-size-3xl);
+      }
+
+      .hero-subtitle {
+        font-size: var(--font-size-lg);
+      }
+
+      .actions-grid,
+      .functions-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="app-background">
+    <div class="grid-background"></div>
+    <div class="particle-container" id="particles"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-icon">🤖</span>
+          <span>VIP AI Assistant</span>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M)" onclick="toggleVoiceAccess()">
+            <span>🎤</span>
+          </button>
+          <button class="icon-btn" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
+            <span>🔍</span>
+          </button>
+          <button class="icon-btn" id="favoritesBtn" title="Favorites" onclick="favoritesManager.showFavoritesModal()">
+            <span>⭐</span>
+          </button>
+          <button class="icon-btn" id="recentBtn" title="Recent (Ctrl+R)"
+            onclick="recentFunctionsManager.showHistoryModal()">
+            <span>🕒</span>
+          </button>
+          <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)">
+            <span>⚙️</span>
+          </button>
+          <button class="btn btn-accent" id="automationBtn">
+            <span>⚡</span>
+            <span>Automation Builder</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero-title animate-fade-in-up">
+          Advanced Mobile Control AI Assistant
+        </h1>
+        <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.1s;">
+          Your intelligent companion with 50+ AI-powered functions for seamless mobile device control, automation, and
+          productivity enhancement
+        </p>
+        <div class="hero-actions animate-fade-in-up" style="animation-delay: 0.2s;">
+          <button class="btn btn-primary btn-lg" onclick="scrollToSection('quick-actions')">
+            <span>🚀</span>
+            <span>Explore Features</span>
+          </button>
+          <button class="btn btn-glass btn-lg" onclick="showModal('demo')">
+            <span>▶️</span>
+            <span>Watch Demo</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Context Panel (Desktop only) -->
+    <aside class="context-panel" id="contextPanel">
+      <div class="context-card">
+        <div class="context-title">Device Context</div>
+        <div class="context-stat">
+          <span class="context-stat-label">Battery</span>
+          <span class="context-stat-value" id="contextBattery">
+            <span class="badge badge-success">--%</span>
+          </span>
+        </div>
+        <div class="context-stat">
+          <span class="context-stat-label">Network</span>
+          <span class="context-stat-value" id="contextNetwork">--</span>
+        </div>
+        <div class="context-stat">
+          <span class="context-stat-label">Status</span>
+          <span class="context-stat-value" id="contextLocation">Checking...</span>
+        </div>
+        <div class="divider"></div>
+        <div class="context-stat">
+          <span class="context-stat-label">Time</span>
+          <span class="context-stat-value" id="currentTime">--:--</span>
+        </div>
+      </div>
+
+      <div class="context-card">
+        <div class="context-title">🎯 Smart Suggestions</div>
+        <div id="suggestions"></div>
+      </div>
+    </aside>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions" id="quick-actions">
+      <div class="container">
+        <h2 class="section-title">⚡ Quick Actions</h2>
+        <p class="section-subtitle">Most-used functions at your fingertips</p>
+        <div class="actions-grid stagger-children" id="quickActionsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Function Categories -->
+    <section class="categories">
+      <div class="container">
+        <h2 class="section-title">🎨 All Features</h2>
+        <p class="section-subtitle">Explore all 50+ AI-powered capabilities</p>
+        <div id="categoriesContainer"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 VIP Advanced Mobile AI Assistant. All rights reserved.</p>
+      <p style="margin-top: var(--space-2); font-size: var(--font-size-sm);">
+        Designed by <a href="https://github.com/viphacker100/" style="color: var(--color-accent-400);">VipHacker100</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Modals will be inserted here by JavaScript -->
+  <div id="modalContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/functions.js"></script>
+  <script src="js/automation.js"></script>
+  <script src="js/openai-handler.js"></script>
+  <script src="js/voice-access.js"></script>
+  <!-- v2.1 Enhanced Features -->
+  <script src="js/theme-manager.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/keyboard-shortcuts.js"></script>
+  <!-- v2.2 Advanced Features -->
+  <script src="js/export-import.js"></script>
+  <script src="js/performance-monitor.js"></script>
+  <!-- v2.3 Power User Features -->
+  <script src="js/recent-functions.js"></script>
+  <script src="js/shortcut-editor.js"></script>
+
+  <script>
+    // Initialize all features
+    document.addEventListener('DOMContentLoaded', () => {
+      // v2.1 features
+      themeManager.init();
+      initKeyboardShortcuts();
+      favoritesManager.updateUI();
+
+      // v2.2 features
+      performanceMonitor.init();
+
+      // v2.3 features
+      shortcutEditor.applyCustomShortcuts();
+
+      // Register Service Worker for offline support
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('✅ Service Worker registered:', registration.scope);
+          })
+          .catch(error => {
+            console.log('❌ Service Worker registration failed:', error);
+          });
+      }
+    });
+
+    // Track performance metrics and recent functions
+    const originalExecuteFunction = window.executeFunction;
+    window.executeFunction = function (functionId) {
+      performanceMonitor.trackFunction(functionId);
+
+      // Get function title
+      const categories = getFunctionCategories();
+      let functionTitle = functionId;
+      for (const category of categories) {
+        const func = category.functions.find(f => f.id === functionId);
+        if (func) {
+          functionTitle = func.title;
+          break;
+        }
+      }
+
+      recentFunctionsManager.add(functionId, functionTitle);
+      return originalExecuteFunction.apply(this, arguments);
+    };
+
+    // Track search usage
+    const originalOpenSearch = window.openSearch;
+    window.openSearch = function () {
+      performanceMonitor.trackSearch();
+      return originalOpenSearch.apply(this, arguments);
+    };
+  </script>
+</body>
+
+</html>
