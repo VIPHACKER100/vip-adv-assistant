@@ -3,7 +3,7 @@
  * Enables Progressive Web App (PWA) functionality
  */
 
-const CACHE_NAME = 'vip-assistant-v2.2.0';
+const CACHE_NAME = 'vip-assistant-v2.3.2-fixed';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -26,6 +26,7 @@ const urlsToCache = [
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
+    self.skipWaiting(); // Force new service worker to activate immediately
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
@@ -80,6 +81,6 @@ self.addEventListener('activate', (event) => {
                     }
                 })
             );
-        })
+        }).then(() => self.clients.claim())
     );
 });
