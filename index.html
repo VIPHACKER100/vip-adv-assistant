@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="VIP Advanced AI Assistant - Premium conversational interface with 75+ mobile control functions and real-time device monitoring">
-  <meta name="theme-color" content="#7C3AED">
-  <title>VIP Advanced Mobile AI Assistant</title>
+    content="VIP Symphony v6.0 - Premium Neural OS with 75+ automated control functions and real-time biometric intelligence">
+  <meta name="theme-color" content="#22D3EE">
+  <title>VIP SYMPHONY | Neural Mobile Interface</title>
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -24,383 +24,19 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/voice-access.css">
   <link rel="stylesheet" href="css/face-recognition.css">
 
   <style>
-    /* Main Layout Styles */
-    .container {
-      max-width: var(--container-2xl);
-      margin: 0 auto;
-      padding: 0 var(--space-6);
-    }
-
-    /* Animated Background */
-    .app-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: var(--bg-primary);
-      overflow: hidden;
-    }
-
-    .app-background::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, var(--color-accent-600) 0%, transparent 70%);
-      opacity: 0.1;
-      animation: float 20s ease-in-out infinite;
-    }
-
-    .app-background::after {
-      content: '';
-      position: absolute;
-      bottom: -50%;
-      left: -20%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--color-secondary-600) 0%, transparent 70%);
-      opacity: 0.1;
-      animation: float 15s ease-in-out infinite reverse;
-    }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: var(--z-sticky);
-      background: var(--glass-bg-strong);
-      backdrop-filter: blur(var(--glass-blur-strong));
-      -webkit-backdrop-filter: blur(var(--glass-blur-strong));
-      border-bottom: 1px solid var(--glass-border);
-      padding: var(--space-4) 0;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-4);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      font-family: var(--font-family-display);
-      font-size: var(--font-size-2xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--text-primary);
-      text-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
-      letter-spacing: -0.02em;
-    }
-
-    @media (max-width: 480px) {
-      .logo {
-        font-size: var(--font-size-xl);
-      }
-
-      .logo-icon {
-        height: 32px !important;
-        width: 32px !important;
-      }
-    }
-
-    .logo-icon {
-      font-size: var(--font-size-3xl);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: var(--space-20) 0 var(--space-16);
-      text-align: center;
-    }
-
-    .hero-title {
-      font-family: var(--font-family-display);
-      font-size: var(--font-size-5xl);
-      font-weight: var(--font-weight-extrabold);
-      line-height: var(--line-height-tight);
-      margin-bottom: var(--space-6);
-      background: var(--gradient-vibrant);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 200% 200%;
-      animation: gradientShift 8s ease infinite;
-    }
-
-    .hero-subtitle {
-      font-size: var(--font-size-xl);
-      color: var(--text-secondary);
-      max-width: 700px;
-      margin: 0 auto var(--space-8);
-      line-height: var(--line-height-relaxed);
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: var(--space-4);
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* Context Panel */
-    .context-panel {
-      position: fixed;
-      top: 100px;
-      right: var(--space-6);
-      width: 320px;
-      z-index: var(--z-dropdown);
-      animation: slideInRight 0.6s ease-out;
-    }
-
-    .context-card {
-      background: var(--glass-bg-strong);
-      backdrop-filter: blur(var(--glass-blur-strong));
-      -webkit-backdrop-filter: blur(var(--glass-blur-strong));
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-5);
-      margin-bottom: var(--space-4);
-    }
-
-    .context-title {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--space-3);
-    }
-
-    .context-stat {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--space-2) 0;
-    }
-
-    .context-stat-label {
-      font-size: var(--font-size-sm);
-      color: var(--text-secondary);
-    }
-
-    .context-stat-value {
-      font-weight: var(--font-weight-semibold);
-      color: var(--text-primary);
-    }
-
-    /* Quick Actions Grid */
-    .quick-actions {
-      padding: var(--space-12) 0;
-    }
-
-    .section-title {
-      font-family: var(--font-family-display);
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
-      margin-bottom: var(--space-2);
-      color: var(--text-primary);
-    }
-
-    .section-subtitle {
-      font-size: var(--font-size-lg);
-      color: var(--text-secondary);
-      margin-bottom: var(--space-8);
-    }
-
-    .actions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--space-5);
-    }
-
-    /* Function Categories */
-    .categories {
-      padding: var(--space-12) 0;
-    }
-
-    .category-section {
-      margin-bottom: var(--space-16);
-    }
-
-    .category-header {
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-      margin-bottom: var(--space-6);
-    }
-
-    .category-icon {
-      width: 60px;
-      height: 60px;
-      background: var(--gradient-primary);
-      border-radius: var(--radius-xl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--font-size-3xl);
-    }
-
-    .functions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: var(--space-4);
-    }
-
-    /* Footer */
-    .footer {
-      padding: var(--space-12) 0;
-      border-top: 1px solid var(--border-primary);
-      text-align: center;
-      color: var(--text-secondary);
-    }
-
-    /* Responsive */
-    @media (max-width: 1280px) {
-      .context-panel {
-        display: none;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .hero-title {
-        font-size: var(--font-size-4xl);
-      }
-
-      .container {
-        padding: 0 var(--space-4);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header {
-        padding: var(--space-3) 0;
-      }
-
-      .logo span:not(.logo-icon) {
-        display: none;
-      }
-
-      .header-actions {
-        gap: var(--space-2);
-      }
-
-      .header-actions .btn span:not(:first-child) {
-        display: none;
-      }
-
-      .header-actions .btn {
-        padding: var(--space-2);
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-      }
-
-      .hero {
-        padding: var(--space-12) 0 var(--space-8);
-      }
-
-      .hero-title {
-        font-size: var(--font-size-3xl);
-      }
-
-      .hero-subtitle {
-        font-size: var(--font-size-base);
-        padding: 0 var(--space-4);
-      }
-
-      .actions-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: var(--space-3);
-      }
-
-      .functions-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-3);
-      }
-
-      .category-header {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--space-3);
-      }
-
-      .section-title {
-        font-size: var(--font-size-2xl);
-      }
-
-      .modal {
-        margin-top: auto;
-        border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-        max-height: 85vh;
-        transform: translateY(100%);
-      }
-
-      .modal-overlay.active .modal {
-        transform: translateY(0);
-      }
-
-      /* Mobile context bar styles */
-      .mobile-context-bar {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--glass-bg-strong);
-        backdrop-filter: blur(var(--glass-blur-strong));
-        -webkit-backdrop-filter: blur(var(--glass-blur-strong));
-        border-top: 1px solid var(--glass-border);
-        padding: var(--space-2) var(--space-4);
-        z-index: var(--z-fixed);
-        justify-content: space-around;
-        align-items: center;
-      }
-
-      .context-item {
-        display: flex;
-        align-items: center;
-        gap: var(--space-2);
-        font-size: var(--font-size-xs);
-        color: var(--text-secondary);
-      }
-
-      .footer {
-        padding-bottom: var(--space-16);
-      }
-    }
-
-    @media (min-width: 769px) {
-      .mobile-context-bar {
-        display: none;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .actions-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-      }
+    /* Small page-specific tweaks that don't belong in shared files */
+    .hero-badge .badge {
+      padding: var(--space-2) var(--space-6);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-black);
+      letter-spacing: var(--letter-spacing-widest);
     }
   </style>
 </head>
@@ -416,62 +52,64 @@
   <header class="header">
     <div class="container">
       <div class="header-content">
-        <div class="logo">
+        <div class="logo animate-fade-in">
           <img src="assets/logo.png" alt="VIP AI" class="logo-icon"
-            style="height: 40px; width: 40px; border-radius: 8px; box-shadow: 0 0 15px rgba(125, 211, 252, 0.4); object-fit: cover;">
-          <span>VIP AI Assistant</span>
+            style="height: 44px; width: 44px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow-accent); object-fit: cover;">
+          <span>VIP AI <span style="color: var(--color-accent-400)">SYMPHONY</span></span>
         </div>
-        <div class="header-actions">
-          <button class="icon-btn hide-mobile" id="voiceAccessBtn"
-            title="Voice Access (Ctrl+M) | Always-Listening (Ctrl+Shift+V)" onclick="toggleVoiceAccess()">
-            <span>🎤</span>
-          </button>
-          <button class="icon-btn hide-mobile" id="voiceSettingsBtn" title="Voice Settings"
-            onclick="voiceManager.showVoiceSelector()">
-            <span>🎙️</span>
-          </button>
-          <button class="icon-btn" id="alwaysListeningBtn" title="Toggle Always-Listening (Ctrl+Shift+V)"
-            onclick="toggleAlwaysListening()" style="display: none;">
-            <span>👂</span>
-          </button>
-          <button class="icon-btn hide-mobile" id="aiChatBtn" title="AI Assistant (Ctrl+J)"
-            onclick="chatManager.toggleChat()">
-            <span>💬</span>
-          </button>
-          <button class="icon-btn" id="notificationBtn" title="Notifications"
-            onclick="notificationManager.togglePanel()">
-            <span>🔔</span>
-            <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
-          </button>
-          <button class="icon-btn hide-mobile" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
-            <span>🔍</span>
-          </button>
-          <button class="icon-btn" id="favoritesBtn" title="Favorites" onclick="favoritesManager.showFavoritesModal()">
-            <span>⭐</span>
-          </button>
-          <button class="icon-btn" id="recentBtn" title="Recent (Ctrl+R)"
-            onclick="recentFunctionsManager.showHistoryModal()">
-            <span>🕒</span>
-          </button>
-          <button class="icon-btn hide-mobile" id="settingsBtn" title="Settings (Ctrl+,)"
-            onclick="showModal('settings')">
-            <span>⚙️</span>
-          </button>
-          <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
-            <span>🛰️</span>
-          </button>
-          <button class="icon-btn" id="faceIdBtn" title="Face ID Recognition" onclick="faceRecognition.open()">
-            <span>🔐</span>
-          </button>
-          <button class="icon-btn" id="boostBtn" title="Boost Pulse (Ctrl+Shift+B)" onclick="toggleBoostMode()"
-            style="color: var(--color-accent-400);">
-            <span>🚀</span>
-          </button>
-          <button class="btn btn-accent" id="automationBtn" onclick="openAutomationBuilder()">
+        <nav class="header-actions" aria-label="Main controls">
+          <div class="action-group hide-mobile">
+            <button class="icon-btn" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
+              <span>🔍</span>
+            </button>
+            <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M)" onclick="toggleVoiceAccess()">
+              <span>🎤</span>
+            </button>
+            <button class="icon-btn" id="voiceSettingsBtn" title="Voice Settings"
+              onclick="voiceManager.showVoiceSelector()">
+              <span>🎙️</span>
+            </button>
+          </div>
+
+          <div class="action-group">
+            <button class="icon-btn" id="aiChatBtn" title="AI Assistant (Ctrl+J)" onclick="chatManager.toggleChat()">
+              <span>💬</span>
+            </button>
+            <button class="icon-btn" id="notificationBtn" title="Notifications"
+              onclick="notificationManager.togglePanel()">
+              <span>🔔</span>
+              <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+            </button>
+          </div>
+
+          <div class="action-group hide-mobile">
+            <button class="icon-btn" id="favoritesBtn" title="Favorites"
+              onclick="favoritesManager.showFavoritesModal()">
+              <span>⭐</span>
+            </button>
+            <button class="icon-btn" id="recentBtn" title="Recent (Ctrl+R)"
+              onclick="recentFunctionsManager.showHistoryModal()">
+              <span>🕒</span>
+            </button>
+          </div>
+
+          <div class="action-group">
+            <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
+              <span>🛰️</span>
+            </button>
+            <button class="icon-btn" id="faceIdBtn" title="Face ID Recognition" onclick="faceRecognition.open()">
+              <span>🔐</span>
+            </button>
+            <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)" onclick="showModal('settings')">
+              <span>⚙️</span>
+            </button>
+          </div>
+
+          <button class="btn btn-accent btn-sm animate-pulse" id="automationBtn" onclick="openAutomationBuilder()">
             <span>⚡</span>
-            <span>Automate</span>
+            <span class="hide-mobile">Automate</span>
           </button>
-        </div>
+        </nav>
       </div>
     </div>
   </header>
@@ -479,20 +117,22 @@
   <!-- Main Content -->
   <main>
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero content-reveal">
       <div class="container">
+        <div class="hero-badge animate-fade-in">
+          <span class="badge badge-accent">V6.0 SYMPHONY RELEASE</span>
+        </div>
         <h1 class="hero-title animate-fade-in-up">
-          Advanced Mobile Control AI Assistant
+          The Future of <span style="color: var(--color-accent-400)">Neural Autonomy</span>
         </h1>
         <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.1s;">
-          Your intelligent conversational companion with 75+ AI-powered functions for seamless mobile device control,
-          hardware management, and productivity enhancement
+          Experience SYMPHONY v6.0 — the elite neural companion with 75+ strategic control modules.
+          Orchestrate device hardware, synthetic workflows, and predictive intelligence via the Unified Command Center.
         </p>
         <div class="hero-actions animate-fade-in-up" style="animation-delay: 0.2s;">
-          <button class="btn btn-primary btn-sm" onclick="showModal('automation')">▶️ Run Automation</button>
-          <button class="btn btn-primary btn-lg" onclick="window.scrollTo({top: 800, behavior: 'smooth'})">
+          <button class="btn btn-primary btn-lg hover-glow" onclick="window.scrollTo({top: 900, behavior: 'smooth'})">
             <span>🚀</span>
-            <span>Explore Features</span>
+            <span>Initialize Hub</span>
           </button>
           <button class="btn btn-glass btn-lg" onclick="showModal('demo')">
             <span>▶️</span>
@@ -620,26 +260,24 @@
 
         <!-- Cognitive Stream v6.0 Widget -->
         <div class="widget-card animate-fade-in-up"
-          style="animation-delay: 0.7s; border-color: hsla(320, 80%, 30%, 0.5);">
+          style="animation-delay: 0.7s; border-color: hsla(320, 80%, 30%, 0.5); overflow: hidden;">
           <div class="widget-header">
-            <span class="widget-icon" style="align-items: center; justify-content: center;">🔮</span>
-            <span class="widget-title">Cognitive Stream <span class="badge badge-error"
-                style="font-size: 8px;">v6.0-ALPHA</span></span>
+            <span class="widget-icon" style="background: var(--gradient-accent); color: var(--color-white);">🔮</span>
+            <span class="widget-title">Neural Output <span class="badge badge-accent" style="font-size: 8px;">SYMPHONY
+                ALPHA</span></span>
           </div>
           <div class="widget-content">
             <div id="cognitiveStream"
-              style="font-family: var(--font-family-mono); font-size: 10px; color: var(--color-secondary-400); height: 80px; overflow: hidden; display: flex; flex-direction: column; gap: 4px;">
-              <div class="stream-line">> INITIALIZING_SYNAPTIC_NODES...</div>
-              <div class="stream-line">> MONITORING_REALWORLD_CONTEXT...</div>
-              <div class="stream-line">> GHOST_SHELL_INTERFACE_READY</div>
+              style="font-family: var(--font-family-mono); font-size: 11px; color: var(--color-accent-400); height: 100px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: var(--space-3); background: rgba(0,0,0,0.3); border-radius: var(--radius-lg);">
+              <div class="stream-line">> INITIALIZING_SYMPHONY_V6...</div>
+              <div class="stream-line">> QUANTUM_SECURE_LINK_ESTABLISHED</div>
+              <div class="stream-line">> READY_FOR_COMMAND_INPUT</div>
             </div>
             <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px;">
-              <div class="status-dot"
-                style="background: var(--color-secondary-500); animation: pulse 1s infinite; width: 6px; height: 6px;">
-              </div>
+              <span class="pulse-dot" style="position: relative; top: 0; right: 0;"></span>
               <span
-                style="font-size: 9px; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 1px;">Neural
-                Gateway Connected</span>
+                style="font-size: 10px; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 1px;">Symphony
+                OS Online</span>
             </div>
           </div>
         </div>
@@ -647,33 +285,34 @@
     </section>
 
     <!-- Context Panel (Desktop only) -->
-    <aside class="context-panel" id="contextPanel">
-      <div class="context-card">
-        <div class="context-title">Device Context</div>
+    <aside class="context-panel animate-fade-in-right" id="contextPanel">
+      <div class="context-card hover-lift">
+        <div class="context-title">🛰️ Device Telemetry</div>
         <div class="context-stat">
-          <span class="context-stat-label">Battery</span>
+          <span class="context-stat-label">Power State</span>
           <span class="context-stat-value" id="contextBattery">
             <span class="badge badge-success">--%</span>
           </span>
         </div>
         <div class="context-stat">
-          <span class="context-stat-label">Network</span>
+          <span class="context-stat-label">Neural Link</span>
           <span class="context-stat-value" id="contextNetwork">--</span>
         </div>
         <div class="context-stat">
-          <span class="context-stat-label">Status</span>
-          <span class="context-stat-value" id="contextLocation">Checking...</span>
+          <span class="context-stat-label">Geospatial</span>
+          <span class="context-stat-value" id="contextLocation">Locating...</span>
         </div>
         <div class="divider"></div>
         <div class="context-stat">
-          <span class="context-stat-label">Time</span>
-          <span class="context-stat-value" id="currentTime">--:--</span>
+          <span class="context-stat-label">System Time</span>
+          <span class="context-stat-value" id="currentTime"
+            style="font-family: var(--font-family-mono); letter-spacing: 2px;">--:--</span>
         </div>
       </div>
 
-      <div class="context-card">
-        <div class="context-title">🎯 Smart Suggestions</div>
-        <div id="suggestions"></div>
+      <div class="context-card hover-lift" style="border-left: 3px solid var(--color-accent-500);">
+        <div class="context-title">🎯 Neural Recommendations</div>
+        <div id="suggestions" class="stagger-children"></div>
       </div>
     </aside>
 
@@ -696,28 +335,28 @@
     </section>
   </main>
 
-  <!-- Mobile Tab Bar (Native-like Navigation) -->
+  <!-- Mobile Tab Bar (SYMPHONY Navigation) -->
   <nav class="mobile-tab-bar animate-fade-in-up">
     <button class="tab-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <span class="tab-icon">🏠</span>
-      <span class="tab-label">Home</span>
+      <span class="tab-label">DASHBOARD</span>
     </button>
     <button class="tab-item" onclick="openSearch()">
       <span class="tab-icon">🔍</span>
-      <span class="tab-label">Search</span>
+      <span class="tab-label">EXPLORE</span>
     </button>
-    <button class="tab-item voice-tab" onclick="toggleVoiceAccess()">
-      <div class="voice-tab-inner">
+    <button class="tab-item voice-tab" onclick="toggleVoiceAccess()" title="VOICE_INIT">
+      <div class="voice-tab-inner animate-glow">
         <span class="tab-icon">🎤</span>
       </div>
     </button>
     <button class="tab-item" onclick="chatManager.toggleChat()">
       <span class="tab-icon">💬</span>
-      <span class="tab-label">AI Chat</span>
+      <span class="tab-label">AI_HUB</span>
     </button>
     <button class="tab-item" onclick="showModal('settings')">
       <span class="tab-icon">⚙️</span>
-      <span class="tab-label">System</span>
+      <span class="tab-label">SYSTEM</span>
     </button>
   </nav>
 
@@ -746,18 +385,27 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 VIP Advanced Mobile AI Assistant. All rights reserved.</p>
-      <p style="margin-top: var(--space-1); font-size: 10px; opacity: 0.5;">
-        Kernel Version: v5.1.0-SYMPHONY (STABLE)
+  <footer class="footer animate-fade-in">
+    <div class="container footer-content">
+      <div class="logo animate-fade-in" style="justify-content: center; margin-bottom: var(--space-6); opacity: 0.6;">
+        <img src="assets/logo.png" alt="VIP AI" class="logo-icon"
+          style="height: 32px; width: 32px; border-radius: var(--radius-sm); filter: grayscale(1);">
+        <span style="font-size: var(--font-size-xl);">VIP AI <span
+            style="color: var(--color-accent-400)">SYMPHONY</span></span>
+      </div>
+      <p>&copy; 2026 VIP Advanced AI Ecosystem. Precision Control. Future Ready.</p>
+      <p
+        style="margin-top: var(--space-2); font-size: 11px; font-family: var(--font-family-mono); color: var(--color-accent-400); opacity: 0.8;">
+        KERNEL_OS: v6.0.0-SYMPHONY_BETA_GOLD
       </p>
-      <p style="margin-top: var(--space-2); font-size: var(--font-size-sm);">
-        Designed by <a href="https://github.com/viphacker100/" style="color: var(--color-accent-400);">VipHacker100</a>
-        •
-        <a href="javascript:void(0)" onclick="showAboutModal()" style="color: var(--color-accent-400);">About
-          Assistant</a>
-      </p>
+      <div
+        style="margin-top: var(--space-6); display: flex; justify-content: center; gap: var(--space-6); font-size: var(--font-size-sm);">
+        <a href="https://github.com/viphacker100/" class="hover-glow">DESIGNED_BY_VIPHACKER100</a>
+        <span style="opacity: 0.3">|</span>
+        <a href="javascript:void(0)" onclick="showAboutModal()" class="hover-glow">ECOSYSTEM_INFO</a>
+        <span style="opacity: 0.3">|</span>
+        <a href="javascript:void(0)" onclick="showModal('diagnostic')" class="hover-glow">SYSTEM_DIAGNOSTICS</a>
+      </div>
     </div>
   </footer>
 
@@ -773,36 +421,36 @@
   <!-- Scripts -->
   <!-- Face Recognition Library -->
   <script src="libs/face-api.min.js"></script>
-  <script src="js/app.js?v=5.1.0"></script>
-  <script src="js/functions.js?v=5.1.0"></script>
-  <script src="js/automation.js?v=5.1.0"></script>
-  <script src="js/openai-handler.js?v=5.1.0"></script>
+  <script src="js/app.js?v=6.0.0"></script>
+  <script src="js/functions.js?v=6.0.0"></script>
+  <script src="js/automation.js?v=6.0.0"></script>
+  <script src="js/openai-handler.js?v=6.0.0"></script>
   <!-- Enhanced Voice System -->
-  <script src="js/voice-manager.js?v=5.1.0"></script>
-  <script src="js/voice-access.js?v=5.1.0"></script>
-  <script src="js/about.js?v=5.1.0"></script>
-  <!-- v5.0 Command Center -->
-  <script src="js/command-center.js?v=5.1.0"></script>
-  <!-- v2.1 Enhanced Features -->
-  <script src="js/theme-manager.js?v=5.1.0"></script>
-  <script src="js/search.js?v=5.1.0"></script>
-  <script src="js/favorites.js?v=5.1.0"></script>
-  <script src="js/keyboard-shortcuts.js?v=5.1.0"></script>
-  <!-- v2.2 Advanced Features -->
-  <script src="js/export-import.js?v=5.1.0"></script>
-  <script src="js/performance-monitor.js?v=5.1.0"></script>
-  <!-- v2.3 Power User Features -->
-  <script src="js/recent-functions.js?v=5.1.0"></script>
-  <script src="js/shortcut-editor.js?v=5.1.0"></script>
-  <!-- v2.5 Smart Hub Features -->
-  <script src="js/chat-manager.js?v=5.1.0"></script>
-  <script src="js/notification-manager.js?v=5.1.0"></script>
-  <!-- v5.0 Always-Listening System -->
-  <script src="js/always-listening.js?v=5.1.0"></script>
-  <!-- v6.0 Cognitive Stream Preview -->
-  <script src="js/cognitive-stream.js?v=5.1.0"></script>
+  <script src="js/voice-manager.js?v=6.0.0"></script>
+  <script src="js/voice-access.js?v=6.0.0"></script>
+  <script src="js/about.js?v=6.0.0"></script>
+  <!-- v6.0 Command Center -->
+  <script src="js/command-center.js?v=6.0.0"></script>
+  <!-- v6.0 Enhanced Features -->
+  <script src="js/theme-manager.js?v=6.0.0"></script>
+  <script src="js/search.js?v=6.0.0"></script>
+  <script src="js/favorites.js?v=6.0.0"></script>
+  <script src="js/keyboard-shortcuts.js?v=6.0.0"></script>
+  <!-- v6.0 Advanced Features -->
+  <script src="js/export-import.js?v=6.0.0"></script>
+  <script src="js/performance-monitor.js?v=6.0.0"></script>
+  <!-- v6.0 Power User Features -->
+  <script src="js/recent-functions.js?v=6.0.0"></script>
+  <script src="js/shortcut-editor.js?v=6.0.0"></script>
+  <!-- v6.0 Smart Hub Features -->
+  <script src="js/chat-manager.js?v=6.0.0"></script>
+  <script src="js/notification-manager.js?v=6.0.0"></script>
+  <!-- v6.0 Always-Listening System -->
+  <script src="js/always-listening.js?v=6.0.0"></script>
+  <!-- v6.0 Cognitive Stream -->
+  <script src="js/cognitive-stream.js?v=6.0.0"></script>
   <!-- Face Recognition System -->
-  <script src="js/face-recognition.js?v=5.1.0"></script>
+  <script src="js/face-recognition.js?v=6.0.0"></script>
 
   <script>
     // Initialize all features

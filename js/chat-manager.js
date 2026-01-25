@@ -1,6 +1,6 @@
 /**
- * VIP AI Assistant - Chat Manager (Smart Hub)
- * Interactive conversational interface for AI intelligence
+ * VIP AI SYMPHONY - Cognitive Gateway v6.0
+ * Intelligent Chat Interface & Synthetic Reasoning Hub
  */
 
 const chatManager = {
@@ -20,7 +20,7 @@ const chatManager = {
         if (this.history.length === 0) {
             this.history.push({
                 role: 'ai',
-                text: 'Hello! I am your VIP AI Assistant Hub. How can I help you manage your digital life today?',
+                text: 'Acoustic link established. I am VIP AI SYMPHONY, your platinum-tier neural interface. How shall we orchestrate your device sub-systems today?',
                 time: new Date().toISOString()
             });
         }
@@ -43,13 +43,13 @@ const chatManager = {
             panel.id = 'aiChatPanel';
             panel.className = 'sidebar-drawer';
             panel.innerHTML = `
-                <div class="drawer-header">
+                <div class="drawer-header" style="background: rgba(0,0,0,0.1); border-bottom: 2px solid var(--glass-border);">
                     <div style="display: flex; flex-direction: column;">
-                        <h2 class="modal-title" style="margin: 0;">🧠 AI Smart Hub</h2>
-                        <div style="font-size: 10px; color: var(--color-accent-400); font-weight: bold; text-transform: uppercase;">Session Node: ACTIVE-V5.1-SYMPHONY</div>
+                        <h2 class="modal-title" style="margin: 0; font-family: var(--font-family-display);">🧠 AI_GATEWAY_HUB</h2>
+                        <div style="font-size: 10px; color: var(--color-accent-400); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Session Node: ACTIVE-PLATINUM-V6.0</div>
                     </div>
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <button class="btn btn-glass" style="padding: 2px 8px; font-size: 10px; min-height: 24px; border-color: var(--color-error-500); color: var(--color-error-400);" onclick="executeFunction('neural_link')">SYNC</button>
+                        <button class="btn btn-glass" style="padding: 2px 10px; font-size: 9px; min-height: 24px; border-color: var(--color-accent-500); color: var(--color-accent-400); font-family: var(--font-family-mono);" onclick="executeFunction('neural_link')">SYNC</button>
                         <select onchange="chatManager.setPersonality(this.value)" style="background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: 4px; color: var(--text-secondary); font-size: 10px; cursor: pointer; height: 24px;">
                             <option value="professional" ${this.personality === 'professional' ? 'selected' : ''}>PRO</option>
                             <option value="concise" ${this.personality === 'concise' ? 'selected' : ''}>MIN</option>
@@ -166,10 +166,10 @@ const chatManager = {
         if (!chipContainer) return;
 
         const chips = [
-            { icon: '🔋', text: 'Battery?' },
-            { icon: '⚡', text: 'Automation' },
-            { icon: '🔦', text: 'Flashlight' },
-            { icon: '📊', text: 'Analytics' }
+            { icon: '🔋', text: 'POWER_STATE' },
+            { icon: '⚡', text: 'INIT_WORKFLOW' },
+            { icon: '🔦', text: 'PHOTON_PULSE' },
+            { icon: '📊', text: 'KERNEL_LOGS' }
         ];
 
         chipContainer.innerHTML = chips.map(c => `
@@ -248,7 +248,7 @@ const chatManager = {
 
             // Add branding if real API was used
             if (hasKey) {
-                responseText = `[VIP-AI] ${responseText}`;
+                responseText = `[SYMPHONY] ${responseText}`;
             }
 
             this.history.push({
@@ -367,10 +367,10 @@ const chatManager = {
 
         // Response modifiers based on personality
         if (this.personality === 'concise') {
-            if (lower.includes('hello')) return 'Greeting received.';
-            if (lower.includes('help')) return 'I manage shortcuts, analytics, and hardware. Ask for a specific task.';
-            if (lower.includes('battery')) return `Status: ${document.getElementById('contextBattery')?.innerText || 'Unknown'}.`;
-            return 'Task noted. Awaiting specific execution parameters.';
+            if (lower.includes('hello')) return 'Acoustic handshake verified.';
+            if (lower.includes('help')) return 'I orchestrate kernel functions and neural workflows. Specify target.';
+            if (lower.includes('battery')) return `ENERGY_CORE: ${document.getElementById('contextBattery')?.innerText || 'STABLE'}.`;
+            return 'Directive received. Processing sub-modular logic.';
         }
 
         if (this.personality === 'creative') {

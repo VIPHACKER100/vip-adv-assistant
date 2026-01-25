@@ -1,7 +1,6 @@
 /**
- * Always-Listening Command System
- * Continuous voice and command interaction for VIP AI Assistant
- * v5.1 - Contextual Symphony
+ * Always-Listening Command System - SYMPHONY KERNEL v6.0
+ * Continuous acoustic monitoring and neural link persistence
  */
 
 // Always-listening state
@@ -12,7 +11,8 @@ window.alwaysListening = {
   commandQueue: [],
   lastActivity: Date.now(),
   interactionCount: 0,
-  wakeWord: 'hey assistant',
+  wakeWord: 'hey symphony',
+  backupWakeWord: 'hey assistant',
   isProcessing: false,
   lastNeuralPulse: 0
 };
@@ -61,7 +61,10 @@ function setupAlwaysListeningHandlers() {
   recognition.onstart = () => {
     alwaysListening.enabled = true;
     updateAlwaysListeningUI(true);
-    console.log('🎤 Always-listening active');
+    console.log('🎤 PERSISTENT_ACOUSTIC_LINK_ACTIVE');
+    if (window.cognitiveStream) {
+      window.cognitiveStream.addLine('> INFO: ACOUSTIC_GATEWAY_OPEN');
+    }
   };
 
   recognition.onend = () => {
@@ -151,31 +154,33 @@ function setupAlwaysListeningHandlers() {
  */
 function handleAlwaysListeningCommand(transcript, isFinal) {
   alwaysListening.lastActivity = Date.now();
+  const lowerTranscript = transcript.toLowerCase();
 
   // Check for wake word
-  if (transcript.includes(alwaysListening.wakeWord)) {
-    // Only show toast once for wake word
+  if (lowerTranscript.includes(alwaysListening.wakeWord) || lowerTranscript.includes(alwaysListening.backupWakeWord)) {
     const now = Date.now();
     if (!alwaysListening.lastWakeToast || now - alwaysListening.lastWakeToast > 5000) {
-      showToast('Wake Word Detected', 'Assistant activated', 'success');
+      showToast('Neural Trigger', 'SYMPHONY_ACTIVATED', 'success');
       alwaysListening.lastWakeToast = now;
-      showNeuralPulse(); // Visual trigger
+      showNeuralPulse();
+      if (window.cognitiveStream) {
+        window.cognitiveStream.addLine('> SUCCESS: WAKE_WORD_MATCH_DETECTED');
+      }
     }
 
     // Extract command after wake word
-    const parts = transcript.split(alwaysListening.wakeWord);
+    let parts = lowerTranscript.split(alwaysListening.wakeWord);
+    if (parts.length === 1) parts = lowerTranscript.split(alwaysListening.backupWakeWord);
+
     const commandToProcess = parts[parts.length - 1].trim();
+    if (commandToProcess.length === 0) return;
 
-    if (commandToProcess.length === 0) return; // Only wake word spoken
-
-    // If we have text after wake word, process it if final
     if (isFinal) {
       executeAlwaysListeningCommand(commandToProcess);
     }
     return;
   }
 
-  // Regular command (no wake word needed if recently activated or in debug mode)
   if (isFinal) {
     executeAlwaysListeningCommand(transcript);
   }
@@ -345,17 +350,17 @@ function stopAlwaysListening() {
 function updateAlwaysListeningUI(isActive) {
   // Update button
   const voiceBtn = document.getElementById('voiceAccessBtn');
+  const orb = document.getElementById('neuralOrb');
+
   if (voiceBtn) {
-    if (isActive) {
-      voiceBtn.classList.add('always-listening-active');
-      voiceBtn.title = 'Always-Listening Active (Ctrl+Shift+V to toggle)';
-    } else {
-      voiceBtn.classList.remove('always-listening-active');
-      voiceBtn.title = 'Voice Access (Ctrl+M)';
-    }
+    voiceBtn.classList.toggle('always-listening-active', isActive);
+    voiceBtn.title = isActive ? 'PERSISTENT_LINK_ACTIVE (CTL+SHF+V)' : 'INITIALIZE_ACOUSTIC_LINK (CTL+SHF+V)';
   }
 
-  // Update status indicator
+  if (orb) {
+    orb.classList.toggle('persistence-active', isActive);
+  }
+
   let statusIndicator = document.getElementById('alwaysListeningStatus');
   if (!statusIndicator) {
     statusIndicator = document.createElement('div');
@@ -365,7 +370,7 @@ function updateAlwaysListeningUI(isActive) {
   }
 
   if (isActive) {
-    statusIndicator.innerHTML = '<span class="pulse-dot"></span> Always-Listening';
+    statusIndicator.innerHTML = '<span class="pulse-dot"></span> SYMPHONY_LISTENING_ACTIVE';
     statusIndicator.classList.add('active');
   } else {
     statusIndicator.classList.remove('active');

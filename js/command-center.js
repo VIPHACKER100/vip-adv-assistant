@@ -1,7 +1,6 @@
 /**
- * Command Center - Unified Interaction Hub
- * Centralized command processing and user interaction
- * v5.0 - Neural Symphony
+ * Command Center - SYMPHONY KERNEL v6.0
+ * Unified Interaction Hub & Command Processor
  */
 
 window.commandCenter = {
@@ -36,53 +35,53 @@ function initCommandCenter() {
  * Register command handlers
  */
 function registerCommandHandlers() {
-  // Voice commands
+  // Bio-Acoustics
   commandCenter.commands.set('voice', {
     handler: () => toggleVoiceAccess(),
-    description: 'Toggle voice access'
+    description: 'Toggle neural voice link'
   });
 
   commandCenter.commands.set('always-listen', {
     handler: () => toggleAlwaysListening(),
-    description: 'Toggle always-listening mode'
+    description: 'Enable persistent acoustic monitoring'
   });
 
-  // Navigation
+  // Navigation Vectors
   commandCenter.commands.set('home', {
     handler: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-    description: 'Scroll to top'
+    description: 'Return to dashboard root'
   });
 
   commandCenter.commands.set('search', {
     handler: () => openSearch(),
-    description: 'Open search'
+    description: 'Initialize Omni-Search'
   });
 
-  // Panels
+  // Neural Hubs
   commandCenter.commands.set('hud', {
     handler: () => toggleHUD(),
-    description: 'Toggle Command Center HUD'
+    description: 'Toggle Command Station overlay'
   });
 
   commandCenter.commands.set('chat', {
     handler: () => chatManager.toggleChat(),
-    description: 'Toggle AI chat'
+    description: 'Activate AI_HUB interface'
   });
 
   commandCenter.commands.set('notifications', {
     handler: () => notificationManager.togglePanel(),
-    description: 'Toggle notifications'
+    description: 'Review system telemetry logs'
   });
 
-  // System
+  // Kernel Operations
   commandCenter.commands.set('boost', {
     handler: () => toggleBoostMode(),
-    description: 'Toggle boost mode'
+    description: 'Initialize SYMPHONY_BOOST'
   });
 
   commandCenter.commands.set('theme', {
     handler: () => toggleTheme(),
-    description: 'Toggle theme'
+    description: 'Shift visual interface spectrum'
   });
 }
 
@@ -211,38 +210,43 @@ function showCommandPalette() {
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
-        <div class="modal-header">
-          <h2 class="modal-title">🎯 Command Center</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 650px; padding: 0; overflow: hidden;">
+        <div class="modal-header" style="background: rgba(0,0,0,0.2); padding: var(--space-5);">
+          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 18px; letter-spacing: 1px;">⚡ COMMAND_CENTRAL_CORE</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
-        <div class="modal-body">
-          <input type="text" id="commandInput" class="input" placeholder="Type a command..." 
-                 style="width: 100%; margin-bottom: var(--space-4);" 
-                 onkeydown="if(event.key==='Enter') { window.commandCenter.processCommand(document.getElementById('commandInput').value, 'palette'); closeModal(); }">
+        <div class="modal-body" style="padding: var(--space-6);">
+          <div style="position: relative; margin-bottom: var(--space-6);">
+            <div style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-accent-400); font-size: 18px;">◈</div>
+            <input type="text" id="commandInput" class="input input-lg" placeholder="ENTER_COMMAND_SEQUENCE..." 
+                   style="width: 100%; padding-left: 48px; background: rgba(255,255,255,0.03); border: 2px solid var(--glass-border); border-radius: var(--radius-2xl); font-family: var(--font-family-mono); height: 60px;" 
+                   onkeydown="if(event.key==='Enter') { window.commandCenter.processCommand(document.getElementById('commandInput').value, 'palette'); closeModal(); }">
+          </div>
           
-          <div style="max-height: 400px; overflow-y: auto;">
+          <div style="max-height: 380px; overflow-y: auto; padding-right: 8px;" class="stagger-children" id="paletteResults">
             ${commands.map(cmd => `
-              <div class="glass-card" style="margin-bottom: var(--space-3); cursor: pointer;" 
+              <div class="glass-card-subtle hover-lift" style="margin-bottom: var(--space-3); cursor: pointer; padding: var(--space-4); border-left: 3px solid transparent;" 
+                   onmouseenter="this.style.borderLeftColor='var(--color-accent-500)'"
+                   onmouseleave="this.style.borderLeftColor='transparent'"
                    onclick="window.commandCenter.processCommand('${cmd.key}', 'palette'); closeModal();">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="flex-between">
                   <div>
-                    <strong style="color: var(--text-primary);">${cmd.key}</strong>
-                    <p style="margin-top: var(--space-1); color: var(--text-secondary); font-size: var(--font-size-sm);">${cmd.description}</p>
+                    <strong style="color: var(--text-primary); font-size: 14px; letter-spacing: 0.5px;">${cmd.key.toUpperCase()}</strong>
+                    <p style="margin-top: var(--space-1); color: var(--text-tertiary); font-size: 12px;">${cmd.description.toUpperCase()}</p>
                   </div>
-                  <span style="color: var(--color-accent-400);">→</span>
+                  <div class="badge badge-accent" style="font-family: var(--font-family-mono); font-size: 10px;">EXEC_LOCAL</div>
                 </div>
               </div>
             `).join('')}
           </div>
 
-          <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-tertiary); border-radius: var(--radius-lg);">
-            <strong style="color: var(--text-primary);">💡 Quick Commands:</strong>
-            <div style="margin-top: var(--space-2); font-size: var(--font-size-sm); color: var(--text-secondary);">
-              <div>• Ctrl+Shift+P - Open Command Palette</div>
-              <div>• Ctrl+Shift+V - Toggle Always-Listening</div>
-              <div>• Ctrl+K - Open Search</div>
-              <div>• Ctrl+J - Open AI Chat</div>
+          <div style="margin-top: var(--space-6); padding: var(--space-4); background: rgba(0,0,0,0.2); border-radius: var(--radius-xl); border: 1px solid var(--glass-border);">
+            <div style="font-size: 10px; color: var(--color-accent-400); margin-bottom: 8px; letter-spacing: 1px; font-weight: 800;">KERNEL_SHORTCUTS:</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); font-size: 11px; font-family: var(--font-family-mono); color: var(--text-tertiary);">
+              <div><span style="color: var(--text-secondary);">CTL+SHF+P</span> — MASTER_PALETTE</div>
+              <div><span style="color: var(--text-secondary);">CTL+SHF+V</span> — BIO_ACOUSTICS</div>
+              <div><span style="color: var(--text-secondary);">CTL+K</span> — OMNI_SEARCH</div>
+              <div><span style="color: var(--text-secondary);">CTL+J</span> — AI_GATEWAY</div>
             </div>
           </div>
         </div>

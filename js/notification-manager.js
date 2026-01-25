@@ -17,8 +17,8 @@ const notificationManager = {
         // Add an initial welcome notification if empty
         if (this.notifications.length === 0) {
             this.addNotification({
-                title: 'Welcome to v2.5 🎉',
-                message: 'Check out the new AI Hub and Notification Center!',
+                title: 'SYMPHONY v6.0 ONLINE 🚀',
+                message: 'Neural Weave architecture initialized. Welcome to the Platinum interface.',
                 type: 'info',
                 time: new Date().toISOString()
             });
@@ -90,20 +90,20 @@ const notificationManager = {
             panel.id = 'notificationPanel';
             panel.className = 'sidebar-drawer';
             panel.innerHTML = `
-                <div class="drawer-header">
-                    <h2 class="modal-title">🔔 Notifications</h2>
-                    <button class="modal-close" onclick="notificationManager.closePanel()">&times;</button>
+                <div class="drawer-header" style="background: rgba(0,0,0,0.1); border-bottom: 2px solid var(--glass-border);">
+                    <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">📡 SYSTEM_TELEMETRY_LOGS</h2>
+                    <button class="modal-close" onclick="notificationManager.closePanel()">×</button>
                 </div>
-                <div style="padding: var(--space-4); border-bottom: 1px solid var(--border-primary); overflow-x: auto; display: flex; gap: var(--space-2); scrollbar-width: none;">
-                    <button class="badge" onclick="notificationManager.filterNotifications('all')" id="filter-all" style="cursor: pointer; border: 1px solid var(--color-accent-500);">All</button>
-                    <button class="badge" onclick="notificationManager.filterNotifications('info')" id="filter-info" style="cursor: pointer; opacity: 0.6;">System</button>
-                    <button class="badge" onclick="notificationManager.filterNotifications('success')" id="filter-success" style="cursor: pointer; opacity: 0.6;">AI</button>
-                    <button class="badge" onclick="notificationManager.filterNotifications('warning')" id="filter-warning" style="cursor: pointer; opacity: 0.6;">Security</button>
+                <div style="padding: var(--space-4); border-bottom: 1px solid var(--glass-border); overflow-x: auto; display: flex; gap: var(--space-3); scrollbar-width: none;">
+                    <button class="badge badge-sm" onclick="notificationManager.filterNotifications('all')" id="filter-all" style="cursor: pointer; border: 1px solid var(--color-accent-500);">ALL_FEEDS</button>
+                    <button class="badge badge-sm" onclick="notificationManager.filterNotifications('info')" id="filter-info" style="cursor: pointer; opacity: 0.6;">KERNEL_LOGS</button>
+                    <button class="badge badge-sm" onclick="notificationManager.filterNotifications('success')" id="filter-success" style="cursor: pointer; opacity: 0.6;">NEURAL_PULSE</button>
+                    <button class="badge badge-sm" onclick="notificationManager.filterNotifications('warning')" id="filter-warning" style="cursor: pointer; opacity: 0.6;">THREAT_DETECTION</button>
                 </div>
-                <div class="drawer-body" id="notificationList"></div>
-                <div style="padding: var(--space-4); border-top: 1px solid var(--border-primary); display: flex; gap: var(--space-2);">
-                    <button class="btn btn-glass btn-sm" onclick="notificationManager.markAllRead()" style="flex: 1;">Mark all read</button>
-                    <button class="btn btn-glass btn-sm" onclick="notificationManager.clearAll()" style="flex: 1;">Clear all</button>
+                <div class="drawer-body" id="notificationList" style="padding: var(--space-4);"></div>
+                <div style="padding: var(--space-5); border-top: 1px solid var(--glass-border); display: flex; gap: var(--space-3); background: rgba(0,0,0,0.05);">
+                    <button class="btn btn-glass btn-sm" onclick="notificationManager.markAllRead()" style="flex: 1; font-size: 10px;">ACKNOWLEDGE_ALL</button>
+                    <button class="btn btn-glass btn-sm" onclick="notificationManager.clearAll()" style="flex: 1; font-size: 10px;">PURGE_BUFFER</button>
                 </div>
             `;
             document.body.appendChild(panel);
@@ -189,12 +189,12 @@ const notificationManager = {
         }
 
         container.innerHTML = filtered.map(n => `
-            <div class="glass-card" style="margin-bottom: var(--space-4); padding: var(--space-4); border-left: 4px solid var(--color-${n.type}-500); opacity: ${n.read ? '0.7' : '1'};">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-1);">
-                    <div style="font-weight: var(--font-weight-semibold); color: var(--text-primary); font-size: var(--font-size-sm);">${n.title}</div>
-                    <div style="font-size: var(--font-size-xs); color: var(--text-tertiary);">${this.formatTime(n.time)}</div>
+            <div class="glass-card-subtle" style="margin-bottom: var(--space-4); padding: var(--space-4); border-left: 3px solid var(--color-${n.type}-500); opacity: ${n.read ? '0.7' : '1'};">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                    <div style="font-weight: 800; color: var(--text-primary); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;">${n.title}</div>
+                    <div style="font-size: 9px; color: var(--text-tertiary); font-family: var(--font-family-mono);">${this.formatTime(n.time).toUpperCase()}</div>
                 </div>
-                <div style="color: var(--text-secondary); font-size: var(--font-size-xs); line-height: 1.4;">${n.message}</div>
+                <div style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${n.message}</div>
             </div>
         `).join('');
     },

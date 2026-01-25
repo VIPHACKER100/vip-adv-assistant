@@ -1,118 +1,118 @@
 /**
- * Custom Keyboard Shortcuts Editor
- * Allow users to customize keyboard shortcuts
+ * VIP AI SYMPHONY - Key Synapse Editor v6.0
+ * Customized Strategic Vector Mapping & Input Configuration
  */
 
 const shortcutEditor = {
-    customShortcuts: JSON.parse(localStorage.getItem('customShortcuts') || '{}'),
+  customShortcuts: JSON.parse(localStorage.getItem('customShortcuts') || '{}'),
 
-    defaultShortcuts: {
-        'search': 'ctrl+k',
-        'voice': 'ctrl+m',
-        'automation': 'ctrl+b',
-        'settings': 'ctrl+,',
-        'help': 'ctrl+/',
-        'theme': 'ctrl+shift+l',
-        'home': 'ctrl+h',
-        'favorites': 'ctrl+shift+f',
-        'recent': 'ctrl+r',
-        'performance': 'ctrl+shift+p'
-    },
+  defaultShortcuts: {
+    'search': 'ctrl+k',
+    'voice': 'ctrl+m',
+    'automation': 'ctrl+b',
+    'settings': 'ctrl+,',
+    'help': 'ctrl+/',
+    'theme': 'ctrl+shift+l',
+    'home': 'ctrl+h',
+    'favorites': 'ctrl+shift+f',
+    'recent': 'ctrl+r',
+    'performance': 'ctrl+shift+p'
+  },
 
-    getShortcut(action) {
-        return this.customShortcuts[action] || this.defaultShortcuts[action];
-    },
+  getShortcut(action) {
+    return this.customShortcuts[action] || this.defaultShortcuts[action];
+  },
 
-    setShortcut(action, shortcut) {
-        this.customShortcuts[action] = shortcut;
-        localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
+  setShortcut(action, shortcut) {
+    this.customShortcuts[action] = shortcut;
+    localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
 
-        // Update keyboard shortcuts
-        if (window.shortcuts) {
-            this.applyCustomShortcuts();
-        }
-    },
+    // Update keyboard shortcuts
+    if (window.shortcuts) {
+      this.applyCustomShortcuts();
+    }
+  },
 
-    resetToDefaults() {
-        this.customShortcuts = {};
-        localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
-        this.applyCustomShortcuts();
-        showToast('Shortcuts Reset', 'Restored to default shortcuts', 'success');
-    },
+  resetToDefaults() {
+    this.customShortcuts = {};
+    localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
+    this.applyCustomShortcuts();
+    showToast('Shortcuts Reset', 'Restored to default shortcuts', 'success');
+  },
 
-    applyCustomShortcuts() {
-        // Rebuild shortcuts with custom bindings
-        const newBindings = {};
+  applyCustomShortcuts() {
+    // Rebuild shortcuts with custom bindings
+    const newBindings = {};
 
-        Object.entries(this.defaultShortcuts).forEach(([action, defaultKey]) => {
-            const key = this.getShortcut(action);
+    Object.entries(this.defaultShortcuts).forEach(([action, defaultKey]) => {
+      const key = this.getShortcut(action);
 
-            switch (action) {
-                case 'search':
-                    newBindings[key] = () => openSearch();
-                    break;
-                case 'voice':
-                    newBindings[key] = () => toggleVoiceAccess();
-                    break;
-                case 'automation':
-                    newBindings[key] = () => openAutomationBuilder();
-                    break;
-                case 'settings':
-                    newBindings[key] = () => showModal('settings');
-                    break;
-                case 'help':
-                    newBindings[key] = () => showShortcutsHelp();
-                    break;
-                case 'theme':
-                    newBindings[key] = () => toggleTheme();
-                    break;
-                case 'home':
-                    newBindings[key] = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-                    break;
-                case 'favorites':
-                    newBindings[key] = () => favoritesManager.showFavoritesModal();
-                    break;
-                case 'recent':
-                    newBindings[key] = () => recentFunctionsManager.showHistoryModal();
-                    break;
-                case 'performance':
-                    newBindings[key] = () => performanceMonitor.showDashboard();
-                    break;
-            }
-        });
+      switch (action) {
+        case 'search':
+          newBindings[key] = () => openSearch();
+          break;
+        case 'voice':
+          newBindings[key] = () => toggleVoiceAccess();
+          break;
+        case 'automation':
+          newBindings[key] = () => openAutomationBuilder();
+          break;
+        case 'settings':
+          newBindings[key] = () => showModal('settings');
+          break;
+        case 'help':
+          newBindings[key] = () => showShortcutsHelp();
+          break;
+        case 'theme':
+          newBindings[key] = () => toggleTheme();
+          break;
+        case 'home':
+          newBindings[key] = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+          break;
+        case 'favorites':
+          newBindings[key] = () => favoritesManager.showFavoritesModal();
+          break;
+        case 'recent':
+          newBindings[key] = () => recentFunctionsManager.showHistoryModal();
+          break;
+        case 'performance':
+          newBindings[key] = () => performanceMonitor.showDashboard();
+          break;
+      }
+    });
 
-        // Add escape key
-        newBindings['escape'] = () => closeModal();
+    // Add escape key
+    newBindings['escape'] = () => closeModal();
 
-        // Update global shortcuts
-        if (window.shortcuts) {
-            shortcuts.bindings = newBindings;
-        }
-    },
+    // Update global shortcuts
+    if (window.shortcuts) {
+      shortcuts.bindings = newBindings;
+    }
+  },
 
-    showEditor() {
-        const modalContainer = document.getElementById('modalContainer');
-        if (!modalContainer) return;
+  showEditor() {
+    const modalContainer = document.getElementById('modalContainer');
+    if (!modalContainer) return;
 
-        const actions = [
-            { id: 'search', name: 'Open Search', icon: '🔍' },
-            { id: 'voice', name: 'Toggle Voice', icon: '🎤' },
-            { id: 'automation', name: 'Automation Builder', icon: '⚡' },
-            { id: 'settings', name: 'Settings', icon: '⚙️' },
-            { id: 'help', name: 'Show Help', icon: '❓' },
-            { id: 'theme', name: 'Toggle Theme', icon: '🎨' },
-            { id: 'home', name: 'Scroll to Top', icon: '🏠' },
-            { id: 'favorites', name: 'Show Favorites', icon: '⭐' },
-            { id: 'recent', name: 'Recent Functions', icon: '🕒' },
-            { id: 'performance', name: 'Performance Dashboard', icon: '📊' }
-        ];
+    const actions = [
+      { id: 'search', name: 'Open Search', icon: '🔍' },
+      { id: 'voice', name: 'Toggle Voice', icon: '🎤' },
+      { id: 'automation', name: 'Automation Builder', icon: '⚡' },
+      { id: 'settings', name: 'Settings', icon: '⚙️' },
+      { id: 'help', name: 'Show Help', icon: '❓' },
+      { id: 'theme', name: 'Toggle Theme', icon: '🎨' },
+      { id: 'home', name: 'Scroll to Top', icon: '🏠' },
+      { id: 'favorites', name: 'Show Favorites', icon: '⭐' },
+      { id: 'recent', name: 'Recent Functions', icon: '🕒' },
+      { id: 'performance', name: 'Performance Dashboard', icon: '📊' }
+    ];
 
-        modalContainer.innerHTML = `
+    modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px;">
-          <div class="modal-header">
-            <h2 class="modal-title">⌨️ Customize Shortcuts</h2>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 720px; padding: 0; overflow: hidden;">
+          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
+            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⌨️ SYMPHONY_VECTOR_CONFIG</h2>
+            <button class="modal-close" onclick="closeModal()">×</button>
           </div>
           <div class="modal-body">
             <div style="margin-bottom: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-warning-500);">
@@ -124,15 +124,15 @@ const shortcutEditor = {
 
             <div style="display: grid; gap: var(--space-3);">
               ${actions.map(action => `
-                <div class="glass-card" style="padding: var(--space-3);">
-                  <div style="display: flex; align-items: center; gap: var(--space-3);">
-                    <span style="font-size: var(--font-size-2xl);">${action.icon}</span>
+                <div class="glass-card-subtle" style="padding: var(--space-4);">
+                  <div style="display: flex; align-items: center; gap: var(--space-4);">
+                    <span style="font-size: 24px;">${action.icon}</span>
                     <div style="flex: 1;">
-                      <div style="font-weight: var(--font-weight-semibold); color: var(--text-primary);">
-                        ${action.name}
+                      <div style="font-weight: 800; color: var(--text-primary); font-size: 13px; letter-spacing: 0.5px;">
+                        ${action.name.toUpperCase()}
                       </div>
-                      <div style="font-size: var(--font-size-xs); color: var(--text-tertiary); margin-top: var(--space-1);">
-                        Default: ${this.defaultShortcuts[action.id]}
+                      <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 4px; font-family: var(--font-family-mono);">
+                        BASELINE: ${this.defaultShortcuts[action.id].toUpperCase()}
                       </div>
                     </div>
                     <input 
@@ -140,8 +140,8 @@ const shortcutEditor = {
                       class="input" 
                       value="${this.getShortcut(action.id)}"
                       placeholder="ctrl+key"
-                      style="width: 150px; font-family: monospace;"
-                      onchange="shortcutEditor.setShortcut('${action.id}', this.value); showToast('Shortcut Updated', '${action.name} shortcut changed', 'success');"
+                      style="width: 140px; font-family: var(--font-family-mono); font-size: 11px; text-align: center; border-color: var(--glass-border);"
+                      onchange="shortcutEditor.setShortcut('${action.id}', this.value); showToast('Vector Synced', '${action.name} re-bound', 'success');"
                     >
                   </div>
                 </div>
@@ -157,16 +157,17 @@ const shortcutEditor = {
               </ul>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-glass" onclick="shortcutEditor.resetToDefaults(); shortcutEditor.showEditor();">
-              Reset to Defaults
+          <div class="modal-footer" style="background: rgba(0,0,0,0.1); padding: var(--space-5);">
+            <button class="btn btn-glass btn-sm" onclick="shortcutEditor.resetToDefaults(); shortcutEditor.showEditor();">
+              RESTORE_BASELINE
             </button>
-            <button class="btn btn-primary" onclick="closeModal()">Done</button>
+            <div style="flex: 1;"></div>
+            <button class="btn btn-primary" onclick="closeModal()">COMMIT_CONFIG</button>
           </div>
         </div>
       </div>
     `;
-    }
+  }
 };
 
 // Export for global access

@@ -1,6 +1,6 @@
 /**
- * Theme Manager
- * Dark/Light/Auto theme switching with persistence
+ * VIP AI SYMPHONY - Spectrum Orchestrator v6.0
+ * Intelligent UI Chroma Shifting & Persistence Matrix
  */
 
 const themeManager = {
@@ -58,7 +58,7 @@ const themeManager = {
     toggle() {
         const next = this.current === 'dark' ? 'light' : 'dark';
         this.apply(next);
-        showToast('Theme', `Switched to ${next} mode`, 'success');
+        showToast('Spectrum Shift', `NODE_CALIBRATION: ${next.toUpperCase()}_MODE`, 'success');
     },
 
     watchSystemPreference() {

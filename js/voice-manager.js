@@ -1,7 +1,6 @@
 /**
- * Enhanced Voice Manager
- * VIP Advanced AI Assistant - Natural Voice System
- * Provides better voice selection and more human-like speech
+ * VIP AI SYMPHONY - Acoustic Synthesis v6.0
+ * Advanced Neural Text-to-Speech & Voice Orchestration
  */
 
 class VoiceManager {
@@ -287,7 +286,7 @@ class VoiceManager {
             <div class="modal-overlay active" onclick="closeModal(event)">
                 <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
                     <div class="modal-header">
-                        <h2 class="modal-title">🎙️ Voice Settings</h2>
+                        <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 18px; letter-spacing: 1px;">🎙️ ACOUSTIC_SYNTHESIS_CONFIG</h2>
                         <button class="modal-close" onclick="closeModal()">×</button>
                     </div>
                     <div class="modal-body">
@@ -318,12 +317,12 @@ class VoiceManager {
 
         // Premium voices
         if (categories.premium.length > 0) {
-            html += this.renderVoiceSection('⭐ Premium Voices', categories.premium, 'premium');
+            html += this.renderVoiceSection('✨ PLATINUM_SYNTHESIS', categories.premium, 'premium');
         }
 
         // Standard voices
         if (categories.standard.length > 0) {
-            html += this.renderVoiceSection('🎤 Standard Voices', categories.standard, 'standard');
+            html += this.renderVoiceSection('⚡ KERNEL_STREAMS', categories.standard, 'standard');
         }
 
         // Other voices
@@ -383,8 +382,8 @@ class VoiceManager {
      */
     renderVoiceControls() {
         return `
-            <div class="glass-card">
-                <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">⚙️ Voice Controls</h4>
+            <div class="glass-card" style="border: 1px solid var(--glass-border);">
+                <h4 style="margin-bottom: var(--space-4); color: var(--color-accent-400); font-size: 12px; letter-spacing: 1px;">SYNAPSE_CONTROLS</h4>
                 
                 <!-- Speed -->
                 <div style="margin-bottom: var(--space-4);">
@@ -448,9 +447,9 @@ class VoiceManager {
      */
     testVoice() {
         const testPhrases = [
-            "Hello! I'm your VIP AI Assistant. How can I help you today?",
-            "Welcome back! It's great to see you again.",
-            "I'm here to assist you with any task you need."
+            "Acoustic baseline established. SYMPHONY v6.0 online.",
+            "Neural synthesis verified. Waiting for bio-metric handshake.",
+            "Platinum-tier cognitive relay is operational. Ready for commands."
         ];
 
         const randomPhrase = testPhrases[Math.floor(Math.random() * testPhrases.length)];

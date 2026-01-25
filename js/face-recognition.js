@@ -65,53 +65,49 @@ class FaceRecognitionManager {
     createUI() {
         const modalHTML = `
       <div class="face-recognition-modal" id="faceRecognitionModal">
-        <div class="face-recognition-container">
+        <div class="face-recognition-container animate-slide-up">
           <div class="face-recognition-header">
-            <h2 class="face-recognition-title">🔐 Face ID Recognition</h2>
+            <h2 class="face-recognition-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">🔐 BIOMETRIC_ID_VERIFICATION</h2>
             <button class="face-recognition-close" onclick="faceRecognition.close()">✕</button>
           </div>
 
           <div class="face-recognition-status" id="faceStatus">
-            <span class="status-icon" id="statusIcon">📷</span>
-            <div class="status-text" id="statusText">Initializing Camera...</div>
-            <div class="status-subtext" id="statusSubtext">Please allow camera access</div>
+            <span class="status-icon" id="statusIcon" style="background: var(--gradient-primary); box-shadow: var(--shadow-glow-accent);">👁️</span>
+            <div class="status-text" id="statusText" style="font-weight: 700; color: var(--text-primary);">INITIALIZING_BIOMETRIC_LINK</div>
+            <div class="status-subtext" id="statusSubtext" style="font-family: var(--font-family-mono); font-size: 10px; opacity: 0.7;">AWAITING_CAMERA_HANDSHAKE...</div>
           </div>
 
-          <div class="video-container">
-            <video id="faceVideo" autoplay muted playsinline></video>
+          <div class="video-container" style="border-radius: var(--radius-2xl); border: 2px solid var(--glass-border); overflow: hidden; background: #000;">
+            <video id="faceVideo" autoplay muted playsinline style="filter: contrast(1.1) brightness(1.1);"></video>
             <canvas id="faceCanvas"></canvas>
-            <div class="scanning-overlay" id="scanningOverlay">
-              <div class="scan-line"></div>
+            <div class="scanning-overlay active" id="scanningOverlay">
+              <div class="scan-line" style="background: linear-gradient(to bottom, transparent, var(--color-accent-400), transparent);"></div>
             </div>
           </div>
 
           <div class="face-recognition-actions">
-            <button class="btn btn-primary" id="startScanBtn" onclick="faceRecognition.startRecognition()">
+            <button class="btn btn-primary btn-sm hover-glow" id="startScanBtn" onclick="faceRecognition.startRecognition()">
               <span>🔍</span>
-              <span>Start Recognition</span>
+              <span>START_SCAN</span>
             </button>
-            <button class="btn btn-accent" id="registerBtn" onclick="faceRecognition.registerFace()">
+            <button class="btn btn-accent btn-sm" id="registerBtn" onclick="faceRecognition.registerFace()">
               <span>➕</span>
-              <span>Register New Face</span>
-            </button>
-            <button class="btn btn-glass" id="clearBtn" onclick="faceRecognition.clearRegisteredFaces()">
-              <span>🗑️</span>
-              <span>Clear All</span>
+              <span>REGISTER_BIO_NODE</span>
             </button>
           </div>
 
-          <div class="face-recognition-info">
+          <div class="face-recognition-info" style="background: var(--glass-bg-subtle); border-top: 1px solid var(--glass-border); padding: var(--space-4);">
             <div class="info-item">
-              <span class="info-label">Registered Faces</span>
-              <span class="info-value" id="registeredCount">0</span>
+              <span class="info-label" style="font-size: 9px; letter-spacing: 1px;">NODES</span>
+              <span class="info-value badge badge-primary" id="registeredCount">0</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Detection Confidence</span>
-              <span class="info-value" id="confidenceValue">--</span>
+              <span class="info-label" style="font-size: 9px; letter-spacing: 1px;">CONFIDENCE</span>
+              <span class="info-value" id="confidenceValue" style="color: var(--color-accent-400); font-family: var(--font-family-mono);">--</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Status</span>
-              <span class="info-value" id="systemStatus">Ready</span>
+              <span class="info-label" style="font-size: 9px; letter-spacing: 1px;">KERNEL_STATE</span>
+              <span class="info-value" id="systemStatus" style="font-weight: bold;">READY</span>
             </div>
           </div>
         </div>
@@ -208,14 +204,18 @@ class FaceRecognitionManager {
      */
     async startRecognition() {
         if (!this.video || this.video.paused) {
-            this.safeToast('Camera not ready', 'warning');
+            this.safeToast('Camera sensor offline', 'warning');
             return;
         }
 
         this.isScanning = true;
         document.getElementById('scanningOverlay').classList.add('active');
-        this.updateStatus('🔍', 'Scanning...', 'Looking for faces');
-        document.getElementById('systemStatus').textContent = 'Scanning';
+        this.updateStatus('🔍', 'SCAN_IN_PROGRESS', 'ANALYZING_FACIAL_TOPOLOGY...');
+        document.getElementById('systemStatus').textContent = 'SCANNING';
+
+        if (window.cognitiveStream) {
+            window.cognitiveStream.addLine('> BIO_ID: STARTING_SCAN_SEQUENCE');
+        }
 
         this.detectFaces();
     }
@@ -356,16 +356,17 @@ class FaceRecognitionManager {
      * Handle successful recognition
      */
     onRecognitionSuccess(recognition) {
-        this.updateStatus('✅', `Welcome, ${recognition.name}!`, `Confidence: ${recognition.confidence}%`);
+        this.updateStatus('✅', `AUTH_SUCCESS: ${recognition.name.toUpperCase()}`, `CONFIDENCE_RATING: ${recognition.confidence}%`);
         document.getElementById('confidenceValue').textContent = recognition.confidence + '%';
-        document.getElementById('systemStatus').textContent = 'Recognized';
+        document.getElementById('systemStatus').textContent = 'VERIFIED';
+        document.getElementById('systemStatus').style.color = 'var(--color-success-400)';
 
         // Show success overlay
         const successHTML = `
-      <div class="recognition-success" id="recognitionSuccess">
-        <div class="recognition-success-icon">✅</div>
-        <div class="recognition-success-text">Recognition Successful</div>
-        <div class="recognition-success-name">Welcome, ${recognition.name}!</div>
+      <div class="recognition-success animate-fade-in" id="recognitionSuccess" style="background: rgba(16, 185, 129, 0.2); border: 2px solid var(--color-success-500); backdrop-filter: blur(10px);">
+        <div class="recognition-success-icon" style="background: var(--color-success-500); box-shadow: 0 0 20px var(--color-success-500);">✓</div>
+        <div class="recognition-success-text" style="font-family: var(--font-family-display); letter-spacing: 2px;">NEURAL_TARGET_VERIFIED</div>
+        <div class="recognition-success-name">WELCOME_BACK_${recognition.name.toUpperCase()}</div>
       </div>
     `;
 
@@ -378,13 +379,17 @@ class FaceRecognitionManager {
         setTimeout(() => {
             const elem = document.getElementById('recognitionSuccess');
             if (elem) elem.remove();
-        }, 3000);
+        }, 3500);
+
+        if (window.cognitiveStream) {
+            window.cognitiveStream.addLine(`> SUCCESS: BIOMETRIC_MATCH_FOUND [${recognition.name}]`);
+        }
 
         // Log to notifications
         if (typeof notificationManager !== 'undefined') {
             notificationManager.addNotification({
-                title: 'Face Recognized',
-                message: `Welcome back, ${recognition.name}! (${recognition.confidence}% confidence)`,
+                title: 'Biometric Verified',
+                message: `Access granted to user node: ${recognition.name}`,
                 type: 'success',
                 timestamp: Date.now()
             });
@@ -392,7 +397,7 @@ class FaceRecognitionManager {
 
         // Trigger voice greeting if available
         if (typeof speak !== 'undefined') {
-            speak(`Welcome back, ${recognition.name}!`);
+            speak(`Verification successful. Welcome back, ${recognition.name}.`);
         }
     }
 

@@ -1,6 +1,6 @@
 /**
- * Search Functionality
- * Quick function search with fuzzy matching
+ * VIP AI SYMPHONY - Omni-Search v6.0
+ * Strategic Sub-modular Matching & Neural Query Engine
  */
 
 const omniSearch = {
@@ -17,10 +17,10 @@ const omniSearch = {
     modalContainer.innerHTML = `
             <div class="modal-overlay active" onclick="omniSearch.close(event)">
                 <div class="modal spotlight-modal" onclick="event.stopPropagation()">
-                    <div class="spotlight-header">
-                        <span style="font-size: 20px; opacity: 0.6;">🔍</span>
-                        <input type="text" id="omniInput" class="spotlight-input" placeholder="Search functions, history, or AI commands..." autocomplete="off">
-                        <div class="spotlight-shortcut">ESC to close</div>
+                    <div class="spotlight-header" style="background: rgba(0,0,0,0.1); border-bottom: 2px solid var(--glass-border);">
+                        <span style="font-size: 20px; color: var(--color-accent-400);">◈</span>
+                        <input type="text" id="omniInput" class="spotlight-input" placeholder="ENTER_NEURAL_COMMAND_OR_MODULE_QUERY..." autocomplete="off" style="font-family: var(--font-family-mono); letter-spacing: 0.5px;">
+                        <div class="spotlight-shortcut" style="font-size: 10px; opacity: 0.5;">ESC_TERMINATE</div>
                     </div>
                     <div class="spotlight-body" id="omniResults">
                         ${this.renderInitialState()}
@@ -52,11 +52,11 @@ const omniSearch = {
 
     return `
             <div class="spotlight-section">
-                <div class="section-label">Recently Used</div>
-                ${recent.map((f, i) => this.renderResultItem(f, i, 'recent')).join('')}
+                <div class="section-label" style="color: var(--color-accent-400); letter-spacing: 2px;">PERSISTENT_NODES</div>
+                ${recent.map((f, i) => this.renderResultItem(f, i, 'HIST_BUFFER')).join('')}
                 
-                <div class="section-label" style="margin-top: 20px;">Your Favorites</div>
-                ${favorites.map((f, i) => this.renderResultItem(f, i + recent.length, 'favorite')).join('')}
+                <div class="section-label" style="margin-top: 24px; color: var(--color-accent-400); letter-spacing: 2px;">PRIORITY_LINKS</div>
+                ${favorites.map((f, i) => this.renderResultItem(f, i + recent.length, 'CORE_LINK')).join('')}
             </div>
         `;
   },
@@ -67,10 +67,10 @@ const omniSearch = {
             <div class="spotlight-item ${isSelected ? 'selected' : ''}" onclick="omniSearch.execute('${item.id || item}')">
                 <div class="item-icon">${item.icon || '📋'}</div>
                 <div class="item-info">
-                    <div class="item-title">${item.title || item}</div>
-                    <div class="item-meta">${type.toUpperCase()}</div>
+                    <div class="item-title" style="font-weight: 800; letter-spacing: 0.5px;">${(item.title || item).toUpperCase()}</div>
+                    <div class="item-meta" style="font-family: var(--font-family-mono); font-size: 8px;">[${type.toUpperCase()}]</div>
                 </div>
-                ${isSelected ? '<div class="item-hint">GO ↵</div>' : ''}
+                ${isSelected ? '<div class="item-hint badge badge-accent" style="font-size: 9px;">SYNC_RUN ↵</div>' : ''}
             </div>
         `;
   },
@@ -107,15 +107,15 @@ const omniSearch = {
 
     container.innerHTML = `
             <div class="spotlight-section">
-                <div class="section-label">Search Results (${this.results.length})</div>
+                <div class="section-label" style="color: var(--color-accent-400); letter-spacing: 2px;">SYMPHONY_MATCHES [0x${this.results.length.toString(16)}]</div>
                 ${this.results.map((f, i) => `
                     <div class="spotlight-item ${i === this.selectedIndex ? 'selected' : ''}" onclick="omniSearch.execute('${f.id}')">
                         <div class="item-icon">${f.icon}</div>
                         <div class="item-info">
-                            <div class="item-title">${f.title}</div>
-                            <div class="item-meta">${f.category}</div>
+                            <div class="item-title" style="font-weight: 800;">${f.title.toUpperCase()}</div>
+                            <div class="item-meta" style="font-size: 9px; opacity: 0.6;">SUBSYSTEM: ${f.category.toUpperCase()}</div>
                         </div>
-                        <div class="item-hint">${f.badge || ''}</div>
+                        <div class="item-hint">${f.badge ? `<span class="badge badge-primary" style="font-size: 8px;">${f.badge.toUpperCase()}</span>` : ''}</div>
                     </div>
                 `).join('')}
             </div>

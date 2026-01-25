@@ -1,67 +1,67 @@
 /**
- * Advanced Mobile Control AI Assistant
- * EXPANDED Function Definitions - 65+ Functions
+ * VIP AI Assistant - SYMPHONY KERNEL v6.0
+ * Neural Engine & Function Registry
  */
 
 // Get all function categories with their functions
 function getFunctionCategories() {
   return [
     {
-      name: 'AI & Vision',
-      icon: '🧠',
-      description: 'Intelligent image analysis and visual understanding',
+      name: 'Neural Vision',
+      icon: '👁️',
+      description: 'Quantum-accelerated visual processing and understanding',
       functions: [
-        { id: 'analyze_image', icon: '📸', title: 'Image Analysis', description: 'AI-powered object detection, OCR, and scene understanding', badge: 'Popular', badgeType: 'accent' },
-        { id: 'visual_search', icon: '🔍', title: 'Visual Search', description: 'Search by image, find products, or identify locations' },
-        { id: 'enhance_media', icon: '✨', title: 'Media Enhancement', description: 'AI upscaling, noise reduction, and style transfer' },
-        { id: 'screen_understanding', icon: '📱', title: 'Screen Understanding', description: 'Understand and interact with on-screen content' },
-        { id: 'generate_content', icon: '🎨', title: 'Content Generation', description: 'Generate images, text, or media using AI' },
-        { id: 'face_recognition', icon: '👤', title: 'Face Recognition', description: 'Identify and tag people in photos', badge: 'New', badgeType: 'success' },
-        { id: 'qr_code_scanner', icon: '📲', title: 'QR/Barcode Scanner', description: 'Scan and decode QR codes and barcodes' },
-        { id: 'neural_link', icon: '🧠', title: 'Neural Link (v6.0)', description: 'Direct cognitive interface simulation', badge: 'Experimental', badgeType: 'error' }
+        { id: 'analyze_image', icon: '📸', title: 'Neural Scan', description: 'Advanced object detection, OCR, and scene semantic understanding', badge: 'V6_ENGINE', badgeType: 'accent' },
+        { id: 'visual_search', icon: '🔍', title: 'Omni-Search', description: 'Hyper-contextual search identifying objects, locations, and products' },
+        { id: 'enhance_media', icon: '✨', title: 'Clarity AI', description: 'Real-time upscaling, denoising, and aesthetic enhancement' },
+        { id: 'screen_understanding', icon: '📱', title: 'Screen Cortex', description: 'Semantic understanding and interaction with dynamic UI content' },
+        { id: 'generate_content', icon: '🎨', title: 'Generative AI', description: 'Neural content synthesis: Images, text, and rich media' },
+        { id: 'face_recognition', icon: '👤', title: 'Biometric ID', description: 'Quantum-secure face registration and recognition', badge: 'SYMPHONY', badgeType: 'success' },
+        { id: 'qr_code_scanner', icon: '📲', title: 'Data Voyager', description: 'Ultra-fast decoding of QR, Data Matrix, and Barcodes' },
+        { id: 'neural_link', icon: '🧠', title: 'Neural Link V6', description: 'Direct synaptic interface simulation for command input', badge: 'EXPERIMENTAL', badgeType: 'error' }
       ]
     },
     {
-      name: 'Automation & Routines',
+      name: 'Workflow Forge',
       icon: '⚡',
-      description: 'Create powerful workflows and smart automations',
+      description: 'Synthetic automation and intelligent routine generation',
       functions: [
-        { id: 'create_automation', icon: '🤖', title: 'Create Automation', description: 'Build custom routines from natural language', badge: 'New', badgeType: 'success' },
-        { id: 'manage_routine', icon: '📋', title: 'Manage Routines', description: 'View, edit, or execute saved automations' },
-        { id: 'smart_suggestions', icon: '💡', title: 'Smart Suggestions', description: 'AI-powered contextual recommendations' },
-        { id: 'task_chain', icon: '🔗', title: 'Task Chain', description: 'Execute complex multi-step workflows' },
-        { id: 'learn_preference', icon: '🧠', title: 'Learn Preferences', description: 'AI learns from your behavior patterns' }
+        { id: 'create_automation', icon: '🤖', title: 'Automation Forge', description: 'Build persistent neural routines via natural language', badge: 'ADVANCED', badgeType: 'success' },
+        { id: 'manage_routine', icon: '📋', title: 'Routine Cortex', description: 'Orchestrate and optimize saved automation sequences' },
+        { id: 'smart_suggestions', icon: '💡', title: 'Predictive Link', description: 'Context-aware neural recommendations for next actions' },
+        { id: 'task_chain', icon: '🔗', title: 'Symphony Chain', description: 'Execute complex, state-aware multi-stage workflows' },
+        { id: 'learn_preference', icon: '🧠', title: 'Adaptive Learning', description: 'Kernel-level optimization based on user interaction patterns' }
       ]
     },
     {
-      name: 'Security & Privacy',
-      icon: '🔒',
-      description: 'Advanced security and privacy controls',
+      name: 'Vault & Shield',
+      icon: '🛡️',
+      description: 'Quantum-secure encryption and privacy management',
       functions: [
-        { id: 'biometric_auth', icon: '👆', title: 'Biometric Login', description: 'Fingerprint or Face ID login simulation' },
-        { id: 'biometric_lock', icon: '🔒', title: 'System Lock', description: 'Lock the system with biometric protection' },
-        { id: 'secure_vault', icon: '🔐', title: 'Secure Vault', description: 'Encrypted storage for sensitive data' },
-        { id: 'privacy_control', icon: '🛡️', title: 'Privacy Controls', description: 'Manage app permissions and privacy settings' },
-        { id: 'secure_communication', icon: '🔑', title: 'Secure Messaging', description: 'End-to-end encrypted communication' },
-        { id: 'find_device', icon: '📍', title: 'Find Device', description: 'Locate, lock, or wipe device remotely' },
-        { id: 'password_generator', icon: '🔐', title: 'Password Generator', description: 'Generate strong, secure passwords' },
-        { id: 'vpn_control', icon: '🔒', title: 'VPN Control', description: 'Manage VPN connections and privacy' },
-        { id: 'app_lock', icon: '🔒', title: 'App Lock', description: 'Lock specific apps with biometrics' }
+        { id: 'biometric_auth', icon: '👆', title: 'Neural Biometrics', description: 'Synaptic fingerprint or face-id authentication simulation' },
+        { id: 'biometric_lock', icon: '🔒', title: 'Kernel Lock', description: 'Full system lockdown with multi-factor neural protection' },
+        { id: 'secure_vault', icon: '🔐', title: 'Data Citadel', description: 'AES-256 encrypted storage for high-value intelligence data' },
+        { id: 'privacy_control', icon: '🛡️', title: 'Privacy Shield', description: 'Advanced permission management and data leak protection' },
+        { id: 'secure_communication', icon: '🔑', title: 'Secure Link', description: 'End-to-end encrypted neural communication channels' },
+        { id: 'find_device', icon: '📍', title: 'Node Locator', description: 'Remote tracking, locking, or thermal wiping of device nodes' },
+        { id: 'password_generator', icon: '🔐', title: 'Entropy Engine', description: 'Generate cryptographically secure authentication tokens' },
+        { id: 'vpn_control', icon: '🔒', title: 'Ghost VPN', description: 'Manage quantum-secure network tunnels and IP masking' },
+        { id: 'app_lock', icon: '🔒', title: 'Module Isolation', description: 'Isolate and lock specific application modules with biometrics' }
       ]
     },
     {
-      name: 'Communication',
+      name: 'Neural Comm',
       icon: '💬',
-      description: 'Smart messaging and collaboration tools',
+      description: 'AI-accelerated messaging and semantic collaboration',
       functions: [
-        { id: 'smart_reply', icon: '💭', title: 'Smart Reply', description: 'AI-generated contextual message suggestions', badge: 'Popular', badgeType: 'accent' },
-        { id: 'compose_message', icon: '✍️', title: 'Compose Message', description: 'AI-assisted message composition' },
-        { id: 'meeting_assistant', icon: '🎥', title: 'Meeting Assistant', description: 'Join, transcribe, or summarize meetings' },
-        { id: 'translate_realtime', icon: '🌐', title: 'Real-time Translation', description: 'Instant language translation' },
-        { id: 'voice_assistant', icon: '🎤', title: 'Voice Assistant', description: 'Advanced voice commands and control' },
-        { id: 'email_assistant', icon: '📧', title: 'Email Assistant', description: 'Smart email management and responses' },
-        { id: 'call_screening', icon: '📞', title: 'Call Screening', description: 'AI answers and screens calls for you' },
-        { id: 'voice_notes', icon: '🎙️', title: 'Voice Notes', description: 'Record and transcribe voice memos' }
+        { id: 'smart_reply', icon: '💭', title: 'Contextual Reply', description: 'AI-synthesized response suggestions based on chat intent', badge: 'SYMPHONY', badgeType: 'accent' },
+        { id: 'compose_message', icon: '✍️', title: 'Message Synthesis', description: 'Neural-assisted drafting and refinement of communications' },
+        { id: 'meeting_assistant', icon: '🎥', title: 'Symphony Meet', description: 'AI-driven meeting orchestration, transcription, and synthesis' },
+        { id: 'translate_realtime', icon: '🌐', title: 'Babel Link', description: 'Near-instant neural translation for multi-lingual streams' },
+        { id: 'voice_assistant', icon: '🎤', title: 'Voice Core', description: 'Natural language understanding and high-fidelity vocal output' },
+        { id: 'email_assistant', icon: '📧', title: 'Inbox Cortex', description: 'Intelligent triage and automated response drafting' },
+        { id: 'call_screening', icon: '📞', title: 'Signal Sentry', description: 'Neural call interception and automated validation' },
+        { id: 'voice_notes', icon: '🎙️', title: 'Oral Ledger', description: 'Capture and semantic indexing of voice-based memoranda' }
       ]
     },
     {
@@ -77,14 +77,14 @@ function getFunctionCategories() {
       ]
     },
     {
-      name: 'Smart Home & IoT',
+      name: 'IoT Symphony',
       icon: '🏠',
-      description: 'Control smart home devices and scenes',
+      description: 'Unified neural orchestration of smart home ecosystems',
       functions: [
-        { id: 'control_smart_home', icon: '💡', title: 'Control Devices', description: 'Manage lights, thermostat, locks, and more' },
-        { id: 'iot_automation', icon: '🔄', title: 'IoT Automation', description: 'Create smart home automations' },
-        { id: 'scene_management', icon: '🎬', title: 'Scene Management', description: 'Create and activate device scenes' },
-        { id: 'energy_monitoring', icon: '⚡', title: 'Energy Monitoring', description: 'Track smart device energy usage' }
+        { id: 'control_smart_home', icon: '💡', title: 'Node Orhcestrator', description: 'Real-time management of lighting, thermal, and security nodes' },
+        { id: 'iot_automation', icon: '🔄', title: 'Mesh Automation', description: 'Create persistent routines across distributed IoT networks' },
+        { id: 'scene_management', icon: '🎬', title: 'Contextual Scenes', description: 'Synchronize multiple device states for specific environments' },
+        { id: 'energy_monitoring', icon: '⚡', title: 'Grid Analytics', description: 'Monitor and optimize real-time energy flow across the ecosystem' }
       ]
     },
     {
@@ -103,16 +103,16 @@ function getFunctionCategories() {
       ]
     },
     {
-      name: 'Analytics & Insights',
+      name: 'Neural Insights',
       icon: '📈',
-      description: 'Usage tracking and wellness features',
+      description: 'Deep telemetry tracking and bio-digital wellness',
       functions: [
-        { id: 'usage_analytics', icon: '📊', title: 'Usage Analytics', description: 'Detailed app and screen time insights' },
-        { id: 'wellness_check', icon: '💚', title: 'Wellness Check', description: 'Digital wellbeing and health integration' },
-        { id: 'performance_optimization', icon: '⚙️', title: 'Performance Optimization', description: 'Battery, storage, and memory optimization' },
-        { id: 'data_usage', icon: '📊', title: 'Data Usage', description: 'Monitor mobile data consumption' },
-        { id: 'app_insights', icon: '📱', title: 'App Insights', description: 'Detailed per-app usage statistics' },
-        { id: 'optimize_resources', icon: '🚀', title: 'Resource Optimizer', description: 'Boost performance and purge system cache', badge: 'Pro', badgeType: 'success' }
+        { id: 'usage_analytics', icon: '📊', title: 'Cortex Stats', description: 'In-depth analysis of app telemetry and screen interaction' },
+        { id: 'wellness_check', icon: '💚', title: 'Bio-Sync', description: 'Monitor digital health metrics and sleep integration' },
+        { id: 'performance_optimization', icon: '⚙️', title: 'Kernel Optimizer', description: 'Synchronize system resources and battery reserves' },
+        { id: 'data_usage', icon: '📊', title: 'Bandwidth Flux', description: 'Monitor real-time network data consumption' },
+        { id: 'app_insights', icon: '📱', title: 'Module Telemetry', description: 'Granular usage statistics for application modules' },
+        { id: 'optimize_resources', icon: '🚀', title: 'Purge & Boost', description: 'Instant recalibration of system memory and cache', badge: 'GOLD', badgeType: 'success' }
       ]
     },
     {
@@ -128,14 +128,14 @@ function getFunctionCategories() {
       ]
     },
     {
-      name: 'Emergency & Safety',
+      name: 'Sentinel & Rescue',
       icon: '🚨',
-      description: 'Emergency assistance and safety features',
+      description: 'Active monitoring and emergency response protocols',
       functions: [
-        { id: 'sos_alert', icon: '🆘', title: 'SOS Alert', description: 'Emergency contacts and location sharing' },
-        { id: 'crash_detection', icon: '🚗', title: 'Crash Detection', description: 'Auto-detect accidents and alert contacts' },
-        { id: 'medical_id', icon: '🏥', title: 'Medical ID', description: 'Emergency medical information access' },
-        { id: 'safety_check', icon: '🔔', title: 'Safety Check-in', description: 'Scheduled safety check-ins' }
+        { id: 'sos_alert', icon: '🆘', title: 'SOS Broadcast', description: 'Immediate signal dispatch to emergency nodes and contacts' },
+        { id: 'crash_detection', icon: '🚗', title: 'Impact Sentinel', description: 'Neural monitoring of high-G events and automated alerting' },
+        { id: 'medical_id', icon: '🏥', title: 'Bio Ledger', description: 'Emergency biometric and medical data accessibility' },
+        { id: 'safety_check', icon: '🔔', title: 'Guardian Link', description: 'Verified safety check-ins and persistent tracking' }
       ]
     },
     {
@@ -150,18 +150,18 @@ function getFunctionCategories() {
       ]
     },
     {
-      name: 'Hardware Control',
-      icon: '🛒',
-      description: 'Direct control over device hardware and sensors',
+      name: 'Hardware Matrix',
+      icon: '⚙️',
+      description: 'Direct synaptic control over device physical layers',
       functions: [
-        { id: 'toggle_flashlight', icon: '🔦', title: 'Flashlight', description: 'Toggle camera LED flashlight' },
-        { id: 'set_brightness', icon: '☀️', title: 'Brightness', description: 'Adjust screen brightness level' },
-        { id: 'set_volume', icon: '🔊', title: 'Volume Control', description: 'Adjust system and media volume' },
-        { id: 'toggle_vibration', icon: '📳', title: 'Haptic Feedback', description: 'Enable or disable system vibration' },
-        { id: 'rotate_screen', icon: '🔄', title: 'Screen Rotation', description: 'Toggle auto-rotate or orientation' },
-        { id: 'nfc_toggle', icon: '📄', title: 'NFC Toggle', description: 'Quickly enable or disable NFC radio' },
-        { id: 'location_toggle', icon: '📍', title: 'GPS / Location', description: 'Manage location services and accuracy' },
-        { id: 'speaker_clean', icon: '🔈', title: 'Speaker Cleaner', description: 'Eject debris using high-frequency sound' }
+        { id: 'toggle_flashlight', icon: '🔦', title: 'Photon Pulse', description: 'Manage device LED illumination vectors' },
+        { id: 'set_brightness', icon: '☀️', title: 'Lumen Scale', description: 'Precision adjustment of display optic output' },
+        { id: 'set_volume', icon: '🔊', title: 'Audio Amplitude', description: 'Manage system acoustic output and fidelity' },
+        { id: 'toggle_vibration', icon: '📳', title: 'Haptic Sync', description: 'Direct control over internal vibration actuators' },
+        { id: 'rotate_screen', icon: '🔄', title: 'Spatial Shift', description: 'Reorient display viewport based on gravity vectors' },
+        { id: 'nfc_toggle', icon: '📄', title: 'NFC Link', description: 'Toggle near-field induction communication modules' },
+        { id: 'location_toggle', icon: '📍', title: 'GPS Pulse', description: 'Control geospatial triangulation and sensor accuracy' },
+        { id: 'speaker_clean', icon: '🔈', title: 'Acoustic Purge', description: 'High-frequency resonance to clear transducer debris', badge: 'TECH', badgeType: 'success' }
       ]
     },
     {
@@ -635,39 +635,43 @@ function showFunctionResult(functionId, title, result) {
   // Format result based on function type
   if (functionId === 'analyze_image') {
     resultHTML = `
-      <div class="glass-card" style="margin-bottom: var(--space-4);">
-        <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">📊 Analysis Results</h4>
-        <div style="margin-bottom: var(--space-3);">
-          <strong style="color: var(--text-secondary);">Detected Objects:</strong>
-          <div style="margin-top: var(--space-2); display: flex; gap: var(--space-2); flex-wrap: wrap;">
-            ${result.data.objects.map(obj => `<span class="badge badge-accent">${obj}</span>`).join('')}
+      <div class="glass-card-strong animate-fade-in" style="margin-bottom: var(--space-6); border-left: 4px solid var(--color-accent-500);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary); font-family: var(--font-family-display); letter-spacing: 1px;">👁️ NEURAL_SCAN_REPORT</h4>
+        <div style="margin-bottom: var(--space-5);">
+          <strong style="color: var(--text-tertiary); font-size: 10px; text-transform: uppercase;">Identified Entities</strong>
+          <div style="margin-top: var(--space-3); display: flex; gap: var(--space-3); flex-wrap: wrap;">
+            ${result.data.objects.map(obj => `<span class="badge badge-accent" style="padding: var(--space-2) var(--space-4);">${obj}</span>`).join('')}
           </div>
         </div>
-        <div style="margin-bottom: var(--space-3);">
-          <strong style="color: var(--text-secondary);">Extracted Text:</strong> ${result.data.text}
+        <div style="background: rgba(0,0,0,0.2); padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 4px;">EXTRACTED_TEXT_STREAM</div>
+            <div style="color: var(--text-primary); font-family: var(--font-family-mono);">${result.data.text}</div>
         </div>
-        <div>
-          <strong style="color: var(--text-secondary);">Scene:</strong> ${result.data.scene}
+        <div class="flex-between">
+          <span style="font-size: 12px; color: var(--text-secondary);">ENVIRONMENT_TYPE</span>
+          <span class="badge badge-success">${result.data.scene}</span>
         </div>
       </div>
     `;
   } else if (functionId === 'enhance_media') {
     resultHTML = `
-      <div class="glass-card">
-        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">✨ Media Enhanced</h4>
-        <div style="display: grid; gap: var(--space-4);">
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg);">
-            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Source</div>
-            <div style="color: var(--text-primary);">${result.data.source}</div>
+      <div class="glass-card animate-fade-in">
+        <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">✨ OPTIC_RECONSTRUCTION</h4>
+        <div style="display: grid; gap: var(--space-5);">
+          <div class="flex-between" style="background: var(--glass-bg-subtle); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid var(--glass-border);">
+            <div style="font-size: 11px; color: var(--text-tertiary);">PRIMARY_SOURCE</div>
+            <div style="color: var(--text-primary); font-weight: 600;">${result.data.source}</div>
           </div>
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg);">
-            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Processing Unit</div>
-            <div style="color: var(--color-success-400); font-weight: bold;">${result.data.processing_unit}</div>
+          <div class="flex-between" style="background: rgba(34, 211, 238, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid rgba(34, 211, 238, 0.2);">
+            <div style="font-size: 11px; color: var(--color-accent-400);">NEURAL_PROCESSOR</div>
+            <div style="color: var(--color-accent-300); font-weight: bold; font-family: var(--font-family-mono);">${result.data.processing_unit}</div>
           </div>
-          <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+          <div style="display: flex; gap: var(--space-2-5); flex-wrap: wrap;">
             ${result.data.filters_applied.map(f => `<span class="badge badge-accent">${f}</span>`).join('')}
           </div>
-          <div class="badge badge-success" style="justify-content: center;">${result.data.improvement}</div>
+          <div class="btn btn-primary" style="width: 100%; border-radius: var(--radius-2xl); pointer-events: none;">
+            ${result.data.improvement} EFFICIENCY GAIN
+          </div>
         </div>
       </div>
     `;
@@ -685,41 +689,48 @@ function showFunctionResult(functionId, title, result) {
     `;
   } else if (functionId === 'usage_analytics') {
     resultHTML = `
-      <div class="glass-card">
-        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">📱 Today's Usage</h4>
-        <div style="margin-bottom: var(--space-4);">
-          <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-400);">
+      <div class="glass-card animate-fade-in-up">
+        <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">📈 CORTEX_TELEMETRY</h4>
+        <div style="margin-bottom: var(--space-6); text-align: center; background: rgba(0,0,0,0.2); padding: var(--space-6); border-radius: var(--radius-2xl);">
+          <div style="font-size: var(--font-size-5xl); font-weight: var(--font-weight-black); color: var(--color-accent-400); font-family: var(--font-family-mono);">
             ${result.data.screen_time}
           </div>
-          <div style="color: var(--text-secondary);">Total Screen Time ${result.data.trend}</div>
+          <div style="color: var(--text-tertiary); font-size: 12px; margin-top: 4px; letter-spacing: 2px;">TOTAL_UPTIME_TODAY</div>
         </div>
-        <div style="margin-bottom: var(--space-3);">
-          <strong style="color: var(--text-secondary);">Top Apps:</strong>
-          ${result.data.top_apps.map(app => `
-            <div style="padding: var(--space-2) 0; border-bottom: 1px solid var(--border-secondary);">
-              ${app}
-            </div>
-          `).join('')}
+        <div style="margin-bottom: var(--space-5);">
+          <strong style="color: var(--text-secondary); display: block; margin-bottom: var(--space-3); font-size: 11px;">RESOURCE_INTENSIVE_MODULES:</strong>
+          <div style="display: grid; gap: var(--space-2);">
+            ${result.data.top_apps.map(app => `
+                <div class="flex-between" style="padding: var(--space-3) var(--space-4); background: var(--glass-bg-subtle); border-radius: var(--radius-lg);">
+                    <span style="font-size: 13px; color: var(--text-primary);">${app.split('(')[0]}</span>
+                    <span style="font-size: 11px; font-family: var(--font-family-mono); color: var(--color-accent-500);">${app.split('(')[1].replace(')', '')}</span>
+                </div>
+            `).join('')}
+          </div>
         </div>
-        <div style="margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border-primary);">
-          <strong style="color: var(--text-secondary);">Device Pickups:</strong> ${result.data.pickups}
+        <div class="flex-between" style="padding-top: var(--space-4); border-top: 1px solid var(--border-primary);">
+          <span style="font-size: 12px; color: var(--text-tertiary);">KERNEL_WAKE_UPS</span>
+          <span style="color: var(--text-primary); font-weight: bold; font-family: var(--font-family-mono);">${result.data.pickups}</span>
         </div>
       </div>
     `;
   } else if (functionId === 'visual_search') {
     resultHTML = `
-      <div class="glass-card">
-        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">🔍 Visual Search Matches</h4>
-        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+      <div class="glass-card animate-fade-in-up">
+        <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">🔍 OMNI_SEARCH_MATCHES</h4>
+        <div style="display: grid; gap: var(--space-3);">
           ${result.data.matches.map(m => `
-            <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); display: flex; justify-content: space-between; align-items: center;">
+            <div class="hover-lift" style="background: var(--glass-bg-subtle); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <div style="font-weight: bold; color: var(--text-primary);">${m.name}</div>
-                <div style="font-size: 11px; color: var(--text-tertiary);">${m.store}</div>
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 14px;">${m.name}</div>
+                <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 2px;">${m.store.toUpperCase()}</div>
               </div>
-              <div style="color: var(--color-accent-400); font-weight: bold;">${m.price}</div>
+              <div class="badge badge-accent" style="font-family: var(--font-family-mono); font-weight: 800;">${m.price}</div>
             </div>
           `).join('')}
+        </div>
+        <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-primary); color: var(--text-tertiary); font-size: 11px; text-align: center;">
+            GEOSPATIAL_CONTEXT: <span style="color: var(--text-secondary);">${result.data.location}</span>
         </div>
       </div>
     `;
@@ -755,39 +766,49 @@ function showFunctionResult(functionId, title, result) {
     `;
   } else if (functionId === 'find_device') {
     resultHTML = `
-      <div class="glass-card">
-        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">📍 Device Locator</h4>
-        <div style="height: 120px; background: var(--bg-tertiary); border-radius: var(--radius-lg); margin-bottom: var(--space-4); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-          <div style="position: absolute; width: 200px; height: 200px; border: 2px solid rgba(34, 211, 238, 0.2); border-radius: 50%; animation: pulse 2s infinite;"></div>
-          <div style="font-size: 32px; z-index: 1;">💯</div>
+      <div class="glass-card animate-fade-in">
+        <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">📍 GEO_NODE_LOCALIZATION</h4>
+        <div style="height: 140px; background: rgba(0,0,0,0.4); border-radius: var(--radius-2xl); margin-bottom: var(--space-5); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border: 1px solid var(--glass-border);">
+          <div class="radar-sweep" style="width: 300px; height: 300px; opacity: 0.1;"></div>
+          <div style="position: absolute; width: 100px; height: 100px; border: 1px solid var(--color-accent-500); border-radius: 50%; animation: pulse 2s infinite;"></div>
+          <div style="font-size: 44px; z-index: 1; filter: drop-shadow(0 0 10px var(--color-accent-500));">📍</div>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
-          <div style="font-size: 11px; color: var(--text-tertiary);">Device: <span style="color: var(--text-primary);">${result.data.device}</span></div>
-          <div style="font-size: 11px; color: var(--text-tertiary);">Battery: <span style="color: var(--text-primary);">${result.data.battery}</span></div>
-          <div style="font-size: 11px; color: var(--text-tertiary); grid-column: span 2;">Location: <span style="color: var(--text-primary);">${result.data.location}</span></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg);">
+            <div style="font-size: 9px; color: var(--text-tertiary);">TARGET_ID</div>
+            <div style="color: var(--text-primary); font-size: 12px; font-weight: 600;">${result.data.device}</div>
+          </div>
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg);">
+            <div style="font-size: 9px; color: var(--text-tertiary);">REMAINING_POWER</div>
+            <div style="color: var(--color-success-400); font-size: 12px; font-weight: 600;">${result.data.battery}</div>
+          </div>
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg); grid-column: span 2;">
+            <div style="font-size: 9px; color: var(--text-tertiary);">GEOSPATIAL_COORDINATES</div>
+            <div style="color: var(--text-primary); font-size: 12px; font-weight: 500;">${result.data.location}</div>
+          </div>
         </div>
       </div>
     `;
   } else if (functionId === 'wellness_check') {
     resultHTML = `
-      <div class="glass-card">
-        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">💚 Health & Wellness</h4>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-            <div style="font-size: 10px; color: var(--text-tertiary);">STEPS</div>
-            <div style="font-size: 20px; font-weight: bold; color: var(--color-success-400);">${result.data.steps}</div>
+      <div class="glass-card animate-fade-in-up">
+        <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">💚 BIO_METRIC_RECOVERY</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+          <div style="background: rgba(16, 185, 129, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border-bottom: 3px solid var(--color-success-500); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); letter-spacing: 1px;">PEDO_COUNT</div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-success-400); font-family: var(--font-family-mono);">${result.data.steps}</div>
           </div>
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-            <div style="font-size: 10px; color: var(--text-tertiary);">SLEEP</div>
-            <div style="font-size: 20px; font-weight: bold; color: var(--color-primary-400);">${result.data.sleep}</div>
+          <div style="background: rgba(124, 58, 237, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border-bottom: 3px solid var(--color-primary-500); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); letter-spacing: 1px;">REM_CYCLE</div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-primary-400); font-family: var(--font-family-mono);">${result.data.sleep}</div>
           </div>
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-            <div style="font-size: 10px; color: var(--text-tertiary);">MINDFUL</div>
-            <div style="font-size: 20px; font-weight: bold; color: var(--color-accent-400);">${result.data.mindfulness}</div>
+          <div style="background: rgba(34, 211, 238, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border-bottom: 3px solid var(--color-accent-500); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); letter-spacing: 1px;">SYNAPTIC_ZEN</div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-accent-400); font-family: var(--font-family-mono);">${result.data.mindfulness}</div>
           </div>
-          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-            <div style="font-size: 10px; color: var(--text-tertiary);">STRESS</div>
-            <div style="font-size: 20px; font-weight: bold; color: var(--color-error-400);">${result.data.stress}</div>
+          <div style="background: rgba(239, 68, 68, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border-bottom: 3px solid var(--color-error-500); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); letter-spacing: 1px;">STRESS_FLUX</div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--color-error-400); font-family: var(--font-family-mono);">${result.data.stress}</div>
           </div>
         </div>
       </div>

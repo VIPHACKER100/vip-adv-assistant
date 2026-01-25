@@ -1,6 +1,6 @@
 /**
- * Keyboard Shortcuts Manager
- * Provides power-user keyboard navigation
+ * VIP AI SYMPHONY - Master Key Registry v6.0
+ * Strategic Vector Navigation & Power-User Controls
  */
 
 const shortcuts = {
@@ -95,20 +95,37 @@ function showShortcutsHelp() {
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
-        <div class="modal-header">
-          <h2 class="modal-title">⌨️ Keyboard Shortcuts</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 650px; padding: 0; overflow: hidden;">
+        <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
+          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⌨️ SYMPHONY_KEY_REGISTRY</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
         <div class="modal-body">
-          ${Object.entries(shortcutGroups).map(([group, shortcuts]) => `
-            <div class="glass-card" style="margin-bottom: var(--space-4);">
-              <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">${group}</h4>
+          ${Object.entries({
+    'KERNEL_VECTORS': {
+      'Ctrl + H': 'ROOT_NAVIGATION',
+      'Ctrl + K': 'OMNI_SEARCH_LINK',
+      'Ctrl + /': 'RECALL_KEY_REGISTRY'
+    },
+    'SYMPHONY_CONTROLS': {
+      'Ctrl + M': 'INITIALIZE_VOICE',
+      'Ctrl + B': 'INIT_WORKFLOW_DESIGNER',
+      'Ctrl + ,': 'SYSTEM_BASELINE_CONFIG',
+      'Escape': 'TERMINATE_ACTIVE_LAYER'
+    },
+    'NEURAL_QUICK_ACCESS': {
+      'Ctrl + Shift + P': 'MASTER_PALETTE',
+      'Ctrl + Shift + V': 'ALWAYS_LISTEN_MODE',
+      'Ctrl + Shift + L': 'SHIFT_THEME_SPECTRUM'
+    }
+  }).map(([group, shortcuts]) => `
+            <div class="glass-card-subtle" style="margin-bottom: var(--space-4); border: 1px solid var(--glass-border);">
+              <h4 style="margin-bottom: var(--space-3); color: var(--color-accent-400); font-size: 11px; letter-spacing: 1px;">${group}</h4>
               <div style="display: grid; gap: var(--space-2);">
                 ${Object.entries(shortcuts).map(([key, desc]) => `
-                  <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-2); background: var(--bg-tertiary); border-radius: var(--radius-md);">
-                    <span style="color: var(--text-secondary);">${desc}</span>
-                    <kbd style="padding: var(--space-1) var(--space-2); background: var(--bg-primary); border: 1px solid var(--border-primary); border-radius: var(--radius-sm); font-family: monospace; font-size: var(--font-size-xs);">${key}</kbd>
+                  <div class="flex-between" style="padding: var(--space-2); background: rgba(255,255,255,0.02); border-radius: var(--radius-md);">
+                    <span style="color: var(--text-secondary); font-size: 12px; font-family: var(--font-family-mono);">${desc}</span>
+                    <kbd style="padding: 2px 8px; background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: 4px; font-family: var(--font-family-mono); font-size: 10px; color: var(--color-accent-300);">${key}</kbd>
                   </div>
                 `).join('')}
               </div>

@@ -1,7 +1,6 @@
-// OpenAI State Object (v4.0 Cognitive Engine)
-const DEFAULT_API_KEY = "sk-svcacct-_Lddj0Wf43yPG_nuuDcIzfuAMVzKv6FCiht-7uNSMOdPEeK-bPHT3BlbkFJJP71jNvXFejZJM8CyVCCHQ3blnoXN5WVt-4uYN1cTfycDOn8QKgA";
+// OpenAI State Object - SYMPHONY PLATINUM v6.0
 const openaiHandler = {
-    apiKey: localStorage.getItem('openai_api_key') || DEFAULT_API_KEY,
+    apiKey: localStorage.getItem('openai_api_key') || "",
     model: localStorage.getItem('openai_model') || "gpt-4o-mini",
     history: [], // Persistent context for this session
     usage: {
@@ -18,6 +17,10 @@ const openaiHandler = {
 
         try {
             const tools = getOpenAIToolsDefinition();
+
+            if (window.cognitiveStream) {
+                window.cognitiveStream.addLine('> AI_GATEWAY: NEURAL_SYNTHESIS_INITIATED');
+            }
 
             // Build Contextual Messages
             const messages = [
@@ -37,7 +40,7 @@ const openaiHandler = {
                     messages: messages,
                     tools: tools,
                     tool_choice: "auto",
-                    temperature: personality === 'creative' ? 0.9 : 0.5
+                    temperature: personality === 'creative' ? 0.95 : 0.6
                 })
             });
 
@@ -100,17 +103,16 @@ const openaiHandler = {
 
     getSystemPrompt(persona) {
         const loc = window.appState?.context?.location || {};
-        const weather = loc.weather || {};
-        const base = `You are VIP AI Assistant v5.1.0 (Contextual Symphony), a premium mobile control companion. 
+        const base = `You are VIP AI SYMPHONY v6.0.0 PLATINUM, an elite neural mobile control OS. 
 Current Time: ${new Date().toLocaleString()}.
-User Location: ${loc.city || 'Unknown Sector'} (${loc.lat?.toFixed(2) || '--'}, ${loc.lon?.toFixed(2) || '--'}).
-Current Weather: ${document.getElementById('wTemp')?.textContent || '--'}, ${document.getElementById('wDesc')?.textContent || 'Checking...'}.
-You have access to device hardware, analytics, and 75+ automated functions. Always favor calling functions for user requests when possible. Be autonomous and proactive.`;
+Node Location: ${loc.city || 'Global Hub'} | Coordinates: [${loc.lat?.toFixed(2) || 'XX'}, ${loc.lon?.toFixed(2) || 'XX'}].
+Sub-System Status: ${document.getElementById('wTemp')?.textContent || '--'} | ${document.getElementById('wDesc')?.textContent || 'Scanning Network'}.
+You are deployed as a hyper-intelligent, autonomous interface. Access to device hardware (Flashlight, Volume, Brightness) and 75+ neural functions (Vision Scan, Omni-Search, Clarity AI). Favor tool calls over plain text for any actionable request. Be proactive, efficient, and command-centric.`;
 
         const personas = {
-            professional: `${base} Be efficient, helpful, and technically accurate.`,
-            concise: `${base} Keep responses extremely brief. Acknowledge commands directly.`,
-            creative: `${base} Use an imaginative, futuristic tone. Describe actions with flair.`
+            professional: `${base} Persona: Strategic, precise, and sophisticated. Use professional technical terminology.`,
+            concise: `${base} Persona: Tactical and brief. Acknowledge commands with minimalist confirmation strings.`,
+            creative: `${base} Persona: Expressive and futuristic. Use vivid, descriptive metaphors regarding neural processes and light.`
         };
 
         return personas[persona] || personas.professional;

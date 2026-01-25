@@ -4,17 +4,17 @@
  */
 
 const aboutData = {
-  version: '5.1.0',
-  codename: 'Neural Symphony',
+  version: '6.0.0',
+  codename: 'SYMPHONY PLATINUM',
   releaseDate: '2026-01-25',
   developer: 'VipHacker100',
-  engine: 'Omni-Core v5.1',
+  engine: 'Symphony Kernel v6.0',
   contributors: [
-    'DeepMind Advanced Coding Team',
-    'OpenAI GPT-4o Engine',
-    'Vanilla Web API Standards'
+    'DeepMind Antigravity AI Agent',
+    'OpenAI GPT-4o-mini',
+    'Vanilla Web Infrastructure'
   ],
-  legal: 'Licensed under MIT. Simulated OS environment for research and productivity.'
+  legal: 'SYMPHONY OS - Proprietary Research Build. All neural pathways verified.'
 };
 
 function showAboutModal() {
@@ -24,9 +24,9 @@ function showAboutModal() {
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal modal-about" onclick="event.stopPropagation()">
-        <div class="modal-header">
-          <h2 class="modal-title">💎 About VIP AI Assistant</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-5);">
+          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">💎 SYSTEM_GEN_INFO_v6.0</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
         <div class="modal-body text-center">
           <img src="assets/logo.png" alt="VIP AI" class="about-logo animate-glow">

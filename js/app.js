@@ -1,6 +1,6 @@
 /**
- * Advanced Mobile Control AI Assistant
- * Core Application Logic & Lifecycle Manager
+ * VIP AI SYMPHONY - Core Kernel v6.0
+ * Primary Application Logic & Lifecycle Management
  */
 
 // Global state
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Initialize core application
  */
 async function initApp() {
-  console.log('?? Initializing VIP AI Assistant Core...');
+  console.log('🌌 INITIALIZING_SYMPHONY_V6_KERNEL...');
 
   // Setup device info
   detectDevice();
@@ -48,6 +48,7 @@ async function initApp() {
   initParticles();
   initTheme();
   setupEventListeners();
+  initScrollHandler();
 
   // Initialize Performance Monitor
   if (window.performanceMonitor) window.performanceMonitor.init();
@@ -58,42 +59,52 @@ async function initApp() {
   // Initial dashboard update
   updateDashboardWidgets();
 
-  // v5.0 Live Location Init
+  // v6.0 Live Location Init
   fetchLiveLocationData();
 
-  // v5.1 Neural Orb Sync
+  // v6.0 Neural Hub Sync
   if (window.syncNeuralOrb) window.syncNeuralOrb();
 
-  // v5.1 Brand Synchronizer
-  updateBranding();
-
-  // Initialize Command Center (v5.0)
+  // Initialize Command Center (v6.0)
   if (window.commandCenter && window.commandCenter.initCommandCenter) {
     setTimeout(() => {
       window.commandCenter.initCommandCenter();
-    }, 500);
+    }, 400);
   }
 
-  // Initialize always-listening system (v5.0)
+  // Initialize always-listening system (v6.0)
   if (window.initAlwaysListening) {
     setTimeout(() => {
       window.initAlwaysListening();
-      // Check if user previously enabled it
       const wasEnabled = localStorage.getItem('alwaysListeningEnabled') === 'true';
       if (wasEnabled) {
-        setTimeout(() => window.startAlwaysListening(), 1000);
+        setTimeout(() => window.startAlwaysListening(), 800);
       }
-    }, 1000);
+    }, 800);
   }
 
-  // Populate categories UI (v5.0 Mobile Optimization)
+  // Populate categories UI
   renderFunctionCategories();
 
-  // v5.1 Proactive Insights
+  // v6.0 Proactive Monitoring
   startProactiveMonitoring();
 
   appState.isInitialized = true;
-  console.log('✅ AI Core Online');
+  console.log('✅ SYMPHONY_OS_ONLINE');
+  showToast('Symphony OS', 'Neural Link Established. System Ready.', 'success');
+}
+
+/**
+ * Handle scroll-driven UI changes
+ */
+function initScrollHandler() {
+  const header = document.querySelector('.header');
+  if (!header) return;
+
+  window.addEventListener('scroll', () => {
+    const isScrolled = window.scrollY > 20;
+    header.classList.toggle('scrolled', isScrolled);
+  }, { passive: true });
 }
 
 /**
@@ -104,7 +115,7 @@ function detectDevice() {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
 
   appState.context.device.isMobile = isMobile;
-  appState.context.device.type = isMobile ? 'Mobile Node' : 'Command Station';
+  appState.context.device.type = isMobile ? 'NEURAL_NODE_MOBILE' : 'CORE_COMMAND_STATION';
   appState.context.device.os = detectOS(ua);
 
   // Set body class
@@ -258,20 +269,18 @@ function updateBatteryInfo(battery) {
     const el = document.getElementById(id);
     if (el) {
       if (id === 'contextBattery') {
-        el.innerHTML = `<span class="badge ${level < 20 ? 'badge-error' : 'badge-success'}">${isCharging ? '? ' : ''}${level}%</span>`;
-        // v2.8 Automatic Power Saving
+        el.innerHTML = `<span class="badge ${level < 20 ? 'badge-error' : 'badge-success'}" style="font-family: var(--font-family-mono);">${isCharging ? '⚡' : ''}${level}%</span>`;
         if (level < 20 && !isCharging) {
-          document.documentElement.style.setProperty('--color-accent-primary', 'var(--color-warning-500)');
+          document.body.classList.add('low-power-mode');
         } else {
-          document.documentElement.style.removeProperty('--color-accent-primary');
+          document.body.classList.remove('low-power-mode');
         }
       } else {
-        el.textContent = `${isCharging ? '? ' : ''}${level}%`;
+        el.textContent = `${isCharging ? '⚡' : ''}${level}%`;
       }
     }
   });
 
-  // v4.3.0 Autonomous Check
   if (window.evaluateRoutines) {
     window.evaluateRoutines('battery', level);
     window.evaluateRoutines('charging', isCharging);
@@ -279,25 +288,26 @@ function updateBatteryInfo(battery) {
 }
 
 function updateNetworkInfo(connection) {
-  const type = connection.effectiveType || '4G';
+  const type = (connection.effectiveType || '5G').toUpperCase();
   appState.context.network = type;
 
   const displays = ['contextNetwork', 'mNetworkVal'];
   displays.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.textContent = type.toUpperCase();
+    if (el) el.innerHTML = `<span class="badge badge-accent" style="font-family: var(--font-family-mono); letter-spacing: 1px;">${type}</span>`;
   });
 }
 
 function updateLocalTime() {
   const now = new Date();
-  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const compactTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  const displays = ['currentTime', 'mTimeVal'];
-  displays.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = timeStr;
-  });
+  const desktopDisplay = document.getElementById('currentTime');
+  const mobileDisplay = document.getElementById('mTimeVal');
+
+  if (desktopDisplay) desktopDisplay.textContent = timeStr;
+  if (mobileDisplay) mobileDisplay.textContent = compactTime;
 }
 
 /**
@@ -514,25 +524,24 @@ function showModal(type) {
   if (type === 'settings') {
     renderSettingsModal();
   } else if (type === 'demo') {
-    showToast('System Demo', 'Neural Symphony v5.1 visual tour starting...', 'info');
-    // Simulate demo modal
+    showToast('System Demo', 'SYMPHONY_V6_VISUAL_REVEAL_STARTING', 'info');
     const modalContainer = document.getElementById('modalContainer');
     if (modalContainer) {
       modalContainer.innerHTML = `
         <div class="modal-overlay active" onclick="closeModal(event)">
-          <div class="modal" onclick="event.stopPropagation()">
+          <div class="modal animate-slide-up" onclick="event.stopPropagation()">
             <div class="modal-header">
-              <h2 class="modal-title">📺 System Demo</h2>
-              <button class="modal-close" onclick="closeModal()">&times;</button>
+              <h2 class="modal-title">📺 SYMPHONY_V6_PREVIEW</h2>
+              <button class="modal-close" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body text-center">
-              <div style="aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                <span style="font-size: 40px;">🎬</span>
+              <div style="aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid var(--glass-border);">
+                <span style="font-size: 44px; filter: drop-shadow(0 0 10px var(--color-accent-500));">🌌</span>
               </div>
-              <p>Welcome to the VIP AI Assistant v5.1 experience. This demo showcases the new Neural Symphony interface, live location context, and advanced mobile controls.</p>
+              <p style="color: var(--text-secondary);">Welcome to the VIP SYMPHONY v6.0 PLATINUM experience. This build features the Neural Weave architecture, real-time biometric telemetry, and autonomous task-chaining logic.</p>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" onclick="closeModal()">Close Demo</button>
+              <button class="btn btn-primary" style="width: 100%;" onclick="closeModal()">INITIALIZE_VIEW</button>
             </div>
           </div>
         </div>
@@ -548,60 +557,39 @@ function renderSettingsModal() {
   if (!modalContainer) return;
 
   const currentKey = localStorage.getItem('openai_api_key') || '';
-  const wakeWord = window.alwaysListening?.wakeWord || 'hey assistant';
+  const packageVersion = 'BUILD_6.0.0_SYMPHONY';
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal modal-settings" onclick="event.stopPropagation()" style="max-width: 700px; padding: 0; overflow: hidden;">
+      <div class="modal modal-settings animate-slide-up" onclick="event.stopPropagation()" style="max-width: 760px; min-height: 520px; padding: 0;">
         <div class="settings-sidebar">
-          <div class="settings-nav-item active" onclick="switchSettingsTab('general')"><span>⚙️</span> General</div>
-          <div class="settings-nav-item" onclick="switchSettingsTab('cognitive')"><span>🧠</span> Cognitive</div>
-          <div class="settings-nav-item" onclick="switchSettingsTab('hardware')"><span>🔋</span> Hardware</div>
-          <div class="settings-nav-item" onclick="switchSettingsTab('advanced')"><span>🛡️</span> Advanced</div>
+          <div class="settings-nav-item active" onclick="switchSettingsTab('general')"><span>⚡</span> GENERAL</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('cognitive')"><span>🧠</span> NEURAL</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('hardware')"><span>🛰️</span> TELEMETRY</div>
+          <div class="settings-nav-item" onclick="switchSettingsTab('advanced')"><span>🛡️</span> SECURITY</div>
         </div>
         
         <div class="settings-main">
-          <div class="modal-header" style="border: none; padding: 24px 24px 0;">
-            <h2 class="modal-title">System Settings</h2>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+          <div class="modal-header">
+            <h2 class="modal-title">SYMPHONY_SYSTEM_SETTINGS</h2>
+            <button class="modal-close" onclick="closeModal()">×</button>
           </div>
           
-          <div class="modal-body" id="settingsTabContent" style="padding: 24px;">
-            <!-- Tab: General (Default) -->
-            <div class="settings-tab-pane active" id="tab-general">
-              <div class="settings-group">
-                <label>Appearance Theme</label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
-                  <div class="theme-preview ${appState.theme === 'dark' ? 'active' : ''}" onclick="applyTheme('dark'); renderSettingsModal();">
-                    <div style="background: #0f172a; height: 40px; border-radius: 6px;"></div>
-                    <span style="font-size: 12px; margin-top: 4px; display: block; text-align: center;">Cyber Dark</span>
-                  </div>
-                  <div class="theme-preview ${appState.theme === 'light' ? 'active' : ''}" onclick="applyTheme('light'); renderSettingsModal();">
-                    <div style="background: #f8fafc; height: 40px; border-radius: 6px; border: 1px solid #ddd;"></div>
-                    <span style="font-size: 12px; margin-top: 4px; display: block; text-align: center;">Silicon Light</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="settings-group" style="margin-top: 24px;">
-                <label>System Language</label>
-                <select class="input" style="width: 100%;">
-                  <option>English (US) - Default</option>
-                  <option>Spanish</option>
-                  <option>Japanese (Neural Beta)</option>
-                </select>
-              </div>
-            </div>
+          <div class="modal-body" id="settingsTabContent">
+            <!-- Initial tab content injected by JS -->
           </div>
           
-          <div class="modal-footer" style="background: var(--bg-tertiary); padding: 16px 24px; border: none;">
-            <div style="flex: 1; font-size: 10px; color: var(--text-tertiary);">BUILD_5.1.0_STABLE</div>
-            <button class="btn btn-primary" onclick="closeModal(); showToast('Settings Saved', 'System configuration updated', 'success');">Apply Changes</button>
+          <div class="modal-footer">
+            <div style="flex: 1; font-size: 10px; font-family: var(--font-family-mono); color: var(--color-accent-400);">${packageVersion}</div>
+            <button class="btn btn-primary" onclick="closeModal(); showToast('Settings Synced', 'System baseline updated', 'success');">APPLY_CHANGES</button>
           </div>
         </div>
       </div>
     </div>
   `;
+
+  // Inject first tab
+  switchSettingsTab('general');
 }
 
 /**
@@ -622,7 +610,7 @@ function switchSettingsTab(tabId) {
   if (tabId === 'advanced') items[3].classList.add('active');
 
   const apiKey = localStorage.getItem('openai_api_key') || '';
-  const wakeWord = window.alwaysListening?.wakeWord || 'hey assistant';
+  const wakeWord = window.alwaysListening?.wakeWord || 'hey symphony';
 
   let html = '';
   switch (tabId) {
@@ -678,9 +666,9 @@ function switchSettingsTab(tabId) {
       html = `
         <div class="settings-tab-pane active">
            <div class="settings-group">
-            <label>Presence Orb (v5.1)</label>
+            <label>Neural Visualization (v6.0)</label>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-              <span style="font-size: 13px; color: var(--text-secondary);">Enable Neural Visualization</span>
+              <span style="font-size: 13px; color: var(--text-secondary);">Enable Synthetic Presence Orb</span>
               <input type="checkbox" checked onchange="document.getElementById('neuralOrbContainer').style.display = this.checked ? 'flex' : 'none'">
             </div>
           </div>

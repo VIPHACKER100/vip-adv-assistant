@@ -1,7 +1,6 @@
-﻿
-/**
- * Favorites Manager
- * Bookmark frequently used functions
+﻿/**
+ * VIP AI SYMPHONY - Priority Registry v6.0
+ * Selective Sub-modular Bookmark & Priority Link Manager
  */
 
 const favoritesManager = {
@@ -69,38 +68,39 @@ const favoritesManager = {
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px;">
-          <div class="modal-header">
-            <h2 class="modal-title">â­ Favorite Functions</h2>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 720px; padding: 0; overflow: hidden;">
+          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
+            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⭐ SYMPHONY_PRIORITY_LINKS</h2>
+            <button class="modal-close" onclick="closeModal()">×</button>
           </div>
           <div class="modal-body">
             ${favorites.length === 0 ? `
-              <div style="text-align: center; padding: var(--space-8); color: var(--text-tertiary);">
-                <div style="font-size: 4rem; margin-bottom: var(--space-4);">â­</div>
-                <h3 style="margin-bottom: var(--space-2); color: var(--text-primary);">No Favorites Yet</h3>
-                <p>Click the star icon on any function card to add it to favorites.</p>
+              <div style="text-align: center; padding: var(--space-10); color: var(--text-tertiary);">
+                <div style="font-size: 3rem; margin-bottom: var(--space-4); opacity: 0.3;">⭐</div>
+                <h3 style="margin-bottom: var(--space-2); color: var(--text-primary); font-family: var(--font-family-display); letter-spacing: 1px;">BUFFER_EMPTY</h3>
+                <p style="font-size: 13px;">Specify functions for immediate neural recall by tagging them with the priority star.</p>
               </div>
             ` : `
               <div style="display: grid; gap: var(--space-3);">
                 ${favorites.map(func => `
-                  <div class="glass-card" style="padding: var(--space-3); cursor: pointer;" onclick="executeFunction('${func.id}')">
-                    <div style="display: flex; align-items: center; gap: var(--space-3);">
-                      <span style="font-size: var(--font-size-2xl);">${func.icon}</span>
-                      <div style="flex: 1;">
-                        <div style="font-weight: var(--font-weight-semibold); color: var(--text-primary);">${func.title}</div>
-                        <div style="font-size: var(--font-size-xs); color: var(--text-tertiary); margin-top: var(--space-1);">
-                          ${func.categoryIcon} ${func.category}
+                  <div class="glass-card-subtle flex-between hover-lift" style="cursor: pointer; padding: var(--space-4);" onclick="executeFunction('${func.id}')">
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                      <span style="font-size: 24px;">${func.icon}</span>
+                      <div>
+                        <div style="font-weight: 800; color: var(--text-primary); font-size: 14px; letter-spacing: 0.5px;">${func.title.toUpperCase()}</div>
+                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 4px; font-family: var(--font-family-mono);">
+                          ${func.categoryIcon} LINK_SUB: ${func.category.toUpperCase()}
                         </div>
                       </div>
-                      <button 
-                        class="icon-btn" 
-                        onclick="event.stopPropagation(); favoritesManager.remove('${func.id}'); favoritesManager.showFavoritesModal();"
-                        title="Remove from favorites"
-                      >
-                        <span>â­</span>
-                      </button>
                     </div>
+                    <button 
+                      class="icon-btn" 
+                      style="color: var(--color-accent-400);"
+                      onclick="event.stopPropagation(); favoritesManager.remove('${func.id}'); favoritesManager.showFavoritesModal();"
+                      title="TERMINATE_PRIORITY_LINK"
+                    >
+                      <span>⭐</span>
+                    </button>
                   </div>
                 `).join('')}
               </div>

@@ -1,6 +1,6 @@
 /**
- * Advanced Mobile Control AI Assistant
- * Voice Access & Voice Commands
+ * VIP AI Assistant - SYMPHONY KERNEL v6.0
+ * Neural Voice Interface & Recognition
  */
 
 // Voice recognition state
@@ -8,7 +8,8 @@ window.voiceState = {
   isListening: false,
   recognition: null,
   commands: {},
-  lastCommand: null
+  lastCommand: null,
+  pulseRing: null
 };
 
 const voiceState = window.voiceState;
@@ -32,24 +33,27 @@ function initVoiceAccess() {
   voiceState.recognition.onstart = () => {
     voiceState.isListening = true;
     updateVoiceUI(true);
-    showToast('Voice Access', 'Listening...', 'info');
+    showToast('Neural Link', 'BIO_ACOUSTIC_LINK_ESTABLISHED', 'success');
+
+    if (window.cognitiveStream) {
+      window.cognitiveStream.addLine('> INFO: VOICE_LINK_ACTIVE');
+    }
   };
 
   voiceState.recognition.onend = () => {
     voiceState.isListening = false;
     updateVoiceUI(false);
 
-    // Auto-restart if always-listening is enabled
     if (window.alwaysListening && window.alwaysListening.enabled) {
       setTimeout(() => {
         if (voiceState.recognition && !voiceState.isListening) {
           try {
             voiceState.recognition.start();
           } catch (e) {
-            console.warn('Auto-restart failed:', e);
+            console.warn('Neural restart failed:', e);
           }
         }
-      }, 500);
+      }, 400);
     }
   };
 
@@ -122,7 +126,16 @@ function registerVoiceCommands() {
     'scroll down': () => window.scrollBy({ top: 500, behavior: 'smooth' }),
     'scroll up': () => window.scrollBy({ top: -500, behavior: 'smooth' }),
 
-    // Functions
+    // V6.0 Enhanced Commands
+    'neural scan': () => executeFunction('analyze_image'),
+    'omni search': () => executeFunction('visual_search'),
+    'clarity ai': () => executeFunction('enhance_media'),
+    'kernel lock': () => executeFunction('biometric_lock'),
+    'bio ledger': () => executeFunction('medical_id'),
+    'symphony chain': () => executeFunction('task_chain'),
+    'acoustic purge': () => executeFunction('speaker_clean'),
+
+    // Legacy mapping (kept for stability)
     'analyze image': () => executeFunction('analyze_image'),
     'smart reply': () => executeFunction('smart_reply'),
     'usage analytics': () => executeFunction('usage_analytics'),
@@ -130,35 +143,22 @@ function registerVoiceCommands() {
     'focus mode': () => executeFunction('focus_mode'),
     'smart home': () => executeFunction('control_smart_home'),
 
-    // Automation
-    'automation builder': () => openAutomationBuilder(),
-    'open automation': () => openAutomationBuilder(),
-    'show automations': () => openAutomationBuilder(),
-
-    // Modals & Panels
+    // Modals & Dashboard
     'close': () => closeModal(),
     'close modal': () => closeModal(),
     'settings': () => showModal('settings'),
-    'open settings': () => showModal('settings'),
-    'show hud': () => toggleHUD(),
-    'telemetry': () => toggleHUD(),
+    'show telemetry': () => toggleHUD(),
     'command center': () => toggleHUD(),
 
-    // Hardware
-    'flashlight on': () => executeFunction('toggle_flashlight'),
-    'flashlight off': () => executeFunction('toggle_flashlight'),
-    'turn on flashlight': () => executeFunction('toggle_flashlight'),
-    'turn off flashlight': () => executeFunction('toggle_flashlight'),
-    'toggle flashlight': () => executeFunction('toggle_flashlight'),
-    'brightness high': () => executeFunction('set_brightness'),
-    'brightness low': () => executeFunction('set_brightness'),
-    'volume up': () => executeFunction('set_volume'),
-    'volume down': () => executeFunction('set_volume'),
-    'mute': () => executeFunction('set_volume'),
-    'vibration on': () => executeFunction('toggle_vibration'),
-    'vibration off': () => executeFunction('toggle_vibration'),
-    'rotate screen': () => executeFunction('rotate_screen'),
-    'clean speaker': () => executeFunction('speaker_clean'),
+    // Hardware Pulse Commands
+    'photon pulse on': () => executeFunction('toggle_flashlight'),
+    'photon pulse off': () => executeFunction('toggle_flashlight'),
+    'lumen high': () => executeFunction('set_brightness'),
+    'lumen low': () => executeFunction('set_brightness'),
+    'amplitude up': () => executeFunction('set_volume'),
+    'amplitude down': () => executeFunction('set_volume'),
+    'haptic sync on': () => executeFunction('toggle_vibration'),
+    'spatial shift': () => executeFunction('rotate_screen'),
 
     // Security & Emergency
     'lock system': () => executeFunction('biometric_lock'),
@@ -244,31 +244,30 @@ function showVoiceUnavailableModal() {
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 500px;">
         <div class="modal-header">
-          <h2 class="modal-title">🎤 Voice Access Unavailable</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+          <h2 class="modal-title">ACOUSTIC_LINK_FAILED</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
         <div class="modal-body">
-          <div class="glass-card" style="text-align: center; padding: var(--space-6);">
-            <div style="font-size: 4rem; margin-bottom: var(--space-4);">🚫</div>
-            <h3 style="margin-bottom: var(--space-3); color: var(--text-primary);">Voice Recognition Not Supported</h3>
-            <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
-              Your browser doesn't support voice recognition, or microphone access is blocked.
+          <div class="glass-card-strong" style="text-align: center; padding: var(--space-8); border: 1px solid var(--color-error-500);">
+            <div style="font-size: 5rem; margin-bottom: var(--space-6); filter: drop-shadow(0 0 15px var(--color-error-500));">⚠️</div>
+            <h3 style="margin-bottom: var(--space-3); color: var(--color-error-400); font-family: var(--font-family-display);">DRV_VOICE_ERROR_0x42</h3>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-6); font-size: 14px;">
+              Acoustic sensors could not be initialized. Terminal permissions or hardware missing.
             </p>
-            <div style="text-align: left; background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); margin-top: var(--space-4);">
-              <strong style="color: var(--text-primary);">💡 To enable voice access:</strong>
-              <ol style="margin-top: var(--space-2); color: var(--text-secondary); padding-left: var(--space-5);">
-                <li>Use Chrome, Edge, or Safari browser</li>
-                <li>Click the 🔒 lock icon in the address bar</li>
-                <li>Allow microphone access for this site</li>
-                <li>Refresh the page and try again</li>
-              </ol>
+            <div style="text-align: left; background: rgba(0,0,0,0.3); padding: var(--space-5); border-radius: var(--radius-xl);">
+              <div style="font-size: 10px; color: var(--color-accent-400); margin-bottom: 8px; letter-spacing: 1px;">RECOVERY_PROTOCOLS:</div>
+              <ul style="color: var(--text-secondary); font-size: 12px; display: grid; gap: 8px;">
+                <li>• Verify mic permissions in security settings</li>
+                <li>• Ensure active neural link in dashboard</li>
+                <li>• Refresh kernel state (F5)</li>
+              </ul>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-glass" onclick="closeModal()">Close</button>
+          <button class="btn btn-primary" style="width: 100%;" onclick="closeModal()">ACKNOWLEDGE</button>
         </div>
       </div>
     </div>
@@ -278,14 +277,20 @@ function showVoiceUnavailableModal() {
 // Update voice UI indicator
 function updateVoiceUI(isListening) {
   const voiceBtn = document.getElementById('voiceAccessBtn');
+  const orb = document.getElementById('neuralOrb');
+  const status = document.querySelector('.always-listening-status');
+
   if (voiceBtn) {
-    if (isListening) {
-      voiceBtn.classList.add('listening');
-      voiceBtn.innerHTML = '<span>🎤</span><span class="pulse"></span>';
-    } else {
-      voiceBtn.classList.remove('listening');
-      voiceBtn.innerHTML = '<span>🎤</span>';
-    }
+    voiceBtn.classList.toggle('listening', isListening);
+    voiceBtn.innerHTML = isListening ? '<span>🎤</span><span class="pulse"></span>' : '<span>🎤</span>';
+  }
+
+  if (orb) {
+    orb.classList.toggle('listening', isListening);
+  }
+
+  if (status) {
+    status.classList.toggle('active', isListening);
   }
 }
 
@@ -295,50 +300,51 @@ function showVoiceHelp() {
   if (!modalContainer) return;
 
   const commandGroups = {
-    'Navigation': ['go home', 'scroll down', 'scroll up'],
-    'Hardware': ['toggle flashlight', 'brightness high/low', 'vibration on/off', 'rotate screen'],
-    'Security': ['lock system', 'medical id', 'sos alert', 'secure vault'],
-    'Intelligence': ['analyze image', 'smart reply', 'usage analytics', 'smart home', 'optimize'],
-    'Panels': ['show hud', 'open automation', 'show history', 'qr scanner', 'open settings'],
-    'System': ['toggle theme', 'help', 'close modal']
+    'NAVIGATION': ['go home', 'scroll down', 'scroll up'],
+    'HARDWARE': ['photon pulse on/off', 'lumen high/low', 'amplitude up/down'],
+    'INTELLIGENCE': ['neural scan', 'omni search', 'clarity ai', 'module telemetry'],
+    'SECURITY': ['kernel lock', 'bio ledger', 'module isolation'],
+    'SYSTEM': ['toggle theme', 'show telemetry', 'overclock', 'system boost']
   };
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px;">
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 760px;">
         <div class="modal-header">
-          <h2 class="modal-title">🎤 Voice Commands</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+          <h2 class="modal-title">SYNAPTIC_VOICE_COMMANDS</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
         <div class="modal-body">
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-6);">
-            Say any of these commands to control the assistant with your voice.
+          <p style="color: var(--text-secondary); margin-bottom: var(--space-8); font-size: 15px;">
+            Acoustic baseline verified. The following neural command sequences are active:
           </p>
           
-          ${Object.entries(commandGroups).map(([group, commands]) => `
-            <div class="glass-card" style="margin-bottom: var(--space-4);">
-              <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">${group}</h4>
-              <div style="display: grid; gap: var(--space-2);">
-                ${commands.map(cmd => `
-                  <div style="padding: var(--space-2); background: var(--bg-tertiary); border-radius: var(--radius-md); font-family: monospace; font-size: var(--font-size-sm);">
-                    "${cmd}"
-                  </div>
-                `).join('')}
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-5);">
+            ${Object.entries(commandGroups).map(([group, commands]) => `
+              <div class="glass-card-subtle" style="padding: var(--space-4); border-top: 2px solid var(--color-accent-500);">
+                <h4 style="margin-bottom: var(--space-4); color: var(--color-accent-400); font-family: var(--font-family-display); font-size: 12px; letter-spacing: 1px;">${group}</h4>
+                <div style="display: grid; gap: var(--space-2-5);">
+                  ${commands.map(cmd => `
+                    <div style="padding: var(--space-2) var(--space-3); background: rgba(255,255,255,0.03); border-radius: var(--radius-md); font-family: var(--font-family-mono); font-size: 11px; color: var(--text-primary);">
+                      "${cmd.toUpperCase()}"
+                    </div>
+                  `).join('')}
+                </div>
               </div>
-            </div>
-          `).join('')}
+            `).join('')}
+          </div>
           
-          <div style="margin-top: var(--space-6); padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
-            <strong style="color: var(--text-primary);">💡 Tip:</strong>
-            <p style="margin-top: var(--space-2); color: var(--text-secondary);">
-              Click the microphone button in the header to start/stop voice listening.
+          <div class="status-pill-accent" style="margin-top: var(--space-8); padding: var(--space-4); border-radius: var(--radius-2xl);">
+            <strong style="color: var(--color-accent-400); font-size: 11px; letter-spacing: 1px;">💡 PRO_TIP:</strong>
+            <p style="margin-top: var(--space-2); color: var(--text-secondary); font-size: 13px;">
+              Say "SYSTEM BOOST" to initialize rapid resource allocation. Use the neural orb to trigger voice link.
             </p>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-glass" onclick="closeModal()">Close</button>
+          <button class="btn btn-glass" onclick="closeModal()">TERMINATE</button>
           <button class="btn btn-primary" onclick="toggleVoiceAccess(); closeModal();">
-            🎤 Start Voice Access
+            INITIALIZE_BIO_LINK
           </button>
         </div>
       </div>

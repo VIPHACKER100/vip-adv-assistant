@@ -1,7 +1,6 @@
-﻿
-/**
- * Advanced Mobile Control AI Assistant
- * Automation Builder & Workflow Management
+﻿/**
+ * VIP AI SYMPHONY - Automation Kernel v6.0
+ * Advanced Workflow Orchestration & Synthetic Routines
  */
 
 // Automation state
@@ -19,82 +18,56 @@ function initAutomation() {
   setInterval(() => checkAutonomousTriggers(), 10000);
 }
 
-// Initialize automation templates
+// Initialize automation templates (SYMPHONY v6.0)
 function initAutomationTemplates() {
   return [
     {
-      id: 'morning_routine',
-      name: 'Morning Routine',
-      description: 'Perfect start to your day',
-      icon: '☀️',
+      id: 'morning_nexus',
+      name: 'Morning Nexus',
+      description: 'Synchronize sub-systems for early hours',
+      icon: '🌅',
       triggers: [{ type: 'time', value: '07:00' }],
       actions: [
-        { function: 'weather_check', label: 'Check weather' },
-        { function: 'read_messages', label: 'Read unread messages' },
-        { function: 'calendar_summary', label: 'Today\'s schedule' },
-        { function: 'smart_suggestions', label: 'Get suggestions' }
+        { function: 'weather_check', label: 'CONTEXT_WEATHER_SYNC' },
+        { function: 'read_messages', label: 'MESSAGE_STREAM_RETRIEVAL' },
+        { function: 'analyze_usage', label: 'RESOURCE_INIT_OPTIMIZATION' },
+        { function: 'visual_search', label: 'OMNI_SCAN_DAILY_INTENT' }
       ]
     },
     {
-      id: 'gym_mode',
-      name: 'Gym Mode',
-      description: 'Workout time automation',
-      icon: '💪',
-      triggers: [{ type: 'location', value: 'Gym', radius: 100 }],
+      id: 'stealth_mode',
+      name: 'Stealth Protocol',
+      description: 'Isolate device context for maximum focus',
+      icon: '🛡️',
+      triggers: [{ type: 'location', value: 'Office', radius: 100 }],
       actions: [
-        { function: 'toggle_dnd', params: { state: 'on' }, label: 'Enable Do Not Disturb' },
-        { function: 'play_media', params: { query: 'Workout Playlist' }, label: 'Play workout music' },
-        { function: 'open_app', params: { app: 'Fitness Tracker' }, label: 'Open fitness app' }
+        { function: 'focus_mode', params: { state: 'on' }, label: 'INIT_COGNITIVE_ISOLATION' },
+        { function: 'biometric_lock', params: { state: 'on' }, label: 'KERNEL_DATA_LOCK' },
+        { function: 'toggle_vibration', params: { state: 'off' }, label: 'DISABLE_HAPTIC_LEAK' }
       ]
     },
     {
-      id: 'bedtime',
-      name: 'Bedtime Routine',
-      description: 'Wind down for better sleep',
-      icon: '🌙',
-      triggers: [{ type: 'time', value: '22:00' }],
+      id: 'neural_recovery',
+      name: 'Neural Recovery',
+      description: 'Automated winding down sequence',
+      icon: '🔮',
+      triggers: [{ type: 'time', value: '22:30' }],
       actions: [
-        { function: 'focus_mode', params: { mode: 'sleep' }, label: 'Enable sleep mode' },
-        { function: 'control_smart_home', params: { action: 'bedtime_scene' }, label: 'Activate bedtime scene' },
-        { function: 'set_alarm', params: { time: '07:00' }, label: 'Set morning alarm' },
-        { function: 'wellness_check', label: 'Review today\'s wellness' }
+        { function: 'wellness_check', label: 'BIO_METRIC_AUDIT' },
+        { function: 'set_brightness', params: { value: 10 }, label: 'LUMEN_REDUCTION_0x1A' },
+        { function: 'focus_mode', params: { mode: 'sleep' }, label: 'ACTIVATE_GHOST_HEARTBEAT' }
       ]
     },
     {
-      id: 'commute',
-      name: 'Commute Assistant',
-      description: 'Smart commute preparation',
-      icon: '🚗',
-      triggers: [{ type: 'time', value: '08:00' }, { type: 'day', value: 'weekday' }],
-      actions: [
-        { function: 'check_traffic', label: 'Check traffic conditions' },
-        { function: 'navigate', params: { destination: 'Work' }, label: 'Start navigation' },
-        { function: 'send_eta', params: { contact: 'Work' }, label: 'Send ETA' },
-        { function: 'play_media', params: { query: 'Podcast' }, label: 'Play podcast' }
-      ]
-    },
-    {
-      id: 'focus_work',
-      name: 'Deep Work Mode',
-      description: 'Maximum productivity focus',
-      icon: '🎯',
-      triggers: [{ type: 'manual' }],
-      actions: [
-        { function: 'focus_mode', params: { mode: 'work', duration: 120 }, label: '2-hour focus session' },
-        { function: 'block_apps', params: { except: ['Work Apps'] }, label: 'Block distractions' },
-        { function: 'auto_reply', params: { message: 'In focus mode, will respond later' }, label: 'Set auto-reply' }
-      ]
-    },
-    {
-      id: 'low_battery_recovery',
-      name: 'Power Safe Routine',
-      description: 'Triggered when battery is critical',
+      id: 'power_reserve',
+      name: 'Reserve Mode',
+      description: 'Critical resource preservation',
       icon: '🔋',
-      triggers: [{ type: 'battery_level', value: 20, operator: '<' }],
+      triggers: [{ type: 'battery_level', value: 15, operator: '<' }],
       actions: [
-        { function: 'optimize_resources', label: 'Purge background RAM' },
-        { function: 'set_brightness', params: { value: 20 }, label: 'Dim display to 20%' },
-        { function: 'toggle_flashlight', params: { state: 'off' }, label: 'Ensure flashlight OFF' }
+        { function: 'optimize_resources', label: 'KERNEL_MEM_PURGE' },
+        { function: 'set_brightness', params: { value: 20 }, label: 'LUMEN_CAP_MIN' },
+        { function: 'toggle_flashlight', params: { state: 'off' }, label: 'TERMINATE_PHOTON_PULSE' }
       ]
     }
   ];
@@ -162,7 +135,6 @@ function checkAutonomousTriggers() {
         const triggerChargingState = (String(trigger.value).toLowerCase() === 'true');
         if (triggerChargingState === isCharging) triggered = true;
       } else if (trigger.type === 'location' && appState.context.location.lat) {
-        // Simple distance check if coordinates are provided, otherwise city match
         if (trigger.lat && trigger.lon) {
           const dist = calculateDistance(trigger.lat, trigger.lon, appState.context.location.lat, appState.context.location.lon);
           if (dist <= (trigger.radius || 500)) triggered = true;
@@ -175,25 +147,23 @@ function checkAutonomousTriggers() {
       }
 
       if (triggered) {
-        // Prevent double execution in short window
         const now = Date.now();
-        // Cooldown period: 5 minutes (300,000 milliseconds)
-        if (routine.lastTriggered && (now - routine.lastTriggered < 300000)) {
-          // console.log(`Routine ${routine.name} recently triggered, skipping.`);
-          return;
-        }
+        if (routine.lastTriggered && (now - routine.lastTriggered < 300000)) return;
 
         routine.lastTriggered = now;
-        // Update routine in state and save to persist lastTriggered
         const routineIndex = automationState.routines.findIndex(r => r.id === routine.id);
         if (routineIndex !== -1) {
-          automationState.routines[routineIndex] = { ...routine }; // Update the object in the array
-          saveRoutines(); // Persist the updated lastTriggered timestamp
+          automationState.routines[routineIndex] = { ...routine };
+          saveRoutines();
+        }
+
+        if (window.cognitiveStream) {
+          window.cognitiveStream.addLine(`> AUTO_TRIG: RULE_MATCH [${routine.name.toUpperCase()}]`);
         }
 
         notificationManager.addNotification({
-          title: `Autonomous Rule: ${routine.name}`,
-          message: `Activated based on system condition: ${formatTrigger(trigger)}`,
+          title: `Autonomous Sequence: ${routine.name}`,
+          message: `ACTIVATE: ${formatTrigger(trigger)} matched kernel condition`,
           type: 'success'
         });
         executeRoutine(routine.id);
@@ -208,35 +178,39 @@ function executeRoutine(routineId) {
     automationState.templates.find(t => t.id === routineId);
 
   if (!routine) {
-    showToast('Error', 'Routine not found', 'error');
+    showToast('Execution Error', 'Workflow node missing from memory', 'error');
     return;
   }
 
-  showToast('Executing', `Running ${routine.name}...`, 'info');
+  showToast('Symphony Workflow', `Initializing ${routine.name} sequence...`, 'info');
 
-  // Simulate step-by-step execution
   let completedSteps = 0;
   const totalSteps = routine.actions.length;
 
   const executeStep = (index) => {
     if (index >= totalSteps) {
-      showToast('Complete', `${routine.name} finished successfully`, 'success');
+      showToast('Workflow Complete', `All ${totalSteps} modules verified.`, 'success');
+      if (window.cognitiveStream) {
+        window.cognitiveStream.addLine(`> SUCCESS: ROUTINE_0x${routine.id.split('_')[1] || 'AF'} COMPLETED`);
+      }
       return;
     }
 
     const action = routine.actions[index];
-    console.log(`Executing step ${index + 1}: ${action.label}`);
 
-    // Simulate execution time
+    if (window.cognitiveStream) {
+      window.cognitiveStream.addLine(`> EXEC: ${action.label}`);
+    }
+
     setTimeout(() => {
       completedSteps++;
       showToast(
-        'Progress',
+        'Processing Step',
         `${action.label} (${completedSteps}/${totalSteps})`,
         'info'
       );
       executeStep(index + 1);
-    }, 800 + Math.random() * 400);
+    }, 600 + Math.random() * 400);
   };
 
   executeStep(0);
@@ -341,50 +315,50 @@ function showAutomationBuilder() {
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()" style="max-width: 900px;">
-        <div class="modal-header">
-          <h2 class="modal-title">⚡ Automation Builder</h2>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 920px; padding: 0; overflow: hidden;">
+        <div class="modal-header" style="background: rgba(0,0,0,0.2); padding: var(--space-6);">
+          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 18px; letter-spacing: 1px;">⚡ SYMPHONY_WORKFLOW_DESIGNER</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
         </div>
-        <div class="modal-body">
-          <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">📚 Template Library</h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4);">
-            <div class="function-card" onclick="showAIRoutineGenerator()" style="border: 2px dashed var(--color-accent-500); background: rgba(124, 58, 237, 0.05); color: var(--color-accent-300);">
-                <div class="function-icon">🧠</div>
-                <div class="function-title">AI Logic Generator</div>
-                <div class="function-description">Describe a workflow and let AI build the logic for you.</div>
+        <div class="modal-body" style="padding: var(--space-6); max-height: 75vh;">
+          <h3 style="margin-bottom: var(--space-6); color: var(--text-primary); font-size: 14px; letter-spacing: 1px;">SYNTHETIC_TEMPLATES</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: var(--space-5);">
+            <div class="function-card hover-lift" onclick="showAIRoutineGenerator()" style="border: 2px dashed var(--color-accent-500); background: rgba(124, 58, 237, 0.05); color: var(--color-accent-300);">
+                <div class="function-icon" style="filter: drop-shadow(0 0 10px var(--color-accent-500));">🧠</div>
+                <div class="function-title" style="font-weight: 800;">NEURAL_LOGIC_ENGINE</div>
+                <div class="function-description">Describe a goal and allow AI to synthesize the sub-modular logic.</div>
                 <div style="margin-top: var(--space-3);">
-                    <span class="badge badge-accent">SMART ENGINE</span>
+                    <span class="badge badge-accent">SMART_SYNAPSE_PRO</span>
                 </div>
             </div>
             ${templates.map(template => `
-              <div class="function-card" onclick="showRoutineDetails('${template.id}')">
+              <div class="function-card hover-lift" onclick="showRoutineDetails('${template.id}')">
                 <div class="function-icon">${template.icon}</div>
-                <div class="function-title">${template.name}</div>
+                <div class="function-title" style="font-weight: 800;">${template.name.toUpperCase()}</div>
                 <div class="function-description">${template.description}</div>
                 <div style="margin-top: var(--space-3);">
-                  <span class="badge badge-primary">${template.actions.length} actions</span>
+                  <span class="badge badge-primary" style="font-family: var(--font-family-mono); font-size: 10px;">${template.actions.length}_MODULES</span>
                 </div>
               </div>
             `).join('')}
           </div>
           
           ${automationState.routines.length > 0 ? `
-            <div class="divider"></div>
-            <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">🤖 Your Automations</h3>
-            <div style="display: grid; gap: var(--space-3);">
+            <div class="divider" style="margin: var(--space-8) 0;"></div>
+            <h3 style="margin-bottom: var(--space-6); color: var(--text-primary); font-size: 14px; letter-spacing: 1px;">ACTIVE_AUTO_SEQUENCES</h3>
+            <div style="display: grid; gap: var(--space-4);">
               ${automationState.routines.map(routine => `
-                <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="showRoutineDetails('${routine.id}')">
-                  <div style="display: flex; align-items: center; gap: var(--space-3);">
-                    <span style="font-size: var(--font-size-2xl);">${routine.icon}</span>
+                <div class="glass-card flex-between hover-lift" style="cursor: pointer; border-left: 4px solid var(--color-accent-500);" onclick="showRoutineDetails('${routine.id}')">
+                  <div style="display: flex; align-items: center; gap: var(--space-4);">
+                    <span style="font-size: 28px;">${routine.icon}</span>
                     <div>
-                      <div style="font-weight: var(--font-weight-semibold); color: var(--text-primary);">${routine.name}</div>
-                      <div style="font-size: var(--font-size-sm); color: var(--text-secondary);">${routine.actions.length} actions</div>
+                      <div style="font-weight: 800; color: var(--text-primary); letter-spacing: 0.5px;">${routine.name.toUpperCase()}</div>
+                      <div style="font-size: 11px; color: var(--text-tertiary); font-family: var(--font-family-mono);">${routine.actions.length} STAGES_PROGREDERE</div>
                     </div>
                   </div>
                   <div>
-                    <span class="badge badge-${routine.enabled ? 'success' : 'warning'}">
-                      ${routine.enabled ? 'Enabled' : 'Disabled'}
+                    <span class="badge badge-${routine.enabled ? 'success' : 'warning'}" style="font-family: var(--font-family-mono); padding: 4px 12px; font-size: 9px;">
+                      ${routine.enabled ? 'KERNEL_ACTIVE' : 'ISOLATED'}
                     </span>
                   </div>
                 </div>
@@ -392,10 +366,11 @@ function showAutomationBuilder() {
             </div>
           ` : ''}
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-glass" onclick="closeModal()">Close</button>
-          <button class="btn btn-accent" onclick="showCustomRoutineBuilder()">
-            ➕ Create Custom
+        <div class="modal-footer" style="background: rgba(0,0,0,0.1); padding: var(--space-5);">
+          <button class="btn btn-glass btn-sm" onclick="closeModal()">TERMINATE</button>
+          <div style="flex: 1;"></div>
+          <button class="btn btn-primary" onclick="showCustomRoutineBuilder()">
+            ➕ NEW_CUSTOM_ROUTINE
           </button>
         </div>
       </div>
