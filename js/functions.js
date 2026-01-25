@@ -599,6 +599,12 @@ function simulateFunction(functionId) {
     showOptimizationWizard();
   } else if (functionId === 'neural_link') {
     showNeuralLinkWizard();
+  } else if (functionId === 'face_recognition') {
+    // Open Face Recognition modal directly
+    if (typeof faceRecognition !== 'undefined') {
+      faceRecognition.open();
+      return { success: true, data: { message: 'Face Recognition opened' } };
+    }
   }
 
   return simulations[functionId] || {

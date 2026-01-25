@@ -151,6 +151,10 @@ function registerVoiceCommands() {
     'sos alert': () => executeFunction('sos_alert'),
     'emergency': () => executeFunction('sos_alert'),
     'secure vault': () => executeFunction('secure_vault'),
+    'face recognition': () => executeFunction('face_recognition'),
+    'face id': () => executeFunction('face_recognition'),
+    'open face id': () => executeFunction('face_recognition'),
+    'recognize face': () => executeFunction('face_recognition'),
 
     // System
     'optimize': () => executeFunction('optimize_resources'),

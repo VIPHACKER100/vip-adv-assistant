@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .status {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .warning {
+            color: #fbbf24;
+        }
+
+        ul {
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔐 Face Recognition Test</h1>
+        <p>This page will help you verify the Face Recognition feature is working correctly.</p>
+
+        <div class="status" id="status">
+            <h3>Running Tests...</h3>
+            <div id="results"></div>
+        </div>
+
+        <button class="btn" onclick="runTests()">🔄 Run Tests Again</button>
+        <button class="btn" onclick="window.location.href='index.html'">🏠 Open Main App</button>
+    </div>
+
+    <script src="libs/face-api.min.js"></script>
+    <script>
+        async function runTests() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing...</p>';
+
+            const tests = [];
+
+            // Test 1: Check if face-api.js is loaded
+            tests.push({
+                name: 'face-api.js Library',
+                passed: typeof faceapi !== 'undefined',
+                message: typeof faceapi !== 'undefined' ? 'Library loaded successfully' : 'Library not found'
+            });
+
+            // Test 2: Check if models directory exists
+            let modelsExist = false;
+            try {
+                const response = await fetch('models/tiny_face_detector_model-weights_manifest.json');
+                modelsExist = response.ok;
+            } catch (e) {
+                modelsExist = false;
+            }
+            tests.push({
+                name: 'Model Files',
+                passed: modelsExist,
+                message: modelsExist ? 'Model files accessible' : 'Model files not found'
+            });
+
+            // Test 3: Check if face-recognition.js is loaded
+            tests.push({
+                name: 'Face Recognition Module',
+                passed: typeof faceRecognition !== 'undefined',
+                message: typeof faceRecognition !== 'undefined' ? 'Module loaded' : 'Module not found (open index.html instead)'
+            });
+
+            // Test 4: Check camera availability
+            let cameraAvailable = false;
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                cameraAvailable = devices.some(device => device.kind === 'videoinput');
+            } catch (e) {
+                cameraAvailable = false;
+            }
+            tests.push({
+                name: 'Camera Access',
+                passed: cameraAvailable,
+                message: cameraAvailable ? 'Camera detected' : 'No camera found or permission denied'
+            });
+
+            // Test 5: Check localStorage
+            let storageWorks = false;
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                storageWorks = true;
+            } catch (e) {
+                storageWorks = false;
+            }
+            tests.push({
+                name: 'LocalStorage',
+                passed: storageWorks,
+                message: storageWorks ? 'Storage available' : 'Storage blocked (check browser settings)'
+            });
+
+            // Display results
+            let html = '<ul style="margin: 0; padding-left: 20px;">';
+            let allPassed = true;
+
+            tests.forEach(test => {
+                const icon = test.passed ? '✅' : '❌';
+                const className = test.passed ? 'success' : 'error';
+                html += `<li class="${className}">${icon} <strong>${test.name}:</strong> ${test.message}</li>`;
+                if (!test.passed) allPassed = false;
+            });
+
+            html += '</ul>';
+
+            if (allPassed) {
+                html = '<h3 class="success">✅ All Tests Passed!</h3>' + html;
+                html += '<p style="margin-top: 20px;">Face Recognition is ready to use. Open the main app and click the 🔐 button!</p>';
+            } else {
+                html = '<h3 class="error">⚠️ Some Tests Failed</h3>' + html;
+                html += '<p style="margin-top: 20px;">Please fix the issues above before using Face Recognition.</p>';
+            }
+
+            results.innerHTML = html;
+        }
+
+        // Run tests on load
+        window.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+
+</html>

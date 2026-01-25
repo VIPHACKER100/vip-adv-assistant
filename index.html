@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/voice-access.css">
+  <link rel="stylesheet" href="css/face-recognition.css">
 
   <style>
     /* Main Layout Styles */
@@ -455,6 +456,9 @@
           <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
             <span>🛰️</span>
           </button>
+          <button class="icon-btn" id="faceIdBtn" title="Face ID Recognition" onclick="faceRecognition.open()">
+            <span>🔐</span>
+          </button>
           <button class="icon-btn" id="boostBtn" title="Boost Pulse (Ctrl+Shift+B)" onclick="toggleBoostMode()"
             style="color: var(--color-accent-400);">
             <span>🚀</span>
@@ -763,6 +767,8 @@
   <div id="hudOverlay" class="hud-overlay"></div>
 
   <!-- Scripts -->
+  <!-- Face Recognition Library -->
+  <script src="libs/face-api.min.js"></script>
   <script src="js/app.js?v=5.1.0"></script>
   <script src="js/functions.js?v=5.1.0"></script>
   <script src="js/automation.js?v=5.1.0"></script>
@@ -789,6 +795,8 @@
   <script src="js/always-listening.js?v=5.1.0"></script>
   <!-- v6.0 Cognitive Stream Preview -->
   <script src="js/cognitive-stream.js?v=5.1.0"></script>
+  <!-- Face Recognition System -->
+  <script src="js/face-recognition.js?v=5.1.0"></script>
 
   <script>
     // Initialize all features
