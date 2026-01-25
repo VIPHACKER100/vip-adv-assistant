@@ -1,7 +1,7 @@
 {
   "name": "VIP Advanced Mobile AI Assistant",
   "short_name": "VIP AI",
-  "description": "Premium AI assistant with 65+ functions, voice control, and automation",
+  "description": "Premium AI assistant with 75+ functions, voice control, AI chat, and automation",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",
@@ -21,12 +21,36 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "utilities", "lifestyle"],
+  "categories": [
+    "productivity",
+    "utilities",
+    "lifestyle"
+  ],
   "screenshots": [
     {
       "src": "/screenshot1.png",
       "sizes": "1280x720",
       "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Search",
+      "short_name": "Search",
+      "description": "Open Spotlight search",
+      "url": "/?action=search"
+    },
+    {
+      "name": "Voice Control",
+      "short_name": "Voice",
+      "description": "Start voice listening",
+      "url": "/?action=voice"
+    },
+    {
+      "name": "Automation Builder",
+      "short_name": "Automate",
+      "description": "Create a new routine",
+      "url": "/?action=automate"
     }
   ]
 }

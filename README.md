@@ -1,23 +1,44 @@
 # VIP Advanced Mobile AI Assistant 🤖
 
-> **Premium web-based AI assistant** with 65+ functions, custom shortcuts, recent history, and complete mobile optimization.
+> **Premium web-based AI assistant** with 75+ functions, conversational AI Hub, persistent notifications, and cross-platform optimization.
 
-![Version](https://img.shields.io/badge/version-2.3.3-blue)
+![Version](https://img.shields.io/badge/version-5.0.0-blue)
 ![Status](https://img.shields.io/badge/status-production--ready-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Functions](https://img.shields.io/badge/functions-65+-purple)
+![Functions](https://img.shields.io/badge/functions-75+--High--Fidelity-purple)
 ![PWA](https://img.shields.io/badge/PWA-enabled-orange)
 
 ---
 
-## ✨ What's New in v2.3.3
+## 🚀 Neural Symphony Platform v5.0
 
-- **📱 Phone & PC Compatibility**: Fully responsive design with mobile bottom-sheet modals and a persistent mobile context bar.
-- **🛡️ Encoding Safety**: Migration to Unicode Escape Sequences (`\uXXXX`) for 100% visual consistency and fix for corrupted icons.
-- **🕒 Recent Functions**: Track and quick-access your last 10 executed functions with usage counts.
-- **⌨️ Custom Shortcuts**: Personalize all keyboard shortcuts to match your workflow from the Settings menu.
-- **📊 Enhanced Analytics**: Real-time tracking of most-used functions and performance metrics.
-- **🔄 Instant Updates**: Improved Service Worker cache management for reliable UI propagation.
+Welcome to the most advanced web-agnostic mobile assistant simulation. Now featuring **Always-Listening** continuous interaction and **Command Center** for unified control.
+
+[**📖 View Technical Documentation**](./TECHNICAL_DETAILS.md) | [**📋 Project Summary**](./PROJECT_SUMMARY.md)
+
+## ✨ What's New in v5.0
+
+- **👂 Always-Listening System**: Continuous voice command recognition with auto-restart and wake word support.
+- **🎯 Command Center**: Unified command processing hub for voice, keyboard, and UI interactions.
+- **🔄 Auto-Restart**: Voice recognition automatically restarts if it stops, ensuring continuous availability.
+- **⌨️ Command Palette**: Quick access to all commands via `Ctrl+Shift+P`.
+- **📊 Activity Monitoring**: Tracks interactions and provides smart reminders.
+
+## ✨ Previous Highlights (v4.7-v4.9)
+
+- **💾 Deep Telemetry**: Canvas-based animated charts for real-time RAM and CPU monitoring using Performance API.
+- **📊 Professional Charts**: Smooth animated area/line charts with gradient fills and glow effects.
+- **💎 Unified Glyph Engine**: 100% native icon synchronization across the entire project.
+- **🛰️ Command Center HUD**: Full-screen real-time visual telemetry for AI load, network density, and security status.
+- **🎙️ Pro Voice Access**: hands-free control for 15+ new hardware and security functions.
+
+## ✨ Previous Highlights (v4.7-v4.8)
+
+- **💎 Unified Glyph Engine**: 100% native icon synchronization across the entire project. No more encoding artifacts.
+- **🛰️ Command Center HUD**: Full-screen real-time visual telemetry for AI load, network density, and security status.
+- **🎙️ Pro Voice Access**: hands-free control for 15+ new hardware and security functions including `lock system` and `toggle flashlight`.
+- **🤖 Automation Wizard Pro**: Visual interface to chain functions into intelligent routines with natural language support.
+- **📱 Platform-Aware Logic**: Automatic hardware protocol switching based on device (Mobile native vs PC simulation).
 
 ---
 
@@ -36,83 +57,38 @@ http://localhost:8000
 ```
 
 ### First Steps
-1. **Allow Microphone** (for voice features) - Click the lock icon in the address bar.
-2. **Click any function card** to see dynamic AI simulations.
-3. **Try voice command**: Click the 🎤 icon and say "help".
-4. **Check device stats**: Real-time battery, network, and status updates on both desktop and mobile.
-5. **Customize**: Go to Settings to change themes (Dark/Light/Auto) or customize shortcuts.
+1. **Chat with AI**: Click the `💬` icon in the header or press `Ctrl+J`.
+2. **Check Notifications**: Click the `🔔` icon to see recent system events.
+3. **Try Hardware Control**: Scroll to the bottom to test modern flashlight and volume utilities.
+4. **Voice Setup**: Allow microphone access to use the 🎤 button for voice commands.
 
 ---
 
-## 📋 Complete Feature List
+## 📋 Key Feature Categories
 
-### 🧠 AI & Vision (7 Functions)
-- **Image Analysis** - Object detection, OCR, scene understanding
-- **Visual Search** - Find products, identify locations
-- **Media Enhancement** - AI upscaling, noise reduction
-- **Screen Understanding** - Interact with on-screen content
-- **Content Generation** - AI-powered image/text creation
-- **Face Recognition** - Identify and tag people
-- **QR/Barcode Scanner** - Scan and decode codes
-
-### ⚡ Automation & Routines (5 Functions)
-- **Create Automation** - Natural language workflow builder
-- **Manage Routines** - View, edit, execute saved automations
-- **Smart Suggestions** - AI-powered contextual recommendations
-- **Task Chain** - Multi-step workflow execution
-- **Learn Preferences** - AI learns from behavior patterns
-
-### 🔒 Security & Privacy (8 Functions)
-- **Biometric Auth** - Fingerprint, face, voice authentication
-- **Secure Vault** - Encrypted storage for sensitive data
-- **Privacy Controls** - Manage app permissions
-- **Secure Messaging** - End-to-end encrypted communication
-- **Find Device** - Locate, lock, or wipe remotely
-- **Password Generator** - Strong, secure passwords
-- **VPN Control** - Manage VPN connections
-- **App Lock** - Lock specific apps with biometrics
-
-### ... and 40+ more functions across categories like Communication, Smart Home, Productivity, and Emergency.
-
----
-
-## 🎤 Voice Commands
-
-### Getting Started
-1. Click the 🎤 microphone icon in the header.
-2. Allow microphone access when prompted.
-3. Say any command like:
-   - "go home"
-   - "analyze image"
-   - "automation builder"
-   - "settings"
-   - "help"
+- **🧠 AI & Vision**: Image analysis, OCR, visual search.
+- **⚙️ Hardware Control**: Flashlight, volume, brightness, NFC, GPS.
+- **⚡ Automation**: Natural language workflow builder and pre-set routines.
+- **🔒 Security**: Secure Vault, Biometric auth simulations, VPN control.
+- **💬 Communication**: Smart replies, translation, call screening.
+- **... and 10 more categories with 75+ total functions.**
 
 ---
 
 ## 🎨 Design System
 
-- **Glassmorphism**: Premium frosted-glass effects with 20px backdrop blur.
-- **Vibrant Gradients**: Custom HSL-tailored color palettes.
-- **Responsive**: Adaptive layout optimized for high-density PC screens and ergonomic mobile interaction.
-
----
-
-## 🛠️ Technical Stack
-
-- **Frontend**: Semantic HTML5, Vanilla CSS3 (Custom Variables), Vanilla JavaScript (ES6+).
-- **APIs**: Web Battery API, Network Information API, Web Speech API.
-- **PWA**: Service Worker with versioned cache control.
+- **Aesthetic**: Premium Glassmorphism (20px backdrop blur).
+- **Responsiveness**: Smooth transitions between Desktop (side-panels) and Mobile (bottom-sheets).
+- **Icons**: Clean, encoding-safe Unicode library.
 
 ---
 
 ## 🏆 Achievements
 
-✅ **65+ Dynamic Functions** - Fully simulated.
-✅ **Mobile Optimized** - Unified experience on Phone and Desktop.
-✅ **Voice Control** - Robust speech recognition.
-✅ **Visual Stability** - Fixed encoding issues for perfect icon rendering.
-✅ **Offline Support** - PWA enabled.
+✅ **75+ Functions** - Industry-leading simulation depth.
+✅ **Interactive AI** - Conversational Smart Hub with history.
+✅ **Universal UI** - Unified experience for Phone, Tablet, and PC.
+✅ **Stability** - Robust PWA caching and encoding fixes.
 
 ---
 

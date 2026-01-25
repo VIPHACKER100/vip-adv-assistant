@@ -6,10 +6,18 @@
 
 // Automation state
 const automationState = {
-  routines: [],
+  routines: JSON.parse(localStorage.getItem('vip_routines') || '[]'),
   currentRoutine: null,
   templates: []
 };
+
+// Initialize automation engine
+function initAutomation() {
+  getAutomationTemplates();
+
+  // Start autonomous monitoring (every 10 seconds)
+  setInterval(() => checkAutonomousTriggers(), 10000);
+}
 
 // Initialize automation templates
 function initAutomationTemplates() {
@@ -18,7 +26,7 @@ function initAutomationTemplates() {
       id: 'morning_routine',
       name: 'Morning Routine',
       description: 'Perfect start to your day',
-      icon: '\u2600\uFE0F',
+      icon: '☀️',
       triggers: [{ type: 'time', value: '07:00' }],
       actions: [
         { function: 'weather_check', label: 'Check weather' },
@@ -31,7 +39,7 @@ function initAutomationTemplates() {
       id: 'gym_mode',
       name: 'Gym Mode',
       description: 'Workout time automation',
-      icon: '\uD83D\uDCAA',
+      icon: '💪',
       triggers: [{ type: 'location', value: 'Gym', radius: 100 }],
       actions: [
         { function: 'toggle_dnd', params: { state: 'on' }, label: 'Enable Do Not Disturb' },
@@ -43,7 +51,7 @@ function initAutomationTemplates() {
       id: 'bedtime',
       name: 'Bedtime Routine',
       description: 'Wind down for better sleep',
-      icon: '\uD83C\uDF19',
+      icon: '🌙',
       triggers: [{ type: 'time', value: '22:00' }],
       actions: [
         { function: 'focus_mode', params: { mode: 'sleep' }, label: 'Enable sleep mode' },
@@ -56,7 +64,7 @@ function initAutomationTemplates() {
       id: 'commute',
       name: 'Commute Assistant',
       description: 'Smart commute preparation',
-      icon: '\uD83D\uDE97',
+      icon: '🚗',
       triggers: [{ type: 'time', value: '08:00' }, { type: 'day', value: 'weekday' }],
       actions: [
         { function: 'check_traffic', label: 'Check traffic conditions' },
@@ -69,12 +77,24 @@ function initAutomationTemplates() {
       id: 'focus_work',
       name: 'Deep Work Mode',
       description: 'Maximum productivity focus',
-      icon: '\uD83C\uDFAF',
+      icon: '🎯',
       triggers: [{ type: 'manual' }],
       actions: [
         { function: 'focus_mode', params: { mode: 'work', duration: 120 }, label: '2-hour focus session' },
         { function: 'block_apps', params: { except: ['Work Apps'] }, label: 'Block distractions' },
         { function: 'auto_reply', params: { message: 'In focus mode, will respond later' }, label: 'Set auto-reply' }
+      ]
+    },
+    {
+      id: 'low_battery_recovery',
+      name: 'Power Safe Routine',
+      description: 'Triggered when battery is critical',
+      icon: '🔋',
+      triggers: [{ type: 'battery_level', value: 20, operator: '<' }],
+      actions: [
+        { function: 'optimize_resources', label: 'Purge background RAM' },
+        { function: 'set_brightness', params: { value: 20 }, label: 'Dim display to 20%' },
+        { function: 'toggle_flashlight', params: { state: 'off' }, label: 'Ensure flashlight OFF' }
       ]
     }
   ];
@@ -107,9 +127,70 @@ function createFromTemplate(templateId) {
   };
 
   automationState.routines.push(routine);
+  saveRoutines();
 
   showToast('Created', `${template.name} automation created`, 'success');
   showRoutineDetails(routine.id);
+}
+
+function saveRoutines() {
+  localStorage.setItem('vip_routines', JSON.stringify(automationState.routines));
+}
+
+// Check for autonomous triggers based on device state
+function checkAutonomousTriggers() {
+  // Ensure appState.context is defined and has battery/isCharging
+  if (!window.appState || !window.appState.context) {
+    console.warn("appState.context not available for autonomous triggers.");
+    return;
+  }
+
+  const battery = parseInt(appState.context.battery);
+  const isCharging = appState.context.isCharging;
+
+  automationState.routines.forEach(routine => {
+    if (!routine.enabled) return;
+
+    routine.triggers.forEach(trigger => {
+      let triggered = false;
+
+      if (trigger.type === 'battery_level') {
+        const val = parseInt(trigger.value);
+        if (trigger.operator === '<' && battery < val) triggered = true;
+        if (trigger.operator === '>' && battery > val) triggered = true;
+      } else if (trigger.type === 'is_charging') {
+        // Ensure trigger.value is boolean for comparison
+        const triggerChargingState = (String(trigger.value).toLowerCase() === 'true');
+        if (triggerChargingState === isCharging) triggered = true;
+      }
+      // Add other trigger types here as needed for autonomous checks
+
+      if (triggered) {
+        // Prevent double execution in short window
+        const now = Date.now();
+        // Cooldown period: 5 minutes (300,000 milliseconds)
+        if (routine.lastTriggered && (now - routine.lastTriggered < 300000)) {
+          // console.log(`Routine ${routine.name} recently triggered, skipping.`);
+          return;
+        }
+
+        routine.lastTriggered = now;
+        // Update routine in state and save to persist lastTriggered
+        const routineIndex = automationState.routines.findIndex(r => r.id === routine.id);
+        if (routineIndex !== -1) {
+          automationState.routines[routineIndex] = { ...routine }; // Update the object in the array
+          saveRoutines(); // Persist the updated lastTriggered timestamp
+        }
+
+        notificationManager.addNotification({
+          title: `Autonomous Rule: ${routine.name}`,
+          message: `Activated based on system condition: ${formatTrigger(trigger)}`,
+          type: 'success'
+        });
+        executeRoutine(routine.id);
+      }
+    });
+  });
 }
 
 // Execute automation routine
@@ -177,7 +258,7 @@ function showRoutineDetails(routineId) {
           </p>
           
           <div class="glass-card" style="margin-bottom: var(--space-4);">
-            <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">\u26A1 Triggers</h4>
+            <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">⚡ Triggers</h4>
             ${routine.triggers.map(trigger => `
               <div class="badge badge-accent" style="margin-right: var(--space-2);">
                 ${formatTrigger(trigger)}
@@ -186,7 +267,7 @@ function showRoutineDetails(routineId) {
           </div>
           
           <div class="glass-card">
-            <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">\uD83D\uDCCB Actions (${routine.actions.length})</h4>
+            <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">📋 Actions (${routine.actions.length})</h4>
             ${routine.actions.map((action, index) => `
               <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); margin-bottom: var(--space-2); background: var(--bg-tertiary); border-radius: var(--radius-lg);">
                 <span style="font-weight: var(--font-weight-bold); color: var(--color-accent-400);">${index + 1}</span>
@@ -196,13 +277,13 @@ function showRoutineDetails(routineId) {
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-glass" onclick="showAutomationBuilder()">\u2190 Back to Templates</button>
+          <button class="btn btn-glass" onclick="showAutomationBuilder()">← Back to Templates</button>
           ${isTemplate ?
       `<button class="btn btn-success" onclick="createFromTemplate('${routineId}')">Use Template</button>` :
       `<button class="btn btn-glass" onclick="toggleRoutine('${routineId}')">${routine.enabled ? 'Disable' : 'Enable'}</button>`
     }
           <button class="btn btn-primary" onclick="executeRoutine('${routineId}'); closeModal();">
-            \u25B6\uFE0F Run Now
+            ▶️ Run Now
           </button>
         </div>
       </div>
@@ -214,15 +295,15 @@ function showRoutineDetails(routineId) {
 function formatTrigger(trigger) {
   switch (trigger.type) {
     case 'time':
-      return `\u23F0 ${trigger.value}`;
+      return `⏰ ${trigger.value}`;
     case 'location':
-      return `\uD83D\uDCCD ${trigger.value}`;
+      return `📍 ${trigger.value}`;
     case 'day':
-      return `\uD83D\uDCC5 ${trigger.value}`;
+      return `📅 ${trigger.value}`;
     case 'app':
-      return `\uD83D\uDCF1 Open ${trigger.value}`;
+      return `📱 Open ${trigger.value}`;
     case 'manual':
-      return `\uD83D\uDC46 Manual trigger`;
+      return `👆 Manual trigger`;
     default:
       return trigger.type;
   }
@@ -253,11 +334,11 @@ function showAutomationBuilder() {
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width: 900px;">
         <div class="modal-header">
-          <h2 class="modal-title">\u26A1 Automation Builder</h2>
+          <h2 class="modal-title">⚡ Automation Builder</h2>
           <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">
-          <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">\uD83D\uDCDA Template Library</h3>
+          <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">📚 Template Library</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4);">
             ${templates.map(template => `
               <div class="function-card" onclick="showRoutineDetails('${template.id}')">
@@ -273,7 +354,7 @@ function showAutomationBuilder() {
           
           ${automationState.routines.length > 0 ? `
             <div class="divider"></div>
-            <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">\uD83E\uDD16 Your Automations</h3>
+            <h3 style="margin-bottom: var(--space-4); color: var(--text-primary);">🤖 Your Automations</h3>
             <div style="display: grid; gap: var(--space-3);">
               ${automationState.routines.map(routine => `
                 <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="showRoutineDetails('${routine.id}')">
@@ -296,13 +377,91 @@ function showAutomationBuilder() {
         </div>
         <div class="modal-footer">
           <button class="btn btn-glass" onclick="closeModal()">Close</button>
-          <button class="btn btn-accent" onclick="showToast('Coming Soon', 'Custom automation builder in development', 'info')">
-            \u2795 Create Custom
+          <button class="btn btn-accent" onclick="showCustomRoutineBuilder()">
+            ➕ Create Custom
           </button>
         </div>
       </div>
     </div>
   `;
+}
+
+function showCustomRoutineBuilder() {
+  const categories = getFunctionCategories();
+  const allFunctions = categories.flatMap(c => c.functions);
+
+  const modalContainer = document.getElementById('modalContainer');
+  modalContainer.innerHTML = `
+    <div class="modal-overlay active" onclick="closeModal(event)">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h2 class="modal-title">➕ Create Custom Routine</h2>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group" style="margin-bottom: var(--space-4);">
+            <label class="label">Routine Name</label>
+            <input type="text" id="custRoutineName" class="input" placeholder="e.g., Gaming Mode">
+          </div>
+          <div class="input-group" style="margin-bottom: var(--space-6);">
+            <label class="label">Select Icon</label>
+            <select id="custRoutineIcon" class="input">
+              <option value="🎮">🎮 Game</option>
+              <option value="📚">📚 Study</option>
+              <option value="🏋️‍♂️">🏋️‍♂️ Workout</option>
+              <option value="🚗">🚗 Drive</option>
+            </select>
+          </div>
+          
+          <h4 style="margin-bottom: var(--space-3); color: var(--text-primary);">Add Actions</h4>
+          <div style="max-height: 300px; overflow-y: auto; background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: var(--space-2);">
+            ${allFunctions.map(f => `
+              <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2); border-bottom: 1px solid var(--border-secondary);">
+                <input type="checkbox" class="cust-action-check" value="${f.id}" data-label="${f.title}">
+                <span style="font-size: var(--font-size-lg);">${f.icon}</span>
+                <span style="color: var(--text-primary); font-size: var(--font-size-sm);">${f.title}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-glass" onclick="showAutomationBuilder()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveCustomRoutine()">Save Routine</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function saveCustomRoutine() {
+  const name = document.getElementById('custRoutineName').value || 'Custom Routine';
+  const icon = document.getElementById('custRoutineIcon').value;
+  const checks = document.querySelectorAll('.cust-action-check:checked');
+
+  if (checks.length === 0) {
+    showToast('Error', 'Please select at least one action', 'error');
+    return;
+  }
+
+  const actions = Array.from(checks).map(c => ({
+    function: c.value,
+    label: c.dataset.label
+  }));
+
+  const routine = {
+    id: `custom_${Date.now()}`,
+    name: name,
+    description: 'User created custom automation',
+    icon: icon,
+    triggers: [{ type: 'manual' }],
+    actions: actions,
+    enabled: true,
+    created: new Date().toISOString()
+  };
+
+  automationState.routines.push(routine);
+  showToast('Saved', `Routine "${name}" created!`, 'success');
+  showAutomationBuilder();
 }
 
 // Override the openAutomationBuilder function from app.js

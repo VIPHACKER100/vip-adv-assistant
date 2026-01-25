@@ -92,11 +92,12 @@ python -m http.server 8000
 
 ---
 
-## 🛡️ Reliability & Compatibility (v2.3.3)
+## 🛡️ Neural Symphony Reliability (v5.0.0)
 
-This version includes **Unicode Escape Migration**:
-- **Problem**: Some browsers previously showed corrugated characters (Mojibake) for icons.
-- **Solution**: All icons now use `\uXXXX` sequences, ensuring 100% visual consistency across all operating systems and encodings.
+This version introduces the **Always-Listening Orchestration**:
+- **Continuous Interaction**: Leverages Speech Recognition API with a custom auto-restart agent.
+- **Unified Command Control**: All inputs (Voice, Keyboard, UI) are normalized through `command-center.js`.
+- **Glyph Integrity**: 100% native implementation for ultra-sharp hardware icons.
 
 ---
 
@@ -110,7 +111,7 @@ This version includes **Unicode Escape Migration**:
 
 ### Icons are still broken?
 1. Perform a **Hard Refresh**: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac).
-2. The Service Worker will automatically detect the new version (v2.3.2) and update your cache.
+2. The Service Worker will automatically detect the new version (v2.5.1) and update your cache.
 
 ### Voice command error?
 1. Ensure you are using **localhost** or an **HTTPS** connection.
@@ -119,5 +120,5 @@ This version includes **Unicode Escape Migration**:
 ---
 
 **Built with ❤️ by VipHacker100**
-**Current Version**: 2.3.3
-**Status**: Stable ✅
+**Current Version**: 5.0.0
+**Status**: Neural Symphony ✅

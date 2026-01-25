@@ -1,105 +1,136 @@
-/**
- * OpenAI Integration Handler
- * Processes natural language commands using OpenAI's API
- */
+// OpenAI State Object (v4.0 Cognitive Engine)
+const openaiHandler = {
+    apiKey: localStorage.getItem('openai_api_key') || "",
+    model: localStorage.getItem('openai_model') || "gpt-4o-mini",
+    history: [], // Persistent context for this session
+    usage: {
+        totalRequests: parseInt(localStorage.getItem('openai_usage_count') || '0'),
+        lastResponseTime: 0
+    },
 
-const OPENAI_API_KEY = localStorage.getItem('openai_api_key') || "";
+    async handlePrompt(userInput) {
+        if (!userInput) return { text: "No input provided." };
+        if (!this.apiKey) return { text: "API Key not configured in Settings." };
 
-// Process user input using OpenAI
-async function processWithOpenAI(userInput) {
-    if (!userInput) return;
+        const startTime = Date.now();
+        const personality = window.chatManager?.personality || 'professional';
 
-    showToast('AI Assistant', 'Thinking...', 'info');
+        try {
+            const tools = getOpenAIToolsDefinition();
 
-    try {
-        // Prepare the tools/functions definition for OpenAI
-        const tools = getOpenAIToolsDefinition();
+            // Build Contextual Messages
+            const messages = [
+                { role: "system", content: this.getSystemPrompt(personality) },
+                ...this.history.slice(-10), // Keep last 10 turns for context
+                { role: "user", content: userInput }
+            ];
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini", // Efficient model for this task
-                messages: [
-                    {
-                        role: "system",
-                        content: `You are an intelligent assistant for a mobile control app. 
-                        Your job is to understand user commands and either execute the appropriate function or provide a helpful response.
-                        If the user wants to perform an action available in your tools, CALL THAT FUNCTION.
-                        If the user just wants to chat, reply conversationally.
-                        Always be concise and helpful.`
-                    },
-                    {
-                        role: "user",
-                        content: userInput
-                    }
-                ],
-                tools: tools,
-                tool_choice: "auto"
-            })
-        });
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: this.model,
+                    messages: messages,
+                    tools: tools,
+                    tool_choice: "auto",
+                    temperature: personality === 'creative' ? 0.9 : 0.5
+                })
+            });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'API request failed');
-        }
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'API request failed');
+            }
 
-        const data = await response.json();
-        const message = data.choices[0].message;
+            const data = await response.json();
+            const message = data.choices[0].message;
 
-        // Handle tool calls
-        if (message.tool_calls) {
-            for (const toolCall of message.tool_calls) {
+            // Track Usage
+            this.usage.totalRequests++;
+            this.usage.lastResponseTime = Date.now() - startTime;
+            localStorage.setItem('openai_usage_count', this.usage.totalRequests);
+
+            let result = {
+                text: message.content || "",
+                functionCall: null
+            };
+
+            // Handle tool calls
+            if (message.tool_calls) {
+                const toolCall = message.tool_calls[0];
                 const functionName = toolCall.function.name;
-                const args = JSON.parse(toolCall.function.arguments);
+
+                result.functionCall = {
+                    name: functionName,
+                    args: JSON.parse(toolCall.function.arguments)
+                };
 
                 // Execute the function
-                // The functionName from OpenAI will match our IDs or be close
-                // We map 'function_id' directly
+                if (typeof executeFunction === 'function') {
+                    executeFunction(functionName);
+                }
 
-                console.log(`OpenAI requested function: ${functionName}`, args);
-
-                showToast('AI Assistant', `Executing: ${functionName.replace(/_/g, ' ')}`, 'success');
-
-                // Call the existing executeFunction from functions.js
-                // We don't really need the arguments for the simulated functions, but we can pass them if we update executeFunction
-                executeFunction(functionName);
-
-                // Optional: We could feed the result back to OpenAI, but for now we just execute
-                speak(`Executing ${functionName.replace(/_/g, ' ')}`);
+                if (!result.text) {
+                    result.text = `System: Initiating ${functionName.replace(/_/g, ' ')} sequence.`;
+                }
             }
-        } else {
-            // Handle regular response
-            const content = message.content;
-            if (content) {
-                console.log('OpenAI response:', content);
-                showToast('AI Assistant', 'Message received', 'info');
-                // You might want to show this in a modal or speak it
-                speak(content);
 
-                // If there's a modal or UI to show chat, we'd update it here
-                // For now, let's just log and toast
-            }
+            // Update local context history
+            this.history.push({ role: "user", content: userInput });
+            this.history.push({ role: "assistant", content: result.text });
+
+            return result;
+
+        } catch (error) {
+            console.error('OpenAI Error:', error);
+            return { text: `AI Error: ${error.message}` };
         }
+    },
 
-    } catch (error) {
-        console.error('OpenAI Error:', error);
-        showToast('AI Error', 'Failed to process command', 'error');
-        speak("I'm sorry, I couldn't process that request.");
+    getSystemPrompt(persona) {
+        const base = `You are VIP AI, a premium mobile control assistant. You have access to device hardware, analytics, and automation tools. Always favor calling functions for user requests when possible. Current time: ${new Date().toLocaleString()}.`;
+
+        const personas = {
+            professional: `${base} Be efficient, helpful, and technically accurate.`,
+            concise: `${base} Keep responses extremely brief. Acknowledge commands directly.`,
+            creative: `${base} Use an imaginative, futuristic tone. Describe actions with flair.`
+        };
+
+        return personas[persona] || personas.professional;
+    },
+
+    setModel(modelId) {
+        this.model = modelId;
+        localStorage.setItem('openai_model', modelId);
+        showToast('Model Updated', `Switched to ${modelId}`, 'success');
+    },
+
+    clearHistory() {
+        this.history = [];
+        showToast('Context Cleared', 'Conversation memory reset', 'info');
+    }
+};
+
+// Legacy support for voice assistant (initially in voice-access.js usage)
+async function processWithOpenAI(userInput) {
+    showToast('AI Assistant', 'Thinking...', 'info');
+    const result = await openaiHandler.handlePrompt(userInput);
+
+    if (result.text) {
+        if (typeof speak === 'function') speak(result.text);
+        showToast('AI Assistant', result.text, result.functionCall ? 'success' : 'info');
     }
 }
 
 // Convert our internal function structure to OpenAI tools format
 function getOpenAIToolsDefinition() {
+    if (typeof getFunctionCategories !== 'function') return [];
+
     const categories = getFunctionCategories();
     const tools = [];
-
-    // We can't list ALL 65+ functions as individual tools potentially due to token limits or complexity,
-    // but GPT-4o-mini should handle it. Let's try to map the most important ones or all.
-    // For now, let's map all of them.
 
     for (const category of categories) {
         for (const func of category.functions) {
@@ -111,11 +142,9 @@ function getOpenAIToolsDefinition() {
                     parameters: {
                         type: "object",
                         properties: {
-                            // detailed parameters could be added here if we had them
-                            // for now we'll just allow empty args or generic query
                             query: {
                                 type: "string",
-                                description: "Optional detail or query for the action"
+                                description: "Optional detail for the action"
                             }
                         },
                         required: []
@@ -124,6 +153,7 @@ function getOpenAIToolsDefinition() {
             });
         }
     }
-
     return tools;
 }
+
+window.openaiHandler = openaiHandler;

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Advanced Mobile Control AI Assistant - Premium web interface for comprehensive mobile device control with AI-powered features">
+    content="VIP Advanced AI Assistant - Premium conversational interface with 75+ mobile control functions and real-time device monitoring">
   <meta name="theme-color" content="#7C3AED">
   <title>VIP Advanced Mobile AI Assistant</title>
 
@@ -405,12 +405,24 @@
     <div class="container">
       <div class="header-content">
         <div class="logo">
-          <span class="logo-icon">🤖</span>
+          <img src="assets/logo.png" alt="VIP AI" class="logo-icon"
+            style="height: 40px; width: 40px; border-radius: 8px; box-shadow: 0 0 15px rgba(125, 211, 252, 0.4); object-fit: cover;">
           <span>VIP AI Assistant</span>
         </div>
         <div class="header-actions">
-          <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M)" onclick="toggleVoiceAccess()">
+          <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M) | Always-Listening (Ctrl+Shift+V)" onclick="toggleVoiceAccess()">
             <span>🎤</span>
+          </button>
+          <button class="icon-btn" id="alwaysListeningBtn" title="Toggle Always-Listening (Ctrl+Shift+V)" onclick="toggleAlwaysListening()" style="display: none;">
+            <span>👂</span>
+          </button>
+          <button class="icon-btn" id="aiChatBtn" title="AI Assistant (Ctrl+J)" onclick="chatManager.toggleChat()">
+            <span>💬</span>
+          </button>
+          <button class="icon-btn" id="notificationBtn" title="Notifications"
+            onclick="notificationManager.togglePanel()">
+            <span>🔔</span>
+            <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
           </button>
           <button class="icon-btn" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
             <span>🔍</span>
@@ -425,9 +437,16 @@
           <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)">
             <span>⚙️</span>
           </button>
+          <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
+            <span>🛰️</span>
+          </button>
+          <button class="icon-btn" id="boostBtn" title="Boost Pulse (Ctrl+Shift+B)" onclick="toggleBoostMode()"
+            style="color: var(--color-accent-400);">
+            <span>🚀</span>
+          </button>
           <button class="btn btn-accent" id="automationBtn">
             <span>⚡</span>
-            <span>Automation Builder</span>
+            <span>Automate</span>
           </button>
         </div>
       </div>
@@ -443,10 +462,11 @@
           Advanced Mobile Control AI Assistant
         </h1>
         <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.1s;">
-          Your intelligent companion with 50+ AI-powered functions for seamless mobile device control, automation, and
-          productivity enhancement
+          Your intelligent conversational companion with 75+ AI-powered functions for seamless mobile device control,
+          hardware management, and productivity enhancement
         </p>
         <div class="hero-actions animate-fade-in-up" style="animation-delay: 0.2s;">
+          <button class="btn btn-primary btn-sm">▶️ Run Automation</button>
           <button class="btn btn-primary btn-lg" onclick="scrollToSection('quick-actions')">
             <span>🚀</span>
             <span>Explore Features</span>
@@ -455,6 +475,91 @@
             <span>▶️</span>
             <span>Watch Demo</span>
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intelligence Widgets Section -->
+    <section class="intelligence-hub container">
+      <div class="widgets-grid">
+        <!-- System Health Widget -->
+        <div class="widget-card animate-fade-in-up" style="animation-delay: 0.3s;">
+          <div class="widget-header">
+            <span class="widget-icon" style="align-items: center; justify-content: center;">🚀 <span id="systemPulse"
+                class="pulse-dot"></span></span>
+            <span class="widget-title">System Health</span>
+          </div>
+          <div class="widget-content">
+            <div class="progress-container">
+              <span class="progress-label">Memory Usage</span>
+              <div class="progress-bar">
+                <div id="memProgress" class="progress-fill" style="width: 42%;"></div>
+              </div>
+            </div>
+            <div class="progress-container">
+              <span class="progress-label">Storage</span>
+              <div class="progress-bar">
+                <div id="storageProgress" class="progress-fill"
+                  style="width: 68%; background: var(--color-warning-500);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-world Weather Widget -->
+        <div class="widget-card animate-fade-in-up" style="animation-delay: 0.4s;">
+          <div class="widget-header">
+            <span class="widget-icon" style="align-items: center; justify-content: center;">☀️</span>
+            <span class="widget-title">Current Context</span>
+          </div>
+          <div class="widget-content">
+            <div
+              style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-bottom: 4px;">
+              <div>
+                <div style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: 4px;"
+                  id="wTemp">72°F</div>
+                <div style="color: var(--text-secondary); font-size: var(--font-size-sm);" id="wDesc">Sunny • San
+                  Francisco</div>
+              </div>
+              <div class="radar-container">
+                <div class="radar-circle"></div>
+                <div class="radar-sweep"></div>
+                <div class="radar-dot"></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: var(--space-4); margin-top: var(--space-3); flex-wrap: wrap;">
+              <div style="font-size: var(--font-size-xs);"><span style="color: var(--text-tertiary);">Humidity:</span>
+                45%</div>
+              <div style="font-size: var(--font-size-xs);"><span style="color: var(--text-tertiary);">Air
+                  Quality:</span> Good</div>
+              <div
+                style="font-size: var(--font-size-xs); width: 100%; border-top: 1px solid var(--border-primary); padding-top: 8px; margin-top: 4px;">
+                <span style="color: var(--text-tertiary);">Environment:</span> <span id="envDetail">Detecting...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Status Widget -->
+        <div class="widget-card animate-fade-in-up" style="animation-delay: 0.5s;">
+          <div class="widget-header">
+            <span class="widget-icon" style="align-items: center; justify-content: center;">🛡️</span>
+            <span class="widget-title">Security Center</span>
+          </div>
+          <div class="widget-content">
+            <div class="security-status success">
+              <span class="status-dot"></span> All systems protected
+            </div>
+            <div
+              style="margin-top: var(--space-3); font-size: var(--font-size-xs); color: var(--text-tertiary); margin-bottom: var(--space-4);">
+              • Last scan: 14 mins ago<br>
+              • 0 threats detected
+            </div>
+            <button class="btn btn-glass btn-sm" style="width: 100%; justify-content: center;"
+              onclick="notificationManager.openPanel()">
+              View Logs
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -513,13 +618,13 @@
   <div class="mobile-context-bar animate-fade-in-up">
     <div id="mBattery" class="context-item">
       <span>🔋</span>
-      <span id="mBatteryVal">--%</span>
+      <span id="mBatteryVal">100%</span>
     </div>
-    <div id="mNetwork" class="context-item">
+    <div class="m-control-item">
       <span>📶</span>
-      <span id="mNetworkVal">--</span>
+      <span id="mNetworkVal">5G Full</span>
     </div>
-    <div class="context-item">
+    <div class="m-control-item">
       <span>🕒</span>
       <span id="mTimeVal">--:--</span>
     </div>
@@ -529,8 +634,14 @@
   <footer class="footer">
     <div class="container">
       <p>&copy; 2026 VIP Advanced Mobile AI Assistant. All rights reserved.</p>
+      <p style="margin-top: var(--space-1); font-size: 10px; opacity: 0.5;">
+        Kernel Version: v5.0.0-ALWAYS-LISTENING (Neural Symphony)
+      </p>
       <p style="margin-top: var(--space-2); font-size: var(--font-size-sm);">
         Designed by <a href="https://github.com/viphacker100/" style="color: var(--color-accent-400);">VipHacker100</a>
+        •
+        <a href="javascript:void(0)" onclick="showAboutModal()" style="color: var(--color-accent-400);">About
+          Assistant</a>
       </p>
     </div>
   </footer>
@@ -541,37 +652,48 @@
   <!-- Modals will be inserted here by JavaScript -->
   <div id="modalContainer"></div>
 
+  <!-- HUD Overlay Container -->
+  <div id="hudOverlay" class="hud-overlay"></div>
+
   <!-- Scripts -->
-  <script src="js/app.js?v=fixed5"></script>
-  <script src="js/functions.js?v=fixed5"></script>
-  <script src="js/automation.js?v=fixed5"></script>
-  <script src="js/openai-handler.js?v=fixed5"></script>
-  <script src="js/voice-access.js?v=fixed5"></script>
+  <script src="js/app.js?v=5.0.0"></script>
+  <script src="js/functions.js?v=5.0.0"></script>
+  <script src="js/automation.js?v=5.0.0"></script>
+  <script src="js/openai-handler.js?v=5.0.0"></script>
+  <script src="js/voice-access.js?v=5.0.0"></script>
+  <script src="js/about.js?v=5.0.0"></script>
+  <!-- v5.0 Command Center -->
+  <script src="js/command-center.js?v=5.0.0"></script>
   <!-- v2.1 Enhanced Features -->
-  <script src="js/theme-manager.js?v=fixed5"></script>
-  <script src="js/search.js?v=fixed5"></script>
-  <script src="js/favorites.js?v=fixed5"></script>
-  <script src="js/keyboard-shortcuts.js?v=fixed5"></script>
+  <script src="js/theme-manager.js?v=5.0.0"></script>
+  <script src="js/search.js?v=5.0.0"></script>
+  <script src="js/favorites.js?v=5.0.0"></script>
+  <script src="js/keyboard-shortcuts.js?v=5.0.0"></script>
   <!-- v2.2 Advanced Features -->
-  <script src="js/export-import.js?v=fixed5"></script>
-  <script src="js/performance-monitor.js?v=fixed5"></script>
+  <script src="js/export-import.js?v=5.0.0"></script>
+  <script src="js/performance-monitor.js?v=5.0.0"></script>
   <!-- v2.3 Power User Features -->
-  <script src="js/recent-functions.js?v=fixed5"></script>
-  <script src="js/shortcut-editor.js?v=fixed5"></script>
+  <script src="js/recent-functions.js?v=5.0.0"></script>
+  <script src="js/shortcut-editor.js?v=5.0.0"></script>
+  <!-- v2.5 Smart Hub Features -->
+  <script src="js/chat-manager.js?v=5.0.0"></script>
+  <script src="js/notification-manager.js?v=5.0.0"></script>
+  <!-- v5.0 Always-Listening System -->
+  <script src="js/always-listening.js?v=5.0.0"></script>
 
   <script>
     // Initialize all features
     document.addEventListener('DOMContentLoaded', () => {
-      // v2.1 features
+      // v2.1-2.3 features
       themeManager.init();
       initKeyboardShortcuts();
       favoritesManager.updateUI();
-
-      // v2.2 features
       performanceMonitor.init();
-
-      // v2.3 features
       shortcutEditor.applyCustomShortcuts();
+
+      // v2.5 features
+      chatManager.init();
+      notificationManager.init();
 
       // Register Service Worker for offline support
       if ('serviceWorker' in navigator) {

@@ -30,7 +30,19 @@ const shortcuts = {
     'escape': () => closeModal(),
 
     // Theme
-    'ctrl+shift+l': () => toggleTheme()
+    'ctrl+shift+l': () => toggleTheme(),
+
+    // v5.0 Always-Listening & Command Center
+    'ctrl+shift+v': () => {
+      if (window.toggleAlwaysListening) {
+        window.toggleAlwaysListening();
+      }
+    },
+    'ctrl+shift+p': () => {
+      if (window.showCommandPalette) {
+        window.showCommandPalette();
+      }
+    }
   }
 };
 
@@ -55,7 +67,7 @@ function initKeyboardShortcuts() {
     }
   });
 
-  console.log('\u2328\uFE0F Keyboard shortcuts enabled');
+  console.log('⌨️ Keyboard shortcuts enabled');
 }
 
 // Show shortcuts help modal
@@ -85,7 +97,7 @@ function showShortcutsHelp() {
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
         <div class="modal-header">
-          <h2 class="modal-title">\u2328\uFE0F Keyboard Shortcuts</h2>
+          <h2 class="modal-title">⌨️ Keyboard Shortcuts</h2>
           <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">

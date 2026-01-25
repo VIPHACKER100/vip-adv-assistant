@@ -4,12 +4,14 @@
  */
 
 // Voice recognition state
-const voiceState = {
+window.voiceState = {
   isListening: false,
   recognition: null,
   commands: {},
   lastCommand: null
 };
+
+const voiceState = window.voiceState;
 
 // Initialize voice recognition
 function initVoiceAccess() {
@@ -36,6 +38,19 @@ function initVoiceAccess() {
   voiceState.recognition.onend = () => {
     voiceState.isListening = false;
     updateVoiceUI(false);
+    
+    // Auto-restart if always-listening is enabled
+    if (window.alwaysListening && window.alwaysListening.enabled) {
+      setTimeout(() => {
+        if (voiceState.recognition && !voiceState.isListening) {
+          try {
+            voiceState.recognition.start();
+          } catch (e) {
+            console.warn('Auto-restart failed:', e);
+          }
+        }
+      }, 500);
+    }
   };
 
   voiceState.recognition.onresult = (event) => {
@@ -99,11 +114,46 @@ function registerVoiceCommands() {
     'open automation': () => openAutomationBuilder(),
     'show automations': () => openAutomationBuilder(),
 
-    // Modals
+    // Modals & Panels
     'close': () => closeModal(),
     'close modal': () => closeModal(),
     'settings': () => showModal('settings'),
     'open settings': () => showModal('settings'),
+    'show hud': () => toggleHUD(),
+    'telemetry': () => toggleHUD(),
+    'command center': () => toggleHUD(),
+
+    // Hardware
+    'flashlight on': () => executeFunction('toggle_flashlight'),
+    'flashlight off': () => executeFunction('toggle_flashlight'),
+    'toggle flashlight': () => executeFunction('toggle_flashlight'),
+    'brightness high': () => executeFunction('set_brightness'),
+    'brightness low': () => executeFunction('set_brightness'),
+    'volume up': () => executeFunction('set_volume'),
+    'volume down': () => executeFunction('set_volume'),
+    'vibration on': () => executeFunction('toggle_vibration'),
+    'vibration off': () => executeFunction('toggle_vibration'),
+    'rotate screen': () => executeFunction('rotate_screen'),
+    'clean speaker': () => executeFunction('speaker_clean'),
+
+    // Security & Emergency
+    'lock system': () => executeFunction('biometric_lock'),
+    'medical id': () => executeFunction('medical_id'),
+    'sos alert': () => executeFunction('sos_alert'),
+    'emergency': () => executeFunction('sos_alert'),
+    'secure vault': () => executeFunction('secure_vault'),
+
+    // System
+    'optimize': () => executeFunction('optimize_resources'),
+    'boost system': () => executeFunction('optimize_resources'),
+    'theme dark': () => toggleTheme(),
+    'theme light': () => toggleTheme(),
+    'toggle theme': () => toggleTheme(),
+    'show history': () => recentFunctionsManager.showHistoryModal(),
+    'qr scanner': () => executeFunction('qr_code_scanner'),
+    'boost mode': () => toggleBoostMode(),
+    'overclock': () => toggleBoostMode(),
+    'system boost': () => toggleBoostMode(),
 
     // Help
     'help': () => showVoiceHelp(),
@@ -167,21 +217,21 @@ function showVoiceUnavailableModal() {
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()">
         <div class="modal-header">
-          <h2 class="modal-title">\uD83C\uDFA4 Voice Access Unavailable</h2>
+          <h2 class="modal-title">🎤 Voice Access Unavailable</h2>
           <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">
           <div class="glass-card" style="text-align: center; padding: var(--space-6);">
-            <div style="font-size: 4rem; margin-bottom: var(--space-4);">\uD83D\uDEAB</div>
+            <div style="font-size: 4rem; margin-bottom: var(--space-4);">🚫</div>
             <h3 style="margin-bottom: var(--space-3); color: var(--text-primary);">Voice Recognition Not Supported</h3>
             <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">
               Your browser doesn't support voice recognition, or microphone access is blocked.
             </p>
             <div style="text-align: left; background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); margin-top: var(--space-4);">
-              <strong style="color: var(--text-primary);">\uD83D\uDCA1 To enable voice access:</strong>
+              <strong style="color: var(--text-primary);">💡 To enable voice access:</strong>
               <ol style="margin-top: var(--space-2); color: var(--text-secondary); padding-left: var(--space-5);">
                 <li>Use Chrome, Edge, or Safari browser</li>
-                <li>Click the \uD83D\uDD12 lock icon in the address bar</li>
+                <li>Click the 🔒 lock icon in the address bar</li>
                 <li>Allow microphone access for this site</li>
                 <li>Refresh the page and try again</li>
               </ol>
@@ -202,10 +252,10 @@ function updateVoiceUI(isListening) {
   if (voiceBtn) {
     if (isListening) {
       voiceBtn.classList.add('listening');
-      voiceBtn.innerHTML = '<span>\uD83C\uDFA4</span><span class="pulse"></span>';
+      voiceBtn.innerHTML = '<span>🎤</span><span class="pulse"></span>';
     } else {
       voiceBtn.classList.remove('listening');
-      voiceBtn.innerHTML = '<span>\uD83C\uDFA4</span>';
+      voiceBtn.innerHTML = '<span>🎤</span>';
     }
   }
 }
@@ -217,17 +267,18 @@ function showVoiceHelp() {
 
   const commandGroups = {
     'Navigation': ['go home', 'scroll down', 'scroll up'],
-    'Functions': ['analyze image', 'smart reply', 'usage analytics', 'secure vault', 'focus mode', 'smart home'],
-    'Automation': ['automation builder', 'open automation', 'show automations'],
-    'Controls': ['close', 'close modal', 'settings', 'open settings'],
-    'Help': ['help', 'what can you do', 'voice commands']
+    'Hardware': ['toggle flashlight', 'brightness high/low', 'vibration on/off', 'rotate screen'],
+    'Security': ['lock system', 'medical id', 'sos alert', 'secure vault'],
+    'Intelligence': ['analyze image', 'smart reply', 'usage analytics', 'smart home', 'optimize'],
+    'Panels': ['show hud', 'open automation', 'show history', 'qr scanner', 'open settings'],
+    'System': ['toggle theme', 'help', 'close modal']
   };
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px;">
         <div class="modal-header">
-          <h2 class="modal-title">\uD83C\uDFA4 Voice Commands</h2>
+          <h2 class="modal-title">🎤 Voice Commands</h2>
           <button class="modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">
@@ -249,7 +300,7 @@ function showVoiceHelp() {
           `).join('')}
           
           <div style="margin-top: var(--space-6); padding: var(--space-4); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
-            <strong style="color: var(--text-primary);">\uD83D\uDCA1 Tip:</strong>
+            <strong style="color: var(--text-primary);">💡 Tip:</strong>
             <p style="margin-top: var(--space-2); color: var(--text-secondary);">
               Click the microphone button in the header to start/stop voice listening.
             </p>
@@ -258,7 +309,7 @@ function showVoiceHelp() {
         <div class="modal-footer">
           <button class="btn btn-glass" onclick="closeModal()">Close</button>
           <button class="btn btn-primary" onclick="toggleVoiceAccess(); closeModal();">
-            \uD83C\uDFA4 Start Voice Access
+            🎤 Start Voice Access
           </button>
         </div>
       </div>

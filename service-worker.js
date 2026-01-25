@@ -3,7 +3,7 @@
  * Enables Progressive Web App (PWA) functionality
  */
 
-const CACHE_NAME = 'vip-assistant-v2.3.2-fixed';
+const CACHE_NAME = 'vip-assistant-v5.0.0-always-listening';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -21,7 +21,9 @@ const urlsToCache = [
     '/js/favorites.js',
     '/js/keyboard-shortcuts.js',
     '/js/export-import.js',
-    '/js/performance-monitor.js'
+    '/js/performance-monitor.js',
+    '/js/always-listening.js',
+    '/js/command-center.js'
 ];
 
 // Install event - cache resources
