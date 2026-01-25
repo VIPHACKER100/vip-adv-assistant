@@ -2,6 +2,21 @@
 
 ## 📋 All Files Updated/Created Across All Versions
 
+### v5.0.0 → v5.1.0 (Contextual Symphony - Live Sync)
+
+#### New Files Created
+1. **js/cognitive-stream.js** - Management of dynamic simulated logs for Cognitive Stream widget.
+
+#### Modified Files
+1. **js/app.js** - Refactored dashboard updates, integrated dynamic Neural Analytics and Cognitive Stream. Added **Ghost Mode** visual toggle and **Proactive Intelligence** logic for time-of-day alerts.
+2. **js/automation.js** - Added AI-powered Routine Designer using OpenAI JSON generation.
+3. **js/chat-manager.js** - Added 'SYNC' button for instant Neural Handshake v6.0 access.
+4. **css/components.css** - Added high-contrast **Ghost Mode** styling.
+5. **js/about.js** - Updated version to v5.1.0 and engine to Omni-Core v5.1.
+6. **index.html** - Updated script versions to 5.1.0 and included cognitive-stream.js.
+7. **service-worker.js** - Added cognitive-stream.js to cache and updated version.
+8. **CHANGELOG.md** - Refined v5.1.0 entry with latest automation, stream, and Ghost Mode features.
+
 ### v4.9.0 → v5.0.0 (Neural Symphony - Always-Listening)
 
 #### New Files Created
@@ -115,6 +130,6 @@ js/openai-handler.js          5.8 KB
 ---
 
 **Last Updated**: 2026-01-25
-**Current Version**: 5.0.0
+**Current Version**: 5.1.0
 **Total Files**: 110+
 **Status**: Universal Master Build ✅ - Neural Symphony Edition

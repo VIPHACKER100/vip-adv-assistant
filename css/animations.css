@@ -573,3 +573,23 @@
     animation: scanLine 3s infinite linear;
     z-index: 10;
 }
+
+/* ===== Performance Optimizations - v5.0 ===== */
+.low-power-mode .particle,
+.low-power-mode .grid-background::after,
+.low-power-mode .pulse-dot,
+.low-power-mode .neural-pulse,
+.low-power-mode .scanner-overlay::after {
+    animation: none !important;
+}
+
+.low-power-mode .glass-card {
+    backdrop-filter: none !important;
+    background: var(--bg-tertiary) !important;
+    box-shadow: none !important;
+}
+
+.low-power-mode .app-background::before,
+.low-power-mode .app-background::after {
+    animation-play-state: paused !important;
+}

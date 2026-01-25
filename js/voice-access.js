@@ -38,7 +38,7 @@ function initVoiceAccess() {
   voiceState.recognition.onend = () => {
     voiceState.isListening = false;
     updateVoiceUI(false);
-    
+
     // Auto-restart if always-listening is enabled
     if (window.alwaysListening && window.alwaysListening.enabled) {
       setTimeout(() => {
@@ -54,11 +54,17 @@ function initVoiceAccess() {
   };
 
   voiceState.recognition.onresult = (event) => {
-    const transcript = Array.from(event.results)
-      .map(result => result[0].transcript)
-      .join('');
+    let finalTranscript = '';
 
-    handleVoiceCommand(transcript);
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      }
+    }
+
+    if (finalTranscript.length > 0) {
+      handleVoiceCommand(finalTranscript.toLowerCase().trim());
+    }
   };
 
   voiceState.recognition.onerror = (event) => {
@@ -126,11 +132,14 @@ function registerVoiceCommands() {
     // Hardware
     'flashlight on': () => executeFunction('toggle_flashlight'),
     'flashlight off': () => executeFunction('toggle_flashlight'),
+    'turn on flashlight': () => executeFunction('toggle_flashlight'),
+    'turn off flashlight': () => executeFunction('toggle_flashlight'),
     'toggle flashlight': () => executeFunction('toggle_flashlight'),
     'brightness high': () => executeFunction('set_brightness'),
     'brightness low': () => executeFunction('set_brightness'),
     'volume up': () => executeFunction('set_volume'),
     'volume down': () => executeFunction('set_volume'),
+    'mute': () => executeFunction('set_volume'),
     'vibration on': () => executeFunction('toggle_vibration'),
     'vibration off': () => executeFunction('toggle_vibration'),
     'rotate screen': () => executeFunction('rotate_screen'),
@@ -163,7 +172,7 @@ function registerVoiceCommands() {
 }
 
 // Handle voice command
-function handleVoiceCommand(transcript) {
+function handleVoiceCommand(transcript, useOpenAI = true) {
   console.log('Voice command:', transcript);
 
   // Find matching command
@@ -174,16 +183,17 @@ function handleVoiceCommand(transcript) {
       voiceState.lastCommand = command;
       showToast('Voice Command', `Executing: ${command}`, 'success');
       action();
-      return;
+      return true;
     }
   }
 
-  // No hardcoded command found - Send to OpenAI
-  if (window.processWithOpenAI) {
+  // No hardcoded command found - Send to OpenAI if requested
+  if (useOpenAI && window.processWithOpenAI) {
     processWithOpenAI(transcript);
-  } else {
-    showToast('Voice Access', 'Command not recognized. Say "help" for available commands.', 'warning');
+    return true;
   }
+
+  return false;
 }
 
 // Toggle voice listening

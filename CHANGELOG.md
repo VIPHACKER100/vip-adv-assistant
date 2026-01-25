@@ -1,6 +1,46 @@
-# Changelog
+---
 
-All notable changes to the VIP Advanced Mobile AI Assistant project are documented in this file.
+## [5.1.0] - 2026-01-25
+
+### 🎉 Contextual Symphony - Ghost in the Shell
+
+Transforming the assistant into a context-aware powerhouse with real-world data synchronization and high-fidelity proactive intelligence.
+
+### Added
+- **?? Proactive Intelligence Engine** - Advanced contextual reasoning for time-of-day and system-load alerts.
+  - Morning/Evening routine advisories based on time.
+  - Memory heap monitoring with automatic optimization prompts.
+- **?? Ghost Mode (Experimental)** - High-contrast cinematic visual interface.
+  - Saturation-based "phantom" aesthetics for low-light or focused work.
+  - Keyboard Shortcut: `Ctrl+Shift+G` to toggle visual state.
+- **?? Neural Handshake Shortcut** - Dedicated 'SYNC' button in the AI Smart Hub for direct v6.0 core access.
+- **📍 Live Location Sync** - Real-time geolocation using GPS and BigDataCloud.
+  - Automatic reverse geocoding to identify your current city/locality.
+  - Every system node now reflects your physical location.
+- **🌤️ Dynamic Weather Engine** - Live meteorological data via Open-Meteo API.
+  - Real-time temperature, sky conditions, and humidity tracking.
+  - Contextual awareness: AI now knows if it's raining or sunny at your location.
+- **📱 Mobile-First NUI** - Complete interface redesign for handheld devices.
+  - **Glassmorphic Bottom Tab Bar**: Native-like one-handed navigation.
+  - **Floating Vitals Pill**: Ultra-compact status tracker for battery/network.
+  - **Bottom-Sheet Modals**: Mobile-optimized dialogs for easier thumb access.
+- **🌱 Low-Power Mode** - Intelligent resource management for mobile nodes.
+  - Automatically disables background particles and GPU-heavy blurs when battery < 30%.
+- **🤖 Contextual Automations** - Location and Weather based triggers.
+  - Start routines when entering a GPS radius or when specific weather events occur.
+- **🧠 Proactive AI Insights** - Live monitoring that sends contextual advice.
+  - Automatically recommends Power Safe, Resource Optimization, or Weather routines based on live state.
+- **⚡ Project: Ghost in the Shell (v6.0 Teaser)** - Experimental Neural Link simulation.
+  - Interactive direct cognitive interface handshake with visceral visual feedback.
+- **🔮 Cognitive Stream Widget** - Real-time "thought" dashboard tracking AI reasoning.
+  - Live animated feed of internal neural operations and intent evaluation.
+- **🧠 Neural Chat v5.1** - Upgraded conversational interface.
+  - High-particle visualizers, personality-driven logic, and tactile neuro-feedback.
+
+### Changed
+- **Particle System** - Optimized count for better 60FPS mobile performance.
+- **AI System Prompt** - Injects live location and weather data for enhanced reasoning.
+- **Service Worker** - Updated cache version for improved offline reliability.
 
 ---
 

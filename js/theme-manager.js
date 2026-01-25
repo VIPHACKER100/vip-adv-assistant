@@ -50,6 +50,9 @@ const themeManager = {
 
         // Update UI if settings modal is open
         this.updateThemeUI();
+
+        // Track telemetry
+        if (window.performanceMonitor) window.performanceMonitor.trackThemeChange();
     },
 
     toggle() {

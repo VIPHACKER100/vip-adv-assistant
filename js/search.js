@@ -93,6 +93,9 @@ const omniSearch = {
     this.results = results;
     this.selectedIndex = 0;
     this.renderResults();
+
+    // Track search telemetry
+    if (window.performanceMonitor) window.performanceMonitor.trackSearch();
   },
 
   renderResults() {
@@ -150,40 +153,8 @@ const omniSearch = {
   }
 };
 
-// Aliases for compatibility
-window.openSearch = () => omniSearch.open();
-window.omniSearch = omniSearch;
-
-// Handle keyboard navigation in search
-function handleSearchKeydown(e) {
-  if (!searchState.results.length) return;
-
-  switch (e.key) {
-    case 'ArrowDown':
-      e.preventDefault();
-      searchState.selectedIndex = Math.min(searchState.selectedIndex + 1, searchState.results.length - 1);
-      performSearch(e.target.value);
-      break;
-    case 'ArrowUp':
-      e.preventDefault();
-      searchState.selectedIndex = Math.max(searchState.selectedIndex - 1, 0);
-      performSearch(e.target.value);
-      break;
-    case 'Enter':
-      e.preventDefault();
-      if (searchState.results[searchState.selectedIndex]) {
-        executeFunction(searchState.results[searchState.selectedIndex].id);
-        closeSearch();
-      }
-      break;
-    case 'Escape':
-      e.preventDefault();
-      closeSearch();
-      break;
-  }
-}
-
 // Export for global access
-window.openSearch = openSearch;
-window.closeSearch = closeSearch;
-window.performSearch = performSearch;
+window.openSearch = () => omniSearch.open();
+window.closeSearch = (e) => omniSearch.close(e);
+window.performSearch = (q) => omniSearch.performSearch(q);
+window.omniSearch = omniSearch;

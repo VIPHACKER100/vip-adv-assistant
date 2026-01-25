@@ -3,7 +3,7 @@
  * Enables Progressive Web App (PWA) functionality
  */
 
-const CACHE_NAME = 'vip-assistant-v5.0.0-always-listening';
+const CACHE_NAME = 'vip-assistant-v5.1.0-context-sync';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -23,7 +23,14 @@ const urlsToCache = [
     '/js/export-import.js',
     '/js/performance-monitor.js',
     '/js/always-listening.js',
-    '/js/command-center.js'
+    '/js/command-center.js',
+    '/js/chat-manager.js',
+    '/js/notification-manager.js',
+    '/js/about.js',
+    '/js/recent-functions.js',
+    '/js/shortcut-editor.js',
+    '/js/cognitive-stream.js',
+    '/assets/logo.png'
 ];
 
 // Install event - cache resources

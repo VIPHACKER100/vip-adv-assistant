@@ -103,6 +103,17 @@
       letter-spacing: -0.02em;
     }
 
+    @media (max-width: 480px) {
+      .logo {
+        font-size: var(--font-size-xl);
+      }
+
+      .logo-icon {
+        height: 32px !important;
+        width: 32px !important;
+      }
+    }
+
     .logo-icon {
       font-size: var(--font-size-3xl);
     }
@@ -410,13 +421,16 @@
           <span>VIP AI Assistant</span>
         </div>
         <div class="header-actions">
-          <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M) | Always-Listening (Ctrl+Shift+V)" onclick="toggleVoiceAccess()">
+          <button class="icon-btn hide-mobile" id="voiceAccessBtn"
+            title="Voice Access (Ctrl+M) | Always-Listening (Ctrl+Shift+V)" onclick="toggleVoiceAccess()">
             <span>🎤</span>
           </button>
-          <button class="icon-btn" id="alwaysListeningBtn" title="Toggle Always-Listening (Ctrl+Shift+V)" onclick="toggleAlwaysListening()" style="display: none;">
+          <button class="icon-btn" id="alwaysListeningBtn" title="Toggle Always-Listening (Ctrl+Shift+V)"
+            onclick="toggleAlwaysListening()" style="display: none;">
             <span>👂</span>
           </button>
-          <button class="icon-btn" id="aiChatBtn" title="AI Assistant (Ctrl+J)" onclick="chatManager.toggleChat()">
+          <button class="icon-btn hide-mobile" id="aiChatBtn" title="AI Assistant (Ctrl+J)"
+            onclick="chatManager.toggleChat()">
             <span>💬</span>
           </button>
           <button class="icon-btn" id="notificationBtn" title="Notifications"
@@ -424,7 +438,7 @@
             <span>🔔</span>
             <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
           </button>
-          <button class="icon-btn" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
+          <button class="icon-btn hide-mobile" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
             <span>🔍</span>
           </button>
           <button class="icon-btn" id="favoritesBtn" title="Favorites" onclick="favoritesManager.showFavoritesModal()">
@@ -434,7 +448,8 @@
             onclick="recentFunctionsManager.showHistoryModal()">
             <span>🕒</span>
           </button>
-          <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)">
+          <button class="icon-btn hide-mobile" id="settingsBtn" title="Settings (Ctrl+,)"
+            onclick="showModal('settings')">
             <span>⚙️</span>
           </button>
           <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
@@ -444,7 +459,7 @@
             style="color: var(--color-accent-400);">
             <span>🚀</span>
           </button>
-          <button class="btn btn-accent" id="automationBtn">
+          <button class="btn btn-accent" id="automationBtn" onclick="openAutomationBuilder()">
             <span>⚡</span>
             <span>Automate</span>
           </button>
@@ -466,8 +481,8 @@
           hardware management, and productivity enhancement
         </p>
         <div class="hero-actions animate-fade-in-up" style="animation-delay: 0.2s;">
-          <button class="btn btn-primary btn-sm">▶️ Run Automation</button>
-          <button class="btn btn-primary btn-lg" onclick="scrollToSection('quick-actions')">
+          <button class="btn btn-primary btn-sm" onclick="showModal('automation')">▶️ Run Automation</button>
+          <button class="btn btn-primary btn-lg" onclick="window.scrollTo({top: 800, behavior: 'smooth'})">
             <span>🚀</span>
             <span>Explore Features</span>
           </button>
@@ -529,9 +544,12 @@
             </div>
             <div style="display: flex; gap: var(--space-4); margin-top: var(--space-3); flex-wrap: wrap;">
               <div style="font-size: var(--font-size-xs);"><span style="color: var(--text-tertiary);">Humidity:</span>
-                45%</div>
+                <span id="wHumidity">45%</span>
+              </div>
               <div style="font-size: var(--font-size-xs);"><span style="color: var(--text-tertiary);">Air
-                  Quality:</span> Good</div>
+                  Quality:</span>
+                <span id="wAQI">Good</span>
+              </div>
               <div
                 style="font-size: var(--font-size-xs); width: 100%; border-top: 1px solid var(--border-primary); padding-top: 8px; margin-top: 4px;">
                 <span style="color: var(--text-tertiary);">Environment:</span> <span id="envDetail">Detecting...</span>
@@ -559,6 +577,62 @@
               onclick="notificationManager.openPanel()">
               View Logs
             </button>
+          </div>
+        </div>
+
+        <!-- Interaction Analytics Widget -->
+        <div class="widget-card animate-fade-in-up" style="animation-delay: 0.6s;">
+          <div class="widget-header">
+            <span class="widget-icon" style="align-items: center; justify-content: center;">📊</span>
+            <span class="widget-title">Neural Analytics</span>
+          </div>
+          <div class="widget-content">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 10px; color: var(--text-tertiary);">DAILY_COMMANDS</span>
+                <span style="font-weight: bold; font-family: var(--font-family-mono);" id="dailyCmds">42</span>
+              </div>
+              <div class="progress" style="height: 4px; background: rgba(255,255,255,0.05);">
+                <div class="progress-bar" style="width: 65%; background: var(--gradient-primary);"></div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 10px; color: var(--text-tertiary);">AI_LATENCY</span>
+                <span style="font-weight: bold; font-family: var(--font-family-mono);" id="aiLatency">124ms</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 10px; color: var(--text-tertiary);">NEURAL_EFFICIENCY</span>
+                <span
+                  style="font-weight: bold; font-family: var(--font-family-mono); color: var(--color-success-400);">98.2%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cognitive Stream v6.0 Widget -->
+        <div class="widget-card animate-fade-in-up"
+          style="animation-delay: 0.7s; border-color: hsla(320, 80%, 30%, 0.5);">
+          <div class="widget-header">
+            <span class="widget-icon" style="align-items: center; justify-content: center;">🔮</span>
+            <span class="widget-title">Cognitive Stream <span class="badge badge-error"
+                style="font-size: 8px;">v6.0-ALPHA</span></span>
+          </div>
+          <div class="widget-content">
+            <div id="cognitiveStream"
+              style="font-family: var(--font-family-mono); font-size: 10px; color: var(--color-secondary-400); height: 80px; overflow: hidden; display: flex; flex-direction: column; gap: 4px;">
+              <div class="stream-line">> INITIALIZING_SYNAPTIC_NODES...</div>
+              <div class="stream-line">> MONITORING_REALWORLD_CONTEXT...</div>
+              <div class="stream-line">> GHOST_SHELL_INTERFACE_READY</div>
+            </div>
+            <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px;">
+              <div class="status-dot"
+                style="background: var(--color-secondary-500); animation: pulse 1s infinite; width: 6px; height: 6px;">
+              </div>
+              <span
+                style="font-size: 9px; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 1px;">Neural
+                Gateway Connected</span>
+            </div>
           </div>
         </div>
       </div>
@@ -614,20 +688,53 @@
     </section>
   </main>
 
-  <!-- Mobile Context Bar -->
-  <div class="mobile-context-bar animate-fade-in-up">
-    <div id="mBattery" class="context-item">
+  <!-- Mobile Tab Bar (Native-like Navigation) -->
+  <nav class="mobile-tab-bar animate-fade-in-up">
+    <button class="tab-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="tab-item" onclick="openSearch()">
+      <span class="tab-icon">🔍</span>
+      <span class="tab-label">Search</span>
+    </button>
+    <button class="tab-item voice-tab" onclick="toggleVoiceAccess()">
+      <div class="voice-tab-inner">
+        <span class="tab-icon">🎤</span>
+      </div>
+    </button>
+    <button class="tab-item" onclick="chatManager.toggleChat()">
+      <span class="tab-icon">💬</span>
+      <span class="tab-label">AI Chat</span>
+    </button>
+    <button class="tab-item" onclick="showModal('settings')">
+      <span class="tab-icon">⚙️</span>
+      <span class="tab-label">System</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Context Pill (Floating Status) -->
+  <div class="mobile-status-pill animate-fade-in-up">
+    <div id="mBattery" class="status-item">
       <span>🔋</span>
       <span id="mBatteryVal">100%</span>
     </div>
-    <div class="m-control-item">
+    <div class="divider-vertical" style="height: 12px; opacity: 0.3;"></div>
+    <div class="status-item">
       <span>📶</span>
-      <span id="mNetworkVal">5G Full</span>
+      <span id="mNetworkVal">LTE</span>
     </div>
-    <div class="m-control-item">
+    <div class="divider-vertical" style="height: 12px; opacity: 0.3;"></div>
+    <div class="status-item">
       <span>🕒</span>
       <span id="mTimeVal">--:--</span>
     </div>
+  </div>
+
+  <!-- Neural Presence Orb -->
+  <div class="neural-orb-container" id="neuralOrbContainer" onmousedown="startOrbDrag(event)"
+    ontouchstart="startOrbDrag(event)">
+    <div class="neural-orb" id="neuralOrb"></div>
   </div>
 
   <!-- Footer -->
@@ -635,7 +742,7 @@
     <div class="container">
       <p>&copy; 2026 VIP Advanced Mobile AI Assistant. All rights reserved.</p>
       <p style="margin-top: var(--space-1); font-size: 10px; opacity: 0.5;">
-        Kernel Version: v5.0.0-ALWAYS-LISTENING (Neural Symphony)
+        Kernel Version: v5.1.0-SYMPHONY (STABLE)
       </p>
       <p style="margin-top: var(--space-2); font-size: var(--font-size-sm);">
         Designed by <a href="https://github.com/viphacker100/" style="color: var(--color-accent-400);">VipHacker100</a>
@@ -656,30 +763,32 @@
   <div id="hudOverlay" class="hud-overlay"></div>
 
   <!-- Scripts -->
-  <script src="js/app.js?v=5.0.0"></script>
-  <script src="js/functions.js?v=5.0.0"></script>
-  <script src="js/automation.js?v=5.0.0"></script>
-  <script src="js/openai-handler.js?v=5.0.0"></script>
-  <script src="js/voice-access.js?v=5.0.0"></script>
-  <script src="js/about.js?v=5.0.0"></script>
+  <script src="js/app.js?v=5.1.0"></script>
+  <script src="js/functions.js?v=5.1.0"></script>
+  <script src="js/automation.js?v=5.1.0"></script>
+  <script src="js/openai-handler.js?v=5.1.0"></script>
+  <script src="js/voice-access.js?v=5.1.0"></script>
+  <script src="js/about.js?v=5.1.0"></script>
   <!-- v5.0 Command Center -->
-  <script src="js/command-center.js?v=5.0.0"></script>
+  <script src="js/command-center.js?v=5.1.0"></script>
   <!-- v2.1 Enhanced Features -->
-  <script src="js/theme-manager.js?v=5.0.0"></script>
-  <script src="js/search.js?v=5.0.0"></script>
-  <script src="js/favorites.js?v=5.0.0"></script>
-  <script src="js/keyboard-shortcuts.js?v=5.0.0"></script>
+  <script src="js/theme-manager.js?v=5.1.0"></script>
+  <script src="js/search.js?v=5.1.0"></script>
+  <script src="js/favorites.js?v=5.1.0"></script>
+  <script src="js/keyboard-shortcuts.js?v=5.1.0"></script>
   <!-- v2.2 Advanced Features -->
-  <script src="js/export-import.js?v=5.0.0"></script>
-  <script src="js/performance-monitor.js?v=5.0.0"></script>
+  <script src="js/export-import.js?v=5.1.0"></script>
+  <script src="js/performance-monitor.js?v=5.1.0"></script>
   <!-- v2.3 Power User Features -->
-  <script src="js/recent-functions.js?v=5.0.0"></script>
-  <script src="js/shortcut-editor.js?v=5.0.0"></script>
+  <script src="js/recent-functions.js?v=5.1.0"></script>
+  <script src="js/shortcut-editor.js?v=5.1.0"></script>
   <!-- v2.5 Smart Hub Features -->
-  <script src="js/chat-manager.js?v=5.0.0"></script>
-  <script src="js/notification-manager.js?v=5.0.0"></script>
+  <script src="js/chat-manager.js?v=5.1.0"></script>
+  <script src="js/notification-manager.js?v=5.1.0"></script>
   <!-- v5.0 Always-Listening System -->
-  <script src="js/always-listening.js?v=5.0.0"></script>
+  <script src="js/always-listening.js?v=5.1.0"></script>
+  <!-- v6.0 Cognitive Stream Preview -->
+  <script src="js/cognitive-stream.js?v=5.1.0"></script>
 
   <script>
     // Initialize all features

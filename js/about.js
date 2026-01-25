@@ -4,24 +4,24 @@
  */
 
 const aboutData = {
-    version: '5.0.0',
-    codename: 'Hyper-Intelligence',
-    releaseDate: '2026-01-25',
-    developer: 'VipHacker100',
-    engine: 'Omni-Core v4.7',
-    contributors: [
-        'DeepMind Advanced Coding Team',
-        'OpenAI GPT-4o Engine',
-        'Vanilla Web API Standards'
-    ],
-    legal: 'Licensed under MIT. Simulated OS environment for research and productivity.'
+  version: '5.1.0',
+  codename: 'Neural Symphony',
+  releaseDate: '2026-01-25',
+  developer: 'VipHacker100',
+  engine: 'Omni-Core v5.1',
+  contributors: [
+    'DeepMind Advanced Coding Team',
+    'OpenAI GPT-4o Engine',
+    'Vanilla Web API Standards'
+  ],
+  legal: 'Licensed under MIT. Simulated OS environment for research and productivity.'
 };
 
 function showAboutModal() {
-    const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+  const modalContainer = document.getElementById('modalContainer');
+  if (!modalContainer) return;
 
-    modalContainer.innerHTML = `
+  modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal modal-about" onclick="event.stopPropagation()">
         <div class="modal-header">

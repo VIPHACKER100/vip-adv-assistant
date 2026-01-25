@@ -46,15 +46,16 @@ const chatManager = {
                 <div class="drawer-header">
                     <div style="display: flex; flex-direction: column;">
                         <h2 class="modal-title" style="margin: 0;">🧠 AI Smart Hub</h2>
-                        <div style="font-size: 10px; color: var(--color-accent-400); font-weight: bold; text-transform: uppercase;">Session Node: ACTIVE-V4.4</div>
+                        <div style="font-size: 10px; color: var(--color-accent-400); font-weight: bold; text-transform: uppercase;">Session Node: ACTIVE-V5.1-SYMPHONY</div>
                     </div>
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <select onchange="chatManager.setPersonality(this.value)" style="background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: 4px; color: var(--text-secondary); font-size: 10px; cursor: pointer;">
+                        <button class="btn btn-glass" style="padding: 2px 8px; font-size: 10px; min-height: 24px; border-color: var(--color-error-500); color: var(--color-error-400);" onclick="executeFunction('neural_link')">SYNC</button>
+                        <select onchange="chatManager.setPersonality(this.value)" style="background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: 4px; color: var(--text-secondary); font-size: 10px; cursor: pointer; height: 24px;">
                             <option value="professional" ${this.personality === 'professional' ? 'selected' : ''}>PRO</option>
                             <option value="concise" ${this.personality === 'concise' ? 'selected' : ''}>MIN</option>
                             <option value="creative" ${this.personality === 'creative' ? 'selected' : ''}>ART</option>
                         </select>
-                        <button class="modal-close" onclick="chatManager.closeChat()">&times;</button>
+                        <button class="modal-close" style="height: 24px; width: 24px; display: flex; align-items: center; justify-content: center; padding: 0;" onclick="chatManager.closeChat()">&times;</button>
                     </div>
                 </div>
                 <div class="visualizer-container">
@@ -107,7 +108,7 @@ const chatManager = {
 
         const ctx = canvas.getContext('2d');
         const particles = [];
-        const count = 30;
+        const count = 50;
 
         for (let i = 0; i < count; i++) {
             particles.push({
@@ -126,7 +127,8 @@ const chatManager = {
             ctx.fillStyle = 'rgba(34, 211, 238, 0.5)';
             ctx.strokeStyle = 'rgba(34, 211, 238, 0.1)';
 
-            const speedMultiplier = this.isTyping ? 3 : 1;
+            const isVoiceListening = (window.voiceState?.isListening) || (window.alwaysListening?.enabled && !window.alwaysListening?.isProcessing);
+            const speedMultiplier = this.isTyping ? 3 : (isVoiceListening ? 2 : 1);
 
             particles.forEach((p, i) => {
                 p.x += p.vx * speedMultiplier;

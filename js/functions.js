@@ -17,7 +17,8 @@ function getFunctionCategories() {
         { id: 'screen_understanding', icon: '📱', title: 'Screen Understanding', description: 'Understand and interact with on-screen content' },
         { id: 'generate_content', icon: '🎨', title: 'Content Generation', description: 'Generate images, text, or media using AI' },
         { id: 'face_recognition', icon: '👤', title: 'Face Recognition', description: 'Identify and tag people in photos', badge: 'New', badgeType: 'success' },
-        { id: 'qr_code_scanner', icon: '📲', title: 'QR/Barcode Scanner', description: 'Scan and decode QR codes and barcodes' }
+        { id: 'qr_code_scanner', icon: '📲', title: 'QR/Barcode Scanner', description: 'Scan and decode QR codes and barcodes' },
+        { id: 'neural_link', icon: '🧠', title: 'Neural Link (v6.0)', description: 'Direct cognitive interface simulation', badge: 'Experimental', badgeType: 'error' }
       ]
     },
     {
@@ -211,11 +212,17 @@ function executeFunction(functionId) {
           showToast('Warning', result.warning, 'warning');
         }, 500);
       }
+
+      // Track execution
+      if (window.performanceMonitor) window.performanceMonitor.trackFunction(functionId);
+
       showFunctionResult(functionId, funcDetails.title, result);
     } else {
       showToast('Error', result.message || 'Function execution failed', 'error');
     }
   }, 1000 + Math.random() * 1000);
+
+  return true;
 }
 
 // Simulate function execution with realistic results
@@ -232,6 +239,16 @@ function simulateFunction(functionId) {
         text: 'Welcome Home',
         scene: isMobile ? 'Outdoor Street' : 'Living Room',
         dominant_colors: ['#2A3F5F', '#C9ADA7', '#F2E9E4']
+      }
+    },
+    weather_check: {
+      success: true,
+      data: {
+        temp: document.getElementById('wTemp')?.textContent || '72°F',
+        condition: document.getElementById('wDesc')?.textContent?.split('•')[0].trim() || 'Clear',
+        location: appState.context.location?.city || 'Remote Node',
+        humidity: document.getElementById('wHumidity')?.textContent || '45%',
+        air_quality: document.getElementById('wAQI')?.textContent || 'Good'
       }
     },
     visual_search: {
@@ -571,11 +588,17 @@ function simulateFunction(functionId) {
     optimize_resources: {
       success: true,
       data: { memory_freed: '1.2 GB', processes_optimized: 24, cache_purged: '450 MB' }
+    },
+    neural_link: {
+      success: true,
+      data: { status: 'SYNCING', integrity: '99.8%', phase: 'GHOST_MODE' }
     }
   };
 
   if (functionId === 'optimize_resources') {
     showOptimizationWizard();
+  } else if (functionId === 'neural_link') {
+    showNeuralLinkWizard();
   }
 
   return simulations[functionId] || {
@@ -1377,3 +1400,95 @@ simulateFunction = function (id) {
 
   return res;
 };
+
+/**
+ * v6.0 Preview - Neural Link Simulation
+ */
+function showNeuralLinkWizard() {
+  const modalContainer = document.getElementById('modalContainer');
+  if (!modalContainer) return;
+
+  modalContainer.innerHTML = `
+    <div class="modal-overlay active" onclick="closeModal(event)">
+      <div class="modal modal-neural" onclick="event.stopPropagation()" style="background: var(--bg-primary); border-color: var(--color-error-500); overflow: hidden;">
+        <div class="scanner-overlay"></div>
+        <div class="modal-header" style="border-bottom: 1px solid var(--color-error-900);">
+          <h2 class="modal-title" style="color: var(--color-error-400);">🛑 PROJECT: GHOST IN THE SHELL</h2>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body text-center" style="padding: var(--space-10) var(--space-6);">
+          <div class="neural-orb" style="margin: 0 auto var(--space-8); width: 120px; height: 120px; background: radial-gradient(circle, var(--color-error-500), transparent 70%); animation: orbActive 0.5s infinite alternate;">
+            <span style="font-size: 50px; line-height: 120px;">🧠</span>
+          </div>
+          <h3 class="font-display" style="font-size: 1.5rem; margin-bottom: var(--space-4); letter-spacing: 2px;">NEURAL LINK v6.0 (ALPHA)</h3>
+          <div id="neuralStatus" style="font-family: var(--font-family-mono); font-size: 12px; color: var(--color-error-300); margin-bottom: var(--space-6);">
+            INITIALIZING_COGNITIVE_HANDSHAKE...
+          </div>
+          
+          <div class="progress" style="background: var(--color-error-950); height: 4px;">
+            <div id="neuralProgress" class="progress-bar" style="width: 0%; background: var(--color-error-500); box-shadow: 0 0 15px var(--color-error-500);"></div>
+          </div>
+          
+          <div id="neuralLogs" style="margin-top: var(--space-6); font-family: var(--font-family-mono); font-size: 10px; color: var(--text-tertiary); text-align: left; height: 100px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;">
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid var(--color-error-900);">
+          <div style="font-size: 10px; color: var(--color-error-500); flex: 1; text-align: left; font-weight: bold;">[EXPERIMENTAL PROTOCOL]</div>
+          <button class="btn btn-glass" onclick="closeModal()">Abort Link</button>
+          <button id="startLinkBtn" class="btn btn-error" onclick="startNeuralLinkSync()">Initiate Sync</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function startNeuralLinkSync() {
+  const btn = document.getElementById('startLinkBtn');
+  const bar = document.getElementById('neuralProgress');
+  const status = document.getElementById('neuralStatus');
+  const logs = document.getElementById('neuralLogs');
+  if (!btn || !bar) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Linking...';
+
+  const steps = [
+    'Establishing secure corridor...',
+    'Bypassing biological firewalls...',
+    'Synchronizing synaptic pulse...',
+    'Mapping neural pathways...',
+    'Injecting ghost protocols...',
+    'Verifying ego integrity...',
+    'LINK_STABLE'
+  ];
+
+  let current = 0;
+  const interval = setInterval(() => {
+    if (current >= steps.length) {
+      clearInterval(interval);
+      status.textContent = 'LINK_ESTABLISHED';
+      status.style.color = '#10B981';
+      showToast('Neural Link', 'Direct cognitive interface connected', 'success');
+      setTimeout(() => {
+        closeModal();
+        notificationManager.addNotification({
+          title: 'v6.0 Alpha Test',
+          message: 'Synaptic handshake successful. Welcome to the future.',
+          type: 'success'
+        });
+      }, 1500);
+      return;
+    }
+
+    const progress = ((current + 1) / steps.length) * 100;
+    bar.style.width = `${progress}%`;
+    status.textContent = steps[current].toUpperCase();
+
+    const log = document.createElement('div');
+    log.textContent = `> ${steps[current]}`;
+    logs.appendChild(log);
+    logs.scrollTop = logs.scrollHeight;
+
+    current++;
+  }, 1000);
+}

@@ -1,7 +1,7 @@
 /**
  * Always-Listening Command System
  * Continuous voice and command interaction for VIP AI Assistant
- * v5.0 - Neural Symphony
+ * v5.1 - Contextual Symphony
  */
 
 // Always-listening state
@@ -13,7 +13,8 @@ window.alwaysListening = {
   lastActivity: Date.now(),
   interactionCount: 0,
   wakeWord: 'hey assistant',
-  isProcessing: false
+  isProcessing: false,
+  lastNeuralPulse: 0
 };
 
 const alwaysListening = window.alwaysListening;
@@ -23,7 +24,7 @@ const alwaysListening = window.alwaysListening;
  */
 function initAlwaysListening() {
   console.log('🎧 Initializing Always-Listening System...');
-  
+
   // Check if voice recognition is supported
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -83,26 +84,38 @@ function setupAlwaysListeningHandlers() {
   };
 
   recognition.onresult = (event) => {
-    const transcript = Array.from(event.results)
-      .map(result => result[0].transcript)
-      .join('')
-      .toLowerCase()
-      .trim();
+    let interimTranscript = '';
+    let finalTranscript = '';
 
-    if (transcript.length > 0) {
-      handleAlwaysListeningCommand(transcript, event);
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcriptPiece = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcriptPiece;
+      } else {
+        interimTranscript += transcriptPiece;
+      }
+    }
+
+    if (finalTranscript.length > 0) {
+      handleAlwaysListeningCommand(finalTranscript.toLowerCase().trim(), true);
+    } else if (interimTranscript.length > 0) {
+      // Check for wake word in interim results for responsiveness
+      const lowerInterim = interimTranscript.toLowerCase();
+      if (lowerInterim.includes(alwaysListening.wakeWord)) {
+        handleAlwaysListeningCommand(lowerInterim.trim(), false);
+      }
     }
   };
 
   recognition.onerror = (event) => {
     console.error('Always-listening error:', event.error);
-    
+
     // Handle specific errors
     if (event.error === 'no-speech') {
       // Normal - just continue listening
       return;
     }
-    
+
     if (event.error === 'aborted') {
       // Recognition was stopped, restart if enabled
       if (alwaysListening.enabled) {
@@ -136,36 +149,62 @@ function setupAlwaysListeningHandlers() {
 /**
  * Handle commands from always-listening
  */
-function handleAlwaysListeningCommand(transcript, event) {
+function handleAlwaysListeningCommand(transcript, isFinal) {
   alwaysListening.lastActivity = Date.now();
-  alwaysListening.interactionCount++;
 
   // Check for wake word
   if (transcript.includes(alwaysListening.wakeWord)) {
-    showToast('Wake Word Detected', 'Assistant activated', 'success');
+    // Only show toast once for wake word
+    const now = Date.now();
+    if (!alwaysListening.lastWakeToast || now - alwaysListening.lastWakeToast > 5000) {
+      showToast('Wake Word Detected', 'Assistant activated', 'success');
+      alwaysListening.lastWakeToast = now;
+      showNeuralPulse(); // Visual trigger
+    }
+
+    // Extract command after wake word
+    const parts = transcript.split(alwaysListening.wakeWord);
+    const commandToProcess = parts[parts.length - 1].trim();
+
+    if (commandToProcess.length === 0) return; // Only wake word spoken
+
+    // If we have text after wake word, process it if final
+    if (isFinal) {
+      executeAlwaysListeningCommand(commandToProcess);
+    }
     return;
   }
 
-  // Process command if not already processing
-  if (alwaysListening.isProcessing) {
-    alwaysListening.commandQueue.push(transcript);
-    return;
+  // Regular command (no wake word needed if recently activated or in debug mode)
+  if (isFinal) {
+    executeAlwaysListeningCommand(transcript);
   }
+}
+
+/**
+ * Execute command after validation
+ */
+function executeAlwaysListeningCommand(command) {
+  if (alwaysListening.isProcessing) return;
 
   alwaysListening.isProcessing = true;
+  alwaysListening.interactionCount++;
 
   // Show visual feedback
-  showCommandFeedback(transcript);
+  showCommandFeedback(command);
+
+  // Track telemetry
+  if (window.performanceMonitor) window.performanceMonitor.trackVoiceCommand();
 
   // Process command
   setTimeout(() => {
-    processCommand(transcript);
+    processCommandInternal(command);
     alwaysListening.isProcessing = false;
 
     // Process queued commands
     if (alwaysListening.commandQueue.length > 0) {
       const nextCommand = alwaysListening.commandQueue.shift();
-      setTimeout(() => handleAlwaysListeningCommand(nextCommand, null), 500);
+      setTimeout(() => executeAlwaysListeningCommand(nextCommand), 500);
     }
   }, 100);
 }
@@ -173,30 +212,15 @@ function handleAlwaysListeningCommand(transcript, event) {
 /**
  * Process command through multiple channels
  */
-function processCommand(command) {
-  // Try voice commands first
-  if (window.handleVoiceCommand) {
+function processCommandInternal(command) {
+  if (window.commandCenter && window.commandCenter.processCommand) {
+    window.commandCenter.processCommand(command, 'voice-always');
+  } else if (window.handleVoiceCommand) {
+    // Fallback for initialization race conditions
     window.handleVoiceCommand(command);
-    return;
+  } else {
+    console.warn('No command processor available for:', command);
   }
-
-  // Try OpenAI processing
-  if (window.processWithOpenAI) {
-    window.processWithOpenAI(command);
-    return;
-  }
-
-  // Try function execution
-  if (window.executeFunction) {
-    // Try to match function names
-    const functionId = command.toLowerCase().replace(/\s+/g, '_');
-    if (window.executeFunction(functionId)) {
-      return;
-    }
-  }
-
-  // Default: show in chat or notification
-  showToast('Command Received', command, 'info');
 }
 
 /**
@@ -215,11 +239,11 @@ function initKeyboardCommandListener() {
     // Build command from key sequence
     if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
       commandBuffer += e.key.toLowerCase();
-      
+
       clearTimeout(bufferTimeout);
       bufferTimeout = setTimeout(() => {
         if (commandBuffer.length > 3) {
-          processCommand(commandBuffer);
+          processCommandInternal(commandBuffer);
         }
         commandBuffer = '';
       }, 2000);
@@ -239,7 +263,7 @@ function initKeyboardCommandListener() {
 function startActivityMonitoring() {
   setInterval(() => {
     const timeSinceActivity = Date.now() - alwaysListening.lastActivity;
-    
+
     // If no activity for 5 minutes, show reminder
     if (timeSinceActivity > 300000 && alwaysListening.enabled) {
       showToast('Always-Listening Active', 'Say "hey assistant" or use voice commands', 'info');
@@ -280,7 +304,7 @@ function startAlwaysListening() {
     alwaysListening.voiceRecognition.start();
     showToast('Always-Listening', '🎤 Now listening continuously', 'success');
     updateAlwaysListeningUI(true);
-    
+
     // Save preference
     localStorage.setItem('alwaysListeningEnabled', 'true');
   } catch (error) {
@@ -294,7 +318,7 @@ function startAlwaysListening() {
  */
 function stopAlwaysListening() {
   alwaysListening.enabled = false;
-  
+
   if (alwaysListening.restartTimeout) {
     clearTimeout(alwaysListening.restartTimeout);
     alwaysListening.restartTimeout = null;
@@ -310,7 +334,7 @@ function stopAlwaysListening() {
 
   updateAlwaysListeningUI(false);
   showToast('Always-Listening', 'Stopped', 'info');
-  
+
   // Save preference
   localStorage.setItem('alwaysListeningEnabled', 'false');
 }
@@ -365,9 +389,34 @@ function showCommandFeedback(command) {
   feedback.textContent = `🎤 "${command}"`;
   feedback.classList.add('show');
 
+  // Trigger pulse for significant commands
+  showNeuralPulse();
+
   setTimeout(() => {
     feedback.classList.remove('show');
   }, 2000);
+}
+
+/**
+ * Show neural pulse visual effect
+ */
+function showNeuralPulse() {
+  const now = Date.now();
+  if (now - alwaysListening.lastNeuralPulse < 1000) return; // Throttling
+  alwaysListening.lastNeuralPulse = now;
+
+  let pulse = document.getElementById('neuralPulseRing');
+  if (!pulse) {
+    pulse = document.createElement('div');
+    pulse.id = 'neuralPulseRing';
+    pulse.className = 'neural-pulse-ring';
+    document.body.appendChild(pulse);
+  }
+
+  // Restart animation
+  pulse.classList.remove('active');
+  void pulse.offsetWidth; // Trigger reflow
+  pulse.classList.add('active');
 }
 
 /**
@@ -376,7 +425,7 @@ function showCommandFeedback(command) {
 document.addEventListener('DOMContentLoaded', () => {
   // Check if always-listening was enabled previously
   const wasEnabled = localStorage.getItem('alwaysListeningEnabled') === 'true';
-  
+
   if (wasEnabled) {
     // Wait a bit for page to fully load
     setTimeout(() => {

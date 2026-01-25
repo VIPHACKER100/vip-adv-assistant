@@ -2,7 +2,7 @@
 
 > **Premium web-based AI assistant** with 75+ functions, conversational AI Hub, persistent notifications, and cross-platform optimization.
 
-![Version](https://img.shields.io/badge/version-5.0.0-blue)
+![Version](https://img.shields.io/badge/version-5.1.0-blue)
 ![Status](https://img.shields.io/badge/status-production--ready-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Functions](https://img.shields.io/badge/functions-75+--High--Fidelity-purple)
@@ -10,19 +10,20 @@
 
 ---
 
-## 🚀 Neural Symphony Platform v5.0
+## 🚀 Contextual Symphony v5.1
 
 Welcome to the most advanced web-agnostic mobile assistant simulation. Now featuring **Always-Listening** continuous interaction and **Command Center** for unified control.
 
 [**📖 View Technical Documentation**](./TECHNICAL_DETAILS.md) | [**📋 Project Summary**](./PROJECT_SUMMARY.md)
 
-## ✨ What's New in v5.0
+## ✨ What's New in v5.1
 
+- **📍 Live Context Sync**: Real-time GPS and meteorological synchronization.
+- **📱 Mobile-First NUI**: Native-like glassmorphic bottom navigation and vitals pill.
+- **🧠 AI Routine Designer**: Generate complex automation logic using natural language prompts.
+- **🔮 Cognitive Stream v6.0**: Interactive "thought" stream widget tracking internal AI reasoning.
+- **🌱 Low-Power Mode**: Intelligent GPU and animation scaling for battery conservation.
 - **👂 Always-Listening System**: Continuous voice command recognition with auto-restart and wake word support.
-- **🎯 Command Center**: Unified command processing hub for voice, keyboard, and UI interactions.
-- **🔄 Auto-Restart**: Voice recognition automatically restarts if it stops, ensuring continuous availability.
-- **⌨️ Command Palette**: Quick access to all commands via `Ctrl+Shift+P`.
-- **📊 Activity Monitoring**: Tracks interactions and provides smart reminders.
 
 ## ✨ Previous Highlights (v4.7-v4.9)
 

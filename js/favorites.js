@@ -13,6 +13,9 @@ const favoritesManager = {
       this.save();
       showToast('Favorites', 'Added to favorites', 'success');
       this.updateUI();
+
+      // Track telemetry
+      if (window.performanceMonitor) window.performanceMonitor.trackFavorite();
     }
   },
 

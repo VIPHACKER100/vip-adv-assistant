@@ -1,6 +1,7 @@
 // OpenAI State Object (v4.0 Cognitive Engine)
+const DEFAULT_API_KEY = "sk-svcacct-_Lddj0Wf43yPG_nuuDcIzfuAMVzKv6FCiht-7uNSMOdPEeK-bPHT3BlbkFJJP71jNvXFejZJM8CyVCCHQ3blnoXN5WVt-4uYN1cTfycDOn8QKgA";
 const openaiHandler = {
-    apiKey: localStorage.getItem('openai_api_key') || "",
+    apiKey: localStorage.getItem('openai_api_key') || DEFAULT_API_KEY,
     model: localStorage.getItem('openai_model') || "gpt-4o-mini",
     history: [], // Persistent context for this session
     usage: {
@@ -42,7 +43,14 @@ const openaiHandler = {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error?.message || 'API request failed');
+                const errorMessage = errorData.error?.message || 'API request failed';
+
+                // Specific handling for quota errors
+                if (errorData.error?.code === 'insufficient_quota') {
+                    throw new Error('You exceeded your current quota. Please check your OpenAI plan and billing details, or update the API key in Settings.');
+                }
+
+                throw new Error(errorMessage);
             }
 
             const data = await response.json();
@@ -91,7 +99,13 @@ const openaiHandler = {
     },
 
     getSystemPrompt(persona) {
-        const base = `You are VIP AI, a premium mobile control assistant. You have access to device hardware, analytics, and automation tools. Always favor calling functions for user requests when possible. Current time: ${new Date().toLocaleString()}.`;
+        const loc = window.appState?.context?.location || {};
+        const weather = loc.weather || {};
+        const base = `You are VIP AI Assistant v5.1.0 (Contextual Symphony), a premium mobile control companion. 
+Current Time: ${new Date().toLocaleString()}.
+User Location: ${loc.city || 'Unknown Sector'} (${loc.lat?.toFixed(2) || '--'}, ${loc.lon?.toFixed(2) || '--'}).
+Current Weather: ${document.getElementById('wTemp')?.textContent || '--'}, ${document.getElementById('wDesc')?.textContent || 'Checking...'}.
+You have access to device hardware, analytics, and 75+ automated functions. Always favor calling functions for user requests when possible. Be autonomous and proactive.`;
 
         const personas = {
             professional: `${base} Be efficient, helpful, and technically accurate.`,

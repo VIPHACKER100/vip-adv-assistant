@@ -112,7 +112,7 @@ function processCommand(command, source = 'user') {
   if (!command || typeof command !== 'string') return;
 
   const cmd = command.toLowerCase().trim();
-  
+
   // Add to history
   addToHistory(cmd, source);
 
@@ -129,6 +129,13 @@ function processCommand(command, source = 'user') {
     if (cmd.includes(key) || key.includes(cmd)) {
       handler.handler();
       showToast('Command Executed', handler.description, 'success');
+      return true;
+    }
+  }
+
+  // Try voice dictionary (from voice-access.js)
+  if (window.handleVoiceCommand && typeof window.handleVoiceCommand === 'function') {
+    if (window.handleVoiceCommand(cmd, false)) {
       return true;
     }
   }
