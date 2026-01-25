@@ -264,24 +264,143 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .face-recognition-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
     .face-recognition-container {
-        width: 95%;
-        padding: var(--space-4);
+        width: 100%;
+        max-width: 100%;
+        padding: var(--space-5);
+        border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .face-recognition-header {
+        margin-bottom: var(--space-4);
     }
 
     .face-recognition-title {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
+    }
+
+    .face-recognition-close {
+        width: 44px;
+        height: 44px;
+        font-size: var(--font-size-2xl);
     }
 
     .video-container {
         aspect-ratio: 3/4;
+        margin-bottom: var(--space-3);
+    }
+
+    .face-recognition-status {
+        padding: var(--space-3);
+        margin-bottom: var(--space-3);
+    }
+
+    .status-icon {
+        font-size: var(--font-size-2xl);
+        margin-bottom: var(--space-1);
+    }
+
+    .status-text {
+        font-size: var(--font-size-base);
+    }
+
+    .status-subtext {
+        font-size: var(--font-size-xs);
     }
 
     .face-recognition-actions {
         flex-direction: column;
+        gap: var(--space-2);
     }
 
     .face-recognition-actions .btn {
         width: 100%;
+        min-height: 48px;
+        font-size: var(--font-size-base);
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .face-recognition-info {
+        padding: var(--space-3);
+        margin-top: var(--space-3);
+    }
+
+    .info-item {
+        padding: var(--space-2) 0;
+    }
+
+    .info-label {
+        font-size: var(--font-size-xs);
+    }
+
+    .info-value {
+        font-size: var(--font-size-sm);
+    }
+
+    .recognition-success {
+        padding: var(--space-6);
+        width: 90%;
+    }
+
+    .recognition-success-icon {
+        font-size: 48px;
+        margin-bottom: var(--space-3);
+    }
+
+    .recognition-success-text {
+        font-size: var(--font-size-xl);
+    }
+
+    .recognition-success-name {
+        font-size: var(--font-size-lg);
+    }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+    .face-recognition-container {
+        padding: var(--space-4);
+    }
+
+    .face-recognition-title {
+        font-size: var(--font-size-base);
+    }
+
+    .face-recognition-close {
+        width: 40px;
+        height: 40px;
+    }
+
+    .status-icon {
+        font-size: var(--font-size-xl);
+    }
+
+    .face-recognition-actions .btn {
+        min-height: 44px;
+        font-size: var(--font-size-sm);
+    }
+
+    .recognition-success {
+        width: 95%;
+        padding: var(--space-4);
+    }
+
+    .recognition-success-icon {
+        font-size: 40px;
+    }
+
+    .recognition-success-text {
+        font-size: var(--font-size-lg);
+    }
+
+    .recognition-success-name {
+        font-size: var(--font-size-base);
     }
 }

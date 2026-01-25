@@ -70,25 +70,40 @@ function initVoiceAccess() {
   voiceState.recognition.onerror = (event) => {
     console.error('Voice recognition error:', event.error);
 
+    // Only show critical errors to user
     let errorMessage = '';
+    let showToUser = false;
+
     switch (event.error) {
       case 'not-allowed':
         errorMessage = 'Microphone access denied. Please allow microphone permission in your browser settings.';
+        showToUser = true;
         break;
       case 'no-speech':
-        errorMessage = 'No speech detected. Please try again.';
+        // Don't show error for no speech - it's normal
+        console.log('No speech detected, continuing to listen...');
         break;
       case 'audio-capture':
         errorMessage = 'No microphone found. Please connect a microphone.';
+        showToUser = true;
         break;
       case 'network':
         errorMessage = 'Network error. Please check your connection.';
+        showToUser = true;
+        break;
+      case 'aborted':
+        // Normal abort, don't show error
+        console.log('Voice recognition aborted');
         break;
       default:
-        errorMessage = `Error: ${event.error}`;
+        errorMessage = `Voice error: ${event.error}`;
+        showToUser = true;
     }
 
-    showToast('Voice Error', errorMessage, 'error');
+    if (showToUser && errorMessage) {
+      showToast('Voice Error', errorMessage, 'error');
+    }
+
     voiceState.isListening = false;
     updateVoiceUI(false);
   };

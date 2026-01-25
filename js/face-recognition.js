@@ -21,12 +21,22 @@ class FaceRecognitionManager {
     async init() {
         try {
             console.log('🔮 Initializing Face Recognition System...');
-            await this.loadModels();
+
+            // Create UI first, before loading models
             this.createUI();
+
+            // Then load models
+            await this.loadModels();
+
             console.log('✅ Face Recognition System Ready');
         } catch (error) {
             console.error('❌ Face Recognition Init Error:', error);
-            showToast('Failed to initialize Face Recognition', 'error');
+            // Safe toast call
+            if (typeof showToast === 'function') {
+                showToast('Face Recognition models failed to load', 'error');
+            } else {
+                console.warn('showToast not available, models failed to load');
+            }
         }
     }
 
@@ -115,15 +125,32 @@ class FaceRecognitionManager {
     }
 
     /**
+     * Safe toast notification
+     */
+    safeToast(message, type = 'info') {
+        if (typeof showToast === 'function') {
+            showToast(message, type);
+        } else {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+    }
+
+    /**
      * Open Face Recognition Modal
      */
     async open() {
-        if (!this.isModelLoaded) {
-            showToast('Face Recognition models not loaded yet', 'warning');
+        const modal = document.getElementById('faceRecognitionModal');
+        if (!modal) {
+            console.error('Face Recognition modal not found in DOM');
+            this.safeToast('Face Recognition UI not initialized', 'error');
             return;
         }
 
-        const modal = document.getElementById('faceRecognitionModal');
+        if (!this.isModelLoaded) {
+            this.safeToast('Face Recognition models are still loading...', 'warning');
+            return;
+        }
+
         modal.classList.add('active');
 
         try {
@@ -131,7 +158,7 @@ class FaceRecognitionManager {
         } catch (error) {
             console.error('Camera Error:', error);
             this.updateStatus('❌', 'Camera Access Denied', 'Please enable camera permissions');
-            showToast('Camera access required for Face Recognition', 'error');
+            this.safeToast('Camera access required for Face Recognition', 'error');
         }
     }
 
@@ -181,7 +208,7 @@ class FaceRecognitionManager {
      */
     async startRecognition() {
         if (!this.video || this.video.paused) {
-            showToast('Camera not ready', 'warning');
+            this.safeToast('Camera not ready', 'warning');
             return;
         }
 
@@ -243,7 +270,7 @@ class FaceRecognitionManager {
      */
     async registerFace() {
         if (!this.video || this.video.paused) {
-            showToast('Camera not ready', 'warning');
+            this.safeToast('Camera not ready', 'warning');
             return;
         }
 
@@ -256,7 +283,7 @@ class FaceRecognitionManager {
                 .withFaceDescriptor();
 
             if (!detection) {
-                showToast('No face detected. Please try again.', 'warning');
+                this.safeToast('No face detected. Please try again.', 'warning');
                 this.updateStatus('❌', 'No Face Detected', 'Please position your face clearly');
                 return;
             }
@@ -264,7 +291,7 @@ class FaceRecognitionManager {
             // Prompt for name
             const name = prompt('Enter your name:');
             if (!name || name.trim() === '') {
-                showToast('Registration cancelled', 'info');
+                this.safeToast('Registration cancelled', 'info');
                 return;
             }
 
@@ -278,7 +305,7 @@ class FaceRecognitionManager {
             this.saveRegisteredFaces();
             this.updateRegisteredCount();
 
-            showToast(`Face registered successfully for ${name}!`, 'success');
+            this.safeToast(`Face registered successfully for ${name}!`, 'success');
             this.updateStatus('✅', 'Registration Complete', `Welcome, ${name}!`);
 
             // Log to notifications
@@ -292,7 +319,7 @@ class FaceRecognitionManager {
             }
         } catch (error) {
             console.error('Registration Error:', error);
-            showToast('Registration failed. Please try again.', 'error');
+            this.safeToast('Registration failed. Please try again.', 'error');
         }
     }
 
@@ -424,7 +451,7 @@ class FaceRecognitionManager {
         this.registeredFaces = [];
         this.saveRegisteredFaces();
         this.updateRegisteredCount();
-        showToast('All registered faces cleared', 'info');
+        this.safeToast('All registered faces cleared', 'info');
 
         if (typeof notificationManager !== 'undefined') {
             notificationManager.addNotification({

@@ -426,6 +426,10 @@
             title="Voice Access (Ctrl+M) | Always-Listening (Ctrl+Shift+V)" onclick="toggleVoiceAccess()">
             <span>🎤</span>
           </button>
+          <button class="icon-btn hide-mobile" id="voiceSettingsBtn" title="Voice Settings"
+            onclick="voiceManager.showVoiceSelector()">
+            <span>🎙️</span>
+          </button>
           <button class="icon-btn" id="alwaysListeningBtn" title="Toggle Always-Listening (Ctrl+Shift+V)"
             onclick="toggleAlwaysListening()" style="display: none;">
             <span>👂</span>
@@ -773,6 +777,8 @@
   <script src="js/functions.js?v=5.1.0"></script>
   <script src="js/automation.js?v=5.1.0"></script>
   <script src="js/openai-handler.js?v=5.1.0"></script>
+  <!-- Enhanced Voice System -->
+  <script src="js/voice-manager.js?v=5.1.0"></script>
   <script src="js/voice-access.js?v=5.1.0"></script>
   <script src="js/about.js?v=5.1.0"></script>
   <!-- v5.0 Command Center -->
