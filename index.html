@@ -337,24 +337,26 @@
 
   <!-- Mobile Tab Bar (SYMPHONY Navigation) -->
   <nav class="mobile-tab-bar animate-fade-in-up">
-    <button class="tab-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <button class="tab-item active" id="tab-home"
+      onclick="window.scrollTo({top: 0, behavior: 'smooth'}); setMobileTabActive('tab-home')">
       <span class="tab-icon">🏠</span>
       <span class="tab-label">DASHBOARD</span>
     </button>
-    <button class="tab-item" onclick="openSearch()">
+    <button class="tab-item" id="tab-search" onclick="openSearch(); setMobileTabActive('tab-search')">
       <span class="tab-icon">🔍</span>
       <span class="tab-label">EXPLORE</span>
     </button>
-    <button class="tab-item voice-tab" onclick="toggleVoiceAccess()" title="VOICE_INIT">
+    <button class="tab-item voice-tab" id="tab-voice" onclick="toggleVoiceAccess(); setMobileTabActive('tab-voice')"
+      title="VOICE_INIT">
       <div class="voice-tab-inner animate-glow">
         <span class="tab-icon">🎤</span>
       </div>
     </button>
-    <button class="tab-item" onclick="chatManager.toggleChat()">
+    <button class="tab-item" id="tab-chat" onclick="chatManager.toggleChat(); setMobileTabActive('tab-chat')">
       <span class="tab-icon">💬</span>
       <span class="tab-label">AI_HUB</span>
     </button>
-    <button class="tab-item" onclick="showModal('settings')">
+    <button class="tab-item" id="tab-settings" onclick="showModal('settings'); setMobileTabActive('tab-settings')">
       <span class="tab-icon">⚙️</span>
       <span class="tab-label">SYSTEM</span>
     </button>

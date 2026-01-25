@@ -104,7 +104,24 @@ function initScrollHandler() {
   window.addEventListener('scroll', () => {
     const isScrolled = window.scrollY > 20;
     header.classList.toggle('scrolled', isScrolled);
+
+    // Mobile header hide/show on scroll
+    if (appState.context.device.isMobile) {
+      handleMobileHeaderScroll();
+    }
   }, { passive: true });
+}
+
+let lastScrollTop = 0;
+function handleMobileHeaderScroll() {
+  const header = document.querySelector('.header');
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  if (st > lastScrollTop && st > 100) {
+    header.style.transform = 'translateY(-100%)';
+  } else {
+    header.style.transform = 'translateY(0)';
+  }
+  lastScrollTop = st <= 0 ? 0 : st;
 }
 
 /**
@@ -308,7 +325,30 @@ function updateLocalTime() {
 
   if (desktopDisplay) desktopDisplay.textContent = timeStr;
   if (mobileDisplay) mobileDisplay.textContent = compactTime;
+
+  // v6.0 Pulse tab bar active state
+  if (appState.context.device.isMobile) {
+    updateMobileTabState();
+  }
 }
+
+function updateMobileTabState() {
+  const tabs = document.querySelectorAll('.tab-item');
+  const scrollPos = window.scrollY;
+
+  // Default to home if at top
+  if (scrollPos < 100) {
+    setMobileTabActive('tab-home');
+  }
+}
+
+function setMobileTabActive(tabId) {
+  document.querySelectorAll('.mobile-tab-bar .tab-item').forEach(t => t.classList.remove('active'));
+  const activeTab = document.getElementById(tabId);
+  if (activeTab) activeTab.classList.add('active');
+}
+
+window.setMobileTabActive = setMobileTabActive;
 
 /**
  * Intelligence Hub Content Management

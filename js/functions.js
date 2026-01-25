@@ -773,7 +773,7 @@ function showFunctionResult(functionId, title, result) {
           <div style="position: absolute; width: 100px; height: 100px; border: 1px solid var(--color-accent-500); border-radius: 50%; animation: pulse 2s infinite;"></div>
           <div style="font-size: 44px; z-index: 1; filter: drop-shadow(0 0 10px var(--color-accent-500));">📍</div>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+        <div class="adaptive-grid">
           <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg);">
             <div style="font-size: 9px; color: var(--text-tertiary);">TARGET_ID</div>
             <div style="color: var(--text-primary); font-size: 12px; font-weight: 600;">${result.data.device}</div>
@@ -793,7 +793,7 @@ function showFunctionResult(functionId, title, result) {
     resultHTML = `
       <div class="glass-card animate-fade-in-up">
         <h4 style="margin-bottom: var(--space-5); color: var(--text-primary); font-family: var(--font-family-display);">💚 BIO_METRIC_RECOVERY</h4>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+        <div class="adaptive-grid">
           <div style="background: rgba(16, 185, 129, 0.05); padding: var(--space-4); border-radius: var(--radius-xl); border-bottom: 3px solid var(--color-success-500); text-align: center;">
             <div style="font-size: 10px; color: var(--text-tertiary); letter-spacing: 1px;">PEDO_COUNT</div>
             <div style="font-size: 24px; font-weight: 800; color: var(--color-success-400); font-family: var(--font-family-mono);">${result.data.steps}</div>
@@ -1143,16 +1143,16 @@ function showFunctionResult(functionId, title, result) {
             <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Capture Mode</div>
             <div style="font-weight: bold; color: var(--text-primary);">${result.data.mode}</div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
-            <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-              <div style="font-size: 10px; color: var(--text-tertiary);">PAGES</div>
-              <div style="font-size: 18px; font-weight: bold; color: var(--color-accent-400);">${result.data.pages}</div>
-            </div>
-            <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
-              <div style="font-size: 10px; color: var(--text-tertiary);">OCR CONFIDENCE</div>
-              <div style="font-size: 18px; font-weight: bold; color: var(--color-success-400);">${result.data.ocr_confidence}</div>
-            </div>
+          <div class="adaptive-grid">
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid var(--glass-border); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 4px;">AUTHORIZED_USER</div>
+            <div style="font-weight: 800; color: var(--text-primary);">${result.data.person}</div>
           </div>
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid var(--glass-border); text-align: center;">
+            <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 4px;">AUTH_CLEARANCE</div>
+            <div style="font-weight: 800; color: var(--color-success-400);">${result.data.auth_level}</div>
+          </div>
+        </div>
           <div class="badge badge-primary" style="justify-content: center;">FORMAT: ${result.data.format}</div>
           <button class="btn btn-glass btn-sm" style="width: 100%;">Share PDF</button>
         </div>
