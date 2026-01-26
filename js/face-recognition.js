@@ -34,11 +34,11 @@ class FaceRecognitionManager {
             // Create UI first, before loading models
             this.createUI();
 
-            // Then load models with timeout protection
+            // Then load models with timeout protection (reduced timeout for parallel loading)
             await Promise.race([
                 this.loadModels(),
                 new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Model loading timeout')), 30000)
+                    setTimeout(() => reject(new Error('Model loading timeout')), 15000)
                 )
             ]);
 
@@ -57,7 +57,7 @@ class FaceRecognitionManager {
     }
 
     /**
-     * Load face-api.js models
+     * Load face-api.js models with optimized parallel loading
      */
     async loadModels() {
         try {
@@ -69,16 +69,28 @@ class FaceRecognitionManager {
 
             console.log('📦 Loading face recognition models from:', modelPath);
 
-            // Load tiny face detector, landmarks and recognition models
-            await faceapi.nets.tinyFaceDetector.loadFromUri(modelPath);
-            await faceapi.nets.faceLandmark68Net.loadFromUri(modelPath);
-            await faceapi.nets.faceRecognitionNet.loadFromUri(modelPath);
+            // Update status to show loading progress
+            const statusElem = document.getElementById('systemStatus');
+            if (statusElem) {
+                statusElem.textContent = 'LOADING...';
+                statusElem.style.color = 'var(--color-warning-400)';
+            }
+
+            // Load all models in parallel for faster initialization
+            const startTime = performance.now();
+
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(modelPath),
+                faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
+                faceapi.nets.faceRecognitionNet.loadFromUri(modelPath)
+            ]);
+
+            const loadTime = ((performance.now() - startTime) / 1000).toFixed(2);
+            console.log(`✅ Face Recognition Models Loaded Successfully in ${loadTime}s`);
 
             this.isModelLoaded = true;
-            console.log('✅ Face Recognition Models Loaded Successfully');
 
             // Update UI status
-            const statusElem = document.getElementById('systemStatus');
             if (statusElem) {
                 statusElem.textContent = 'READY';
                 statusElem.style.color = 'var(--color-success-400)';
@@ -97,6 +109,11 @@ class FaceRecognitionManager {
                 mobileFaceIdBtn.classList.add('animate-fade-in');
             }
             console.log('🔓 Face ID interface unlocked');
+
+            // Show success toast
+            if (typeof showToast === 'function') {
+                showToast(`Face ID ready in ${loadTime}s`, 'success');
+            }
 
             return true;
         } catch (error) {

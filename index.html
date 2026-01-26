@@ -32,6 +32,12 @@
   <link rel="stylesheet" href="css/voice-access.css">
   <link rel="stylesheet" href="css/face-recognition.css">
 
+  <!-- Preload critical resources for faster Face ID loading -->
+  <link rel="preload" href="libs/face-api.min.js" as="script">
+  <link rel="prefetch" href="models/tiny_face_detector_model-weights_manifest.json">
+  <link rel="prefetch" href="models/face_landmark_68_model-weights_manifest.json">
+  <link rel="prefetch" href="models/face_recognition_model-weights_manifest.json">
+
   <style>
     /* Small page-specific tweaks that don't belong in shared files */
     .hero-badge .badge {
