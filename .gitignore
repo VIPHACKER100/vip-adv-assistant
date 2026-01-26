@@ -1,13 +1,15 @@
-<<<<<<< HEAD
 # Dependencies
 node_modules/
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
 
 # Environment variables
 .env
 .env.local
 .env.*.local
+.env.production
+.env.development
 
 # IDE
 .vscode/
@@ -23,6 +25,8 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Testing
 coverage/
@@ -30,12 +34,17 @@ coverage/
 testsprite_tests/tmp/*.png
 testsprite_tests/tmp/*.mp4
 testsprite_tests/tmp/*.webm
+playwright-report/
+test-results/
+*.spec.js.snap
 
 # Build outputs
 dist/
 build/
 *.min.js
 *.min.css
+.vite/
+.cache/
 
 # Temporary files
 tmp/
@@ -47,67 +56,8 @@ temp/
 Thumbs.db
 .DS_Store
 desktop.ini
-
-# Backup files
-*.bak
-*.backup
-*~
-
-# API Keys (extra safety)
-**/config/keys.js
-**/config/secrets.js
-
-# User-specific
-.user.ini
-=======
-# Dependencies
-node_modules/
-package-lock.json
-yarn.lock
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# IDE
-.vscode/
-.idea/
 *.swp
 *.swo
-*~
-.DS_Store
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Testing
-coverage/
-.nyc_output/
-testsprite_tests/tmp/*.png
-testsprite_tests/tmp/*.mp4
-testsprite_tests/tmp/*.webm
-
-# Build outputs
-dist/
-build/
-*.min.js
-*.min.css
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-*.cache
-
-# OS files
-Thumbs.db
-.DS_Store
-desktop.ini
 
 # Backup files
 *.bak
@@ -117,7 +67,22 @@ desktop.ini
 # API Keys (extra safety)
 **/config/keys.js
 **/config/secrets.js
+secrets/
+.secrets
 
 # User-specific
 .user.ini
->>>>>>> aaf95f08b85548227262ee8797ec4f9d10497be1
+
+# TypeScript
+*.tsbuildinfo
+
+# Sentry
+.sentryclirc
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Misc
+.eslintcache
+.stylelintcache

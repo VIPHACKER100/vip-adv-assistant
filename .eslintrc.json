@@ -1,0 +1,133 @@
+{
+    "env": {
+        "browser": true,
+        "es2022": true,
+        "node": true,
+        "jest": true,
+        "serviceworker": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:import/recommended",
+        "plugin:jest/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:security/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "import",
+        "jest",
+        "jsx-a11y",
+        "security",
+        "prettier"
+    ],
+    "rules": {
+        "no-console": [
+            "warn",
+            {
+                "allow": [
+                    "warn",
+                    "error",
+                    "info"
+                ]
+            }
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_"
+            }
+        ],
+        "no-var": "error",
+        "prefer-const": "error",
+        "prefer-arrow-callback": "error",
+        "prefer-template": "error",
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "curly": [
+            "error",
+            "all"
+        ],
+        "no-eval": "error",
+        "no-implied-eval": "error",
+        "no-new-func": "error",
+        "no-return-await": "error",
+        "require-await": "error",
+        "no-throw-literal": "error",
+        "prefer-promise-reject-errors": "error",
+        "import/order": [
+            "error",
+            {
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index"
+                ],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
+        ],
+        "import/no-unresolved": "off",
+        "import/no-named-as-default": "off",
+        "security/detect-object-injection": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "jsx-a11y/click-events-have-key-events": "warn",
+        "jsx-a11y/no-static-element-interactions": "warn",
+        "prettier/prettier": "error"
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.test.js",
+                "*.spec.js"
+            ],
+            "env": {
+                "jest": true
+            },
+            "rules": {
+                "no-console": "off"
+            }
+        },
+        {
+            "files": [
+                "service-worker.js"
+            ],
+            "env": {
+                "serviceworker": true,
+                "browser": false
+            },
+            "globals": {
+                "self": "readonly",
+                "caches": "readonly",
+                "clients": "readonly"
+            }
+        }
+    ],
+    "globals": {
+        "appState": "writable",
+        "showToast": "readonly",
+        "openSearch": "readonly",
+        "toggleVoiceAccess": "readonly",
+        "voiceManager": "readonly",
+        "chatManager": "readonly",
+        "notificationManager": "readonly",
+        "favoritesManager": "readonly",
+        "performanceMonitor": "readonly",
+        "commandCenter": "readonly",
+        "cognitiveStream": "readonly",
+        "openaiHandler": "readonly",
+        "faceapi": "readonly"
+    }
+}
