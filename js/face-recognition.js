@@ -13,6 +13,8 @@ class FaceRecognitionManager {
         this.stream = null;
         this.registeredFaces = this.loadRegisteredFaces();
         this.currentDetection = null;
+        this.detectionInterval = null;
+        this.detectionTimeout = null;
     }
 
     /**
@@ -22,11 +24,23 @@ class FaceRecognitionManager {
         try {
             console.log('🔮 Initializing Face Recognition System...');
 
+            // Verify face-api library is loaded
+            if (typeof faceapi === 'undefined') {
+                console.warn('⚠️ face-api.js library not loaded yet, retrying...');
+                setTimeout(() => this.init(), 500);
+                return;
+            }
+
             // Create UI first, before loading models
             this.createUI();
 
-            // Then load models
-            await this.loadModels();
+            // Then load models with timeout protection
+            await Promise.race([
+                this.loadModels(),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Model loading timeout')), 30000)
+                )
+            ]);
 
             console.log('✅ Face Recognition System Ready');
         } catch (error) {
@@ -37,6 +51,8 @@ class FaceRecognitionManager {
             } else {
                 console.warn('showToast not available, models failed to load');
             }
+            // Continue anyway - UI is created
+            this.isModelLoaded = false;
         }
     }
 
@@ -45,17 +61,45 @@ class FaceRecognitionManager {
      */
     async loadModels() {
         try {
+            if (typeof faceapi === 'undefined') {
+                throw new Error('face-api.js library not loaded');
+            }
+
             const modelPath = './models';
-            await Promise.all([
+            
+            console.log('📦 Loading face recognition models from:', modelPath);
+
+            const modelLoadPromises = [
                 faceapi.nets.tinyFaceDetector.loadFromUri(modelPath),
                 faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
                 faceapi.nets.faceRecognitionNet.loadFromUri(modelPath)
-            ]);
+            ];
+
+            await Promise.all(modelLoadPromises);
+            
             this.isModelLoaded = true;
-            console.log('✅ Face Recognition Models Loaded');
+            console.log('✅ Face Recognition Models Loaded Successfully');
+            
+            // Update UI status
+            const statusElem = document.getElementById('systemStatus');
+            if (statusElem) {
+                statusElem.textContent = 'READY';
+                statusElem.style.color = 'var(--color-success-400)';
+            }
+            
+            return true;
         } catch (error) {
             console.error('❌ Model Loading Error:', error);
-            throw new Error('Failed to load face recognition models');
+            this.isModelLoaded = false;
+            
+            // Update UI with error status
+            const statusElem = document.getElementById('systemStatus');
+            if (statusElem) {
+                statusElem.textContent = 'OFFLINE';
+                statusElem.style.color = 'var(--color-error-400)';
+            }
+            
+            throw new Error(`Failed to load face recognition models: ${error.message}`);
         }
     }
 
@@ -163,10 +207,27 @@ class FaceRecognitionManager {
      */
     close() {
         const modal = document.getElementById('faceRecognitionModal');
-        modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+        }
         this.stopCamera();
+        this.stopDetection();
+        document.getElementById('scanningOverlay')?.classList.remove('active');
+    }
+
+    /**
+     * Stop detection loop
+     */
+    stopDetection() {
         this.isScanning = false;
-        document.getElementById('scanningOverlay').classList.remove('active');
+        if (this.detectionInterval) {
+            clearInterval(this.detectionInterval);
+            this.detectionInterval = null;
+        }
+        if (this.detectionTimeout) {
+            clearTimeout(this.detectionTimeout);
+            this.detectionTimeout = null;
+        }
     }
 
     /**
@@ -180,11 +241,14 @@ class FaceRecognitionManager {
             this.video.srcObject = this.stream;
 
             this.video.addEventListener('loadedmetadata', () => {
-                this.canvas.width = this.video.videoWidth;
-                this.canvas.height = this.video.videoHeight;
+                if (this.canvas) {
+                    this.canvas.width = this.video.videoWidth;
+                    this.canvas.height = this.video.videoHeight;
+                }
                 this.updateStatus('✅', 'Camera Ready', 'Click "Start Recognition" to begin');
-            });
+            }, { once: true });
         } catch (error) {
+            console.error('Camera access error:', error);
             throw error;
         }
     }
@@ -227,41 +291,49 @@ class FaceRecognitionManager {
         if (!this.isScanning) return;
 
         try {
+            if (!this.video || this.video.paused) {
+                this.stopDetection();
+                return;
+            }
+
             const detections = await faceapi
                 .detectAllFaces(this.video, new faceapi.TinyFaceDetectorOptions())
                 .withFaceLandmarks()
                 .withFaceDescriptors();
 
             // Clear canvas
-            const ctx = this.canvas.getContext('2d');
-            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            if (this.canvas) {
+                const ctx = this.canvas.getContext('2d');
+                ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            if (detections.length > 0) {
-                // Draw detections
-                faceapi.draw.drawDetections(this.canvas, detections);
-                faceapi.draw.drawFaceLandmarks(this.canvas, detections);
+                if (detections.length > 0) {
+                    // Draw detections
+                    faceapi.draw.drawDetections(this.canvas, detections);
+                    faceapi.draw.drawFaceLandmarks(this.canvas, detections);
 
-                // Try to recognize
-                const recognition = this.recognizeFace(detections[0].descriptor);
+                    // Try to recognize
+                    const recognition = this.recognizeFace(detections[0].descriptor);
 
-                if (recognition) {
-                    this.onRecognitionSuccess(recognition);
+                    if (recognition) {
+                        this.onRecognitionSuccess(recognition);
+                    } else {
+                        this.updateStatus('👤', 'Face Detected', 'Unknown person - Register to identify');
+                        const confidence = (detections[0].detection.score * 100).toFixed(1);
+                        document.getElementById('confidenceValue').textContent = confidence + '%';
+                    }
                 } else {
-                    this.updateStatus('👤', 'Face Detected', 'Unknown person - Register to identify');
-                    const confidence = (detections[0].detection.score * 100).toFixed(1);
-                    document.getElementById('confidenceValue').textContent = confidence + '%';
+                    this.updateStatus('🔍', 'Scanning...', 'No face detected');
+                    document.getElementById('confidenceValue').textContent = '--';
                 }
-            } else {
-                this.updateStatus('🔍', 'Scanning...', 'No face detected');
-                document.getElementById('confidenceValue').textContent = '--';
             }
 
-            // Continue detection loop
-            setTimeout(() => this.detectFaces(), 100);
+            // Schedule next detection with proper cleanup
+            if (this.isScanning) {
+                this.detectionTimeout = setTimeout(() => this.detectFaces(), 100);
+            }
         } catch (error) {
             console.error('Detection Error:', error);
-            this.isScanning = false;
-            document.getElementById('scanningOverlay').classList.remove('active');
+            this.stopDetection();
         }
     }
 
@@ -295,10 +367,11 @@ class FaceRecognitionManager {
                 return;
             }
 
-            // Save face descriptor
+            // Save face descriptor - properly convert Float32Array
+            const descriptorArray = Array.from(detection.descriptor);
             this.registeredFaces.push({
                 name: name.trim(),
-                descriptor: Array.from(detection.descriptor),
+                descriptor: descriptorArray,
                 timestamp: Date.now()
             });
 
@@ -334,11 +407,21 @@ class FaceRecognitionManager {
         let bestDistance = Infinity;
 
         for (const registered of this.registeredFaces) {
-            const distance = faceapi.euclideanDistance(descriptor, registered.descriptor);
+            try {
+                // Ensure both descriptors are proper format
+                const registeredDescriptor = new Float32Array(registered.descriptor);
+                const currentDescriptor = descriptor instanceof Float32Array 
+                    ? descriptor 
+                    : new Float32Array(descriptor);
 
-            if (distance < threshold && distance < bestDistance) {
-                bestDistance = distance;
-                bestMatch = registered;
+                const distance = faceapi.euclideanDistance(currentDescriptor, registeredDescriptor);
+
+                if (distance < threshold && distance < bestDistance) {
+                    bestDistance = distance;
+                    bestMatch = registered;
+                }
+            } catch (error) {
+                console.error('Error comparing faces:', error);
             }
         }
 
