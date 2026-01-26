@@ -1,508 +1,122 @@
 /**
- * VIP AI Assistant - Enhanced Design System v6.2
- * Premium dark theme with advanced glassmorphism and mobile-first design
+ * VIP AI Assistant - SYMPHONY NEURAL KERNEL 7.0
+ * Design System Specification: "NEURAL FLUX"
  */
 
 :root {
-  /* ===== Mobile-Specific Design Tokens ===== */
-  /* Touch Target Sizes (Apple HIG & Material Design compliant) */
-  --touch-target-min: 48px;
-  --touch-target-comfortable: 52px;
-  --touch-target-large: 56px;
+  /* ===== Neural Flux Palette (HSL Optimized) ===== */
+  /* Deep Space Foundation */
+  --color-foundation: hsl(230, 20%, 4%);
+  --color-surface-900: hsl(230, 15%, 8%);
+  --color-surface-800: hsl(230, 12%, 12%);
+  --color-surface-700: hsl(230, 10%, 18%);
 
-  /* Mobile Spacing Scale (optimized for smaller screens) */
-  --mobile-space-xs: 0.5rem;
-  /* 8px */
-  --mobile-space-sm: 0.75rem;
-  /* 12px */
-  --mobile-space-md: 1rem;
-  /* 16px */
-  --mobile-space-lg: 1.25rem;
-  /* 20px */
-  --mobile-space-xl: 1.5rem;
-  /* 24px */
+  /* Neon Primary: Electric Cyan */
+  --color-primary-hue: 190;
+  --color-primary: hsl(var(--color-primary-hue), 100%, 50%);
+  --color-primary-glow: hsla(var(--color-primary-hue), 100%, 50%, 0.4);
+  --color-primary-dim: hsl(var(--color-primary-hue), 80%, 30%);
 
-  /* Safe Area Insets (for notched devices) */
+  /* Neon Secondary: Plasma Purple */
+  --color-secondary-hue: 280;
+  --color-secondary: hsl(var(--color-secondary-hue), 100%, 65%);
+  --color-secondary-glow: hsla(var(--color-secondary-hue), 100%, 65%, 0.4);
+
+  /* Semantic Neon */
+  --color-success: hsl(150, 100%, 50%);
+  --color-warning: hsl(45, 100%, 50%);
+  --color-error: hsl(0, 100%, 60%);
+  --color-info: hsl(210, 100%, 60%);
+
+  /* Text & Contrast */
+  --text-main: hsl(0, 0%, 98%);
+  --text-dim: hsl(230, 10%, 70%);
+  --text-mute: hsl(230, 10%, 40%);
+  --text-glow: hsla(0, 0%, 100%, 0.1);
+
+  /* ===== Advanced Glassmorphism (V7 Spec) ===== */
+  --glass-bg: hsla(230, 15%, 10%, 0.6);
+  --glass-border: hsla(0, 0%, 100%, 0.08);
+  --glass-border-bright: hsla(0, 0%, 100%, 0.15);
+  --glass-blur: 32px;
+  --glass-shadow: 0 8px 32px 0 hsla(230, 20%, 2%, 0.8);
+  --glass-shine: linear-gradient(135deg, hsla(0, 0%, 100%, 0.05) 0%, transparent 100%);
+
+  /* ===== Mobile-Optimal Topology ===== */
   --safe-area-top: env(safe-area-inset-top, 0px);
-  --safe-area-right: env(safe-area-inset-right, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-area-left: env(safe-area-inset-left, 0px);
+  --nav-height: calc(80px + var(--safe-area-bottom));
+  --pill-height: 48px;
+  --radius-neural: 24px;
+  --touch-target: 52px;
 
-  /* Mobile Font Sizes (optimized for readability) */
-  --mobile-font-xs: 0.75rem;
-  /* 12px */
-  --mobile-font-sm: 0.875rem;
-  /* 14px */
-  --mobile-font-base: 1rem;
-  /* 16px */
-  --mobile-font-lg: 1.125rem;
-  /* 18px */
-  --mobile-font-xl: 1.25rem;
-  /* 20px */
+  /* ===== Spacing Grid ===== */
+  --space-unit: 4px;
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+  --s12: 48px;
 
-  /* Mobile Blur Levels (reduced for performance) */
-  --mobile-blur-sm: 8px;
-  --mobile-blur-md: 12px;
-  --mobile-blur-lg: 16px;
+  /* ===== Dynamic Elevations ===== */
+  --shadow-neon-primary: 0 0 20px var(--color-primary-glow);
+  --shadow-neon-secondary: 0 0 20px var(--color-secondary-glow);
+  --shadow-3d: 20px 20px 60px #050505, -20px -20px 60px #0b0b0b;
 
-
-  /* ===== Enhanced Color Palette ===== */
-  /* Primary - Deep Purple/Blue with better contrast */
-  --color-primary-950: hsl(250, 65%, 8%);
-  --color-primary-900: hsl(250, 60%, 12%);
-  --color-primary-800: hsl(250, 55%, 18%);
-  --color-primary-700: hsl(250, 50%, 25%);
-  --color-primary-600: hsl(250, 45%, 35%);
-  --color-primary-500: hsl(250, 50%, 50%);
-  --color-primary-400: hsl(250, 55%, 65%);
-  --color-primary-300: hsl(250, 60%, 75%);
-
-  /* Accent - Vibrant Cyan with more variations */
-  --color-accent-700: hsl(190, 95%, 35%);
-  --color-accent-600: hsl(190, 90%, 45%);
-  --color-accent-500: hsl(190, 85%, 55%);
-  --color-accent-400: hsl(190, 80%, 65%);
-  --color-accent-300: hsl(190, 75%, 75%);
-  --color-accent-200: hsl(190, 70%, 85%);
-
-  /* Secondary - Vibrant Pink/Magenta */
-  --color-secondary-700: hsl(320, 90%, 40%);
-  --color-secondary-600: hsl(320, 85%, 50%);
-  --color-secondary-500: hsl(320, 80%, 60%);
-  --color-secondary-400: hsl(320, 75%, 70%);
-  --color-secondary-300: hsl(320, 70%, 80%);
-
-  /* Success - Modern Green */
-  --color-success-700: hsl(150, 70%, 35%);
-  --color-success-600: hsl(150, 65%, 45%);
-  --color-success-500: hsl(150, 60%, 55%);
-  --color-success-400: hsl(150, 55%, 65%);
-  --color-success-300: hsl(150, 50%, 75%);
-
-  /* Warning - Vibrant Orange */
-  --color-warning-700: hsl(35, 90%, 40%);
-  --color-warning-600: hsl(35, 85%, 50%);
-  --color-warning-500: hsl(35, 80%, 60%);
-  --color-warning-400: hsl(35, 75%, 70%);
-  --color-warning-300: hsl(35, 70%, 80%);
-
-  /* Error - Modern Red */
-  --color-error-700: hsl(5, 80%, 40%);
-  --color-error-600: hsl(5, 75%, 50%);
-  --color-error-500: hsl(5, 70%, 60%);
-  --color-error-400: hsl(5, 65%, 70%);
-  --color-error-300: hsl(5, 60%, 80%);
-
-  /* Info - Cool Blue */
-  --color-info-700: hsl(210, 85%, 40%);
-  --color-info-600: hsl(210, 80%, 50%);
-  --color-info-500: hsl(210, 75%, 60%);
-  --color-info-400: hsl(210, 70%, 70%);
-
-  /* Grayscale - Enhanced with better contrast */
-  --color-gray-950: hsl(250, 20%, 6%);
-  --color-gray-900: hsl(250, 18%, 10%);
-  --color-gray-850: hsl(250, 15%, 14%);
-  --color-gray-800: hsl(250, 12%, 18%);
-  --color-gray-750: hsl(250, 10%, 22%);
-  --color-gray-700: hsl(250, 10%, 28%);
-  --color-gray-600: hsl(250, 8%, 42%);
-  --color-gray-500: hsl(250, 6%, 58%);
-  --color-gray-400: hsl(250, 5%, 72%);
-  --color-gray-300: hsl(250, 5%, 86%);
-  --color-gray-200: hsl(250, 5%, 93%);
-  --color-gray-100: hsl(250, 5%, 98%);
-
-  /* White with more opacity variations */
-  --color-white: hsl(0, 0%, 100%);
-  --color-white-95: hsla(0, 0%, 100%, 0.95);
-  --color-white-90: hsla(0, 0%, 100%, 0.9);
-  --color-white-80: hsla(0, 0%, 100%, 0.8);
-  --color-white-70: hsla(0, 0%, 100%, 0.7);
-  --color-white-60: hsla(0, 0%, 100%, 0.6);
-  --color-white-50: hsla(0, 0%, 100%, 0.5);
-  --color-white-40: hsla(0, 0%, 100%, 0.4);
-  --color-white-30: hsla(0, 0%, 100%, 0.3);
-  --color-white-20: hsla(0, 0%, 100%, 0.2);
-  --color-white-15: hsla(0, 0%, 100%, 0.15);
-  --color-white-10: hsla(0, 0%, 100%, 0.1);
-  --color-white-5: hsla(0, 0%, 100%, 0.05);
-  --color-white-3: hsla(0, 0%, 100%, 0.03);
-
-  /* ===== Advanced Gradients ===== */
-  --gradient-primary: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-accent-600) 100%);
-  --gradient-accent: linear-gradient(135deg, var(--color-accent-500) 0%, var(--color-secondary-500) 100%);
-  --gradient-vibrant: linear-gradient(135deg, var(--color-accent-400) 0%, var(--color-secondary-400) 50%, var(--color-primary-400) 100%);
-  --gradient-success: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-accent-500) 100%);
-  --gradient-warning: linear-gradient(135deg, var(--color-warning-500) 0%, var(--color-error-500) 100%);
-  --gradient-glass: linear-gradient(135deg, var(--color-white-15) 0%, var(--color-white-5) 100%);
-  --gradient-overlay: linear-gradient(180deg, transparent 0%, var(--color-gray-950) 100%);
-  --gradient-shimmer: linear-gradient(90deg, transparent 0%, var(--color-white-10) 50%, transparent 100%);
-
-  /* Mesh gradients for backgrounds */
-  --gradient-mesh-1: radial-gradient(at 0% 0%, var(--color-primary-900) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, var(--color-accent-900) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, var(--color-secondary-900) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, var(--color-primary-900) 0px, transparent 50%);
-
-  /* ===== Typography - Enhanced ===== */
-  --font-family-primary: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-display: 'Outfit', 'Inter', sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-
-  /* Font Sizes - Refined scale */
-  --font-size-2xs: 0.625rem;
-  /* 10px */
-  --font-size-xs: 0.75rem;
-  /* 12px */
-  --font-size-sm: 0.875rem;
-  /* 14px */
-  --font-size-base: 1rem;
-  /* 16px */
-  --font-size-lg: 1.125rem;
-  /* 18px */
-  --font-size-xl: 1.25rem;
-  /* 20px */
-  --font-size-2xl: 1.5rem;
-  /* 24px */
-  --font-size-3xl: 1.875rem;
-  /* 30px */
-  --font-size-4xl: 2.25rem;
-  /* 36px */
-  --font-size-5xl: 3rem;
-  /* 48px */
-  --font-size-6xl: 3.75rem;
-  /* 60px */
-  --font-size-7xl: 4.5rem;
-  /* 72px */
-
-  /* Font Weights */
-  --font-weight-thin: 200;
-  --font-weight-light: 300;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-extrabold: 800;
-  --font-weight-black: 900;
-
-  /* Line Heights */
-  --line-height-none: 1;
-  --line-height-tight: 1.25;
-  --line-height-snug: 1.375;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.625;
-  --line-height-loose: 2;
-
-  /* Letter Spacing */
-  --letter-spacing-tighter: -0.05em;
-  --letter-spacing-tight: -0.025em;
-  --letter-spacing-normal: 0em;
-  --letter-spacing-wide: 0.025em;
-  --letter-spacing-wider: 0.05em;
-  --letter-spacing-widest: 0.1em;
-
-  /* ===== Spacing - Enhanced Scale ===== */
-  --space-px: 1px;
-  --space-0: 0;
-  --space-0-5: 0.125rem;
-  /* 2px */
-  --space-1: 0.25rem;
-  /* 4px */
-  --space-1-5: 0.375rem;
-  /* 6px */
-  --space-2: 0.5rem;
-  /* 8px */
-  --space-2-5: 0.625rem;
-  /* 10px */
-  --space-3: 0.75rem;
-  /* 12px */
-  --space-3-5: 0.875rem;
-  /* 14px */
-  --space-4: 1rem;
-  /* 16px */
-  --space-5: 1.25rem;
-  /* 20px */
-  --space-6: 1.5rem;
-  /* 24px */
-  --space-7: 1.75rem;
-  /* 28px */
-  --space-8: 2rem;
-  /* 32px */
-  --space-9: 2.25rem;
-  /* 36px */
-  --space-10: 2.5rem;
-  /* 40px */
-  --space-11: 2.75rem;
-  /* 44px */
-  --space-12: 3rem;
-  /* 48px */
-  --space-14: 3.5rem;
-  /* 56px */
-  --space-16: 4rem;
-  /* 64px */
-  --space-20: 5rem;
-  /* 80px */
-  --space-24: 6rem;
-  /* 96px */
-  --space-28: 7rem;
-  /* 112px */
-  --space-32: 8rem;
-  /* 128px */
-
-  /* ===== Border Radius - Enhanced ===== */
-  --radius-none: 0;
-  --radius-sm: 0.375rem;
-  /* 6px */
-  --radius-md: 0.5rem;
-  /* 8px */
-  --radius-lg: 0.75rem;
-  /* 12px */
-  --radius-xl: 1rem;
-  /* 16px */
-  --radius-2xl: 1.5rem;
-  /* 24px */
-  --radius-3xl: 2rem;
-  /* 32px */
-  --radius-full: 9999px;
-
-  /* ===== Shadows - Enhanced with more variations ===== */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 20px -5px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 30px -8px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(0, 0, 0, 0.4);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-  --shadow-3xl: 0 35px 60px -15px rgba(0, 0, 0, 0.8);
-
-  /* Glow shadows */
-  --shadow-glow-sm: 0 0 10px rgba(99, 102, 241, 0.3);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.4), 0 0 40px rgba(99, 102, 241, 0.2);
-  --shadow-glow-lg: 0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.3);
-  --shadow-glow-accent: 0 0 20px var(--color-accent-500), 0 0 40px var(--color-accent-600);
-  --shadow-glow-pink: 0 0 20px var(--color-secondary-500), 0 0 40px var(--color-secondary-600);
-  --shadow-glow-success: 0 0 20px var(--color-success-500), 0 0 40px var(--color-success-600);
-
-  /* Inner shadows */
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  --shadow-inner-lg: inset 0 4px 8px 0 rgba(0, 0, 0, 0.4);
-
-  /* ===== Advanced Glassmorphism with Better Contrast ===== */
-  --glass-bg-subtle: rgba(255, 255, 255, 0.05);
-  --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-bg-medium: rgba(255, 255, 255, 0.12);
-  --glass-bg-strong: rgba(255, 255, 255, 0.18);
-  --glass-bg-stronger: rgba(255, 255, 255, 0.22);
-
-  --glass-border-subtle: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.20);
-  --glass-border-strong: rgba(255, 255, 255, 0.30);
-
-  --glass-blur-sm: 8px;
-  --glass-blur: 12px;
-  --glass-blur-md: 16px;
-  --glass-blur-lg: 20px;
-  --glass-blur-xl: 24px;
-
-  /* ===== Transitions - Enhanced ===== */
-  --transition-instant: 50ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slower: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Special easing */
-  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --transition-elastic: 600ms cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  --transition-smooth: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-  /* ===== Z-Index Layers - Enhanced ===== */
-  --z-base: 0;
-  --z-raised: 10;
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-fixed: 300;
-  --z-overlay: 400;
-  --z-modal: 500;
-  --z-popover: 600;
-  --z-toast: 700;
-  --z-tooltip: 800;
-  --z-max: 9999;
-
-  /* ===== Semantic Colors - Enhanced with Better Contrast ===== */
-  --bg-primary: var(--color-gray-950);
-  --bg-secondary: var(--color-gray-900);
-  --bg-tertiary: var(--color-gray-850);
-  --bg-quaternary: var(--color-gray-800);
-
-  --text-primary: var(--color-white-98);
-  --text-secondary: var(--color-white-80);
-  --text-tertiary: var(--color-white-60);
-  --text-quaternary: var(--color-white-40);
-  --text-disabled: var(--color-white-25);
-  --text-placeholder: var(--color-white-45);
-
-  --border-primary: var(--color-white-20);
-  --border-secondary: var(--color-white-15);
-  --border-tertiary: var(--color-white-10);
-
-  /* ===== Accessibility-Focused Colors ===== */
-  --text-primary-high-contrast: #0f172a;
-  --text-secondary-high-contrast: #334155;
-  --text-tertiary-high-contrast: #475569;
-  --text-quaternary-high-contrast: #64748b;
-  --bg-primary-high-contrast: #ffffff;
-  --bg-secondary-high-contrast: #f8fafc;
-  --border-primary-high-contrast: #cbd5e1;
-
-  /* Focus and accessibility colors */
-  --color-accessible-focus: #2563eb;
-  --color-accessible-focus-outline: #dbeafe;
-  --color-accessible-focus-bg: #eff6ff;
-  --color-accessible-focus-text: #1e3a8a;
-
-  /* ===== Container Widths ===== */
-  --container-xs: 480px;
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1280px;
-  --container-2xl: 1536px;
-  --container-3xl: 1920px;
-
-  /* ===== Breakpoints (for reference) ===== */
-  --breakpoint-xs: 480px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
+  /* ===== Transitions ===== */
+  --t-neural: 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  --t-bounce: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ===== Global Resets & Base Styles ===== */
+/* Global Reset for Neural Flux */
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-normal);
-  line-height: var(--line-height-normal);
-  color: var(--text-primary);
-  background: var(--bg-primary);
+  background-color: var(--color-foundation);
+  color: var(--text-main);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.6;
   overflow-x: hidden;
-  min-height: 100vh;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Improved link styles */
-a {
-  color: var(--color-accent-400);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+h1,
+h2,
+h3,
+.font-display {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-a:hover {
-  color: var(--color-accent-300);
+/* Base Glass Component */
+.neural-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-neural);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
-a:focus-visible {
-  outline: 2px solid var(--color-accessible-focus);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Selection styles */
-::selection {
-  background: var(--color-accent-500);
-  color: var(--color-white);
-}
-
-::-moz-selection {
-  background: var(--color-accent-500);
-  color: var(--color-white);
-}
-
-/* Enhanced scrollbar styles */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-full);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-gray-700);
-  border-radius: var(--radius-full);
-  border: 2px solid var(--bg-secondary);
-  transition: background var(--transition-fast);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-600);
-}
-
-::-webkit-scrollbar-thumb:active {
-  background: var(--color-gray-500);
-}
-
-/* Thin scrollbar variant */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-/* Focus visible styles */
-:focus-visible {
-  outline: 2px solid var(--color-accessible-focus);
-  outline-offset: 2px;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --glass-bg: rgba(255, 255, 255, 0.15);
-    --glass-bg-strong: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.3);
-  }
-}
-
-/* Print styles */
-@media print {
-  body {
-    background: white;
-    color: black;
-  }
-
-  .no-print {
-    display: none !important;
-  }
+.neural-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--glass-shine);
+  pointer-events: none;
 }

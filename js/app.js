@@ -542,37 +542,36 @@ class VIPApp {
 
     // Render Categories
     container.innerHTML = categories.map(cat => `
-            <div class="category-section animate-fade-in-up">
-                <div class="category-header">
-                    <div class="category-icon">${cat.icon}</div>
+            <div class="category-section animate-fade-in-up" style="margin-bottom: var(--s10);">
+                <div style="display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s6);">
+                    <div class="card-icon" style="background: var(--color-primary-dim); color: var(--color-primary);">${cat.icon}</div>
                     <div>
-                        <h3 class="section-title" style="font-size: var(--font-size-xl); margin: 0;">${cat.name}</h3>
-                        <p style="font-size: var(--font-size-sm); color: var(--text-secondary); opacity: 0.7;">${cat.description}</p>
+                        <h3 style="font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.1em;">${cat.name}</h3>
+                        <p style="font-size: 0.75rem; color: var(--text-mute);">${cat.description}</p>
                     </div>
                 </div>
-                <div class="functions-grid">
+                <div class="node-grid">
                     ${cat.functions.map(f => `
-                        <div class="function-card" onclick="executeFunction('${f.id}')">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <div class="function-icon">${f.icon}</div>
-                                ${f.badge ? `<span class="badge badge-${f.badgeType || 'primary'}">${f.badge}</span>` : ''}
+                        <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="card-icon">${f.icon}</div>
+                                ${f.badge ? `<span style="font-size: 0.6rem; padding: 2px 8px; background: var(--color-primary); color: var(--color-foundation); border-radius: 10px; font-weight: 800;">${f.badge}</span>` : ''}
                             </div>
-                            <h4 class="function-title">${f.title}</h4>
-                            <p class="function-description">${f.description}</p>
+                            <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
+                            <p style="font-size: 0.7rem; opacity: 0.7;">${f.description}</p>
                         </div>
                     `).join('')}
                 </div>
             </div>
         `).join('');
 
-    // Also populate Quick Actions if empty
-    if (quickGrid && quickGrid.innerHTML.trim() === '') {
-      const popular = categories.flatMap(c => c.functions).filter(f => f.badge === 'Popular').slice(0, 4);
+    // Populate Quick Actions
+    if (quickGrid) {
+      const popular = categories.flatMap(c => c.functions).filter(f => f.badge === 'Popular' || f.isPopular).slice(0, 4);
       quickGrid.innerHTML = popular.map(f => `
-                <div class="function-card" onclick="executeFunction('${f.id}')">
-                    <div class="function-icon" style="background: var(--gradient-accent);">${f.icon}</div>
-                    <h4 class="function-title">${f.title}</h4>
-                    <p class="function-description">${f.description}</p>
+                <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
+                    <div class="card-icon" style="background: var(--color-secondary-glow); color: var(--color-secondary);">${f.icon}</div>
+                    <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
                 </div>
             `).join('');
     }
@@ -586,57 +585,55 @@ class VIPApp {
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type} animate-fade-in-up`;
+    const color = type === 'error' ? 'var(--color-error)' : (type === 'success' ? 'var(--color-success)' : 'var(--color-primary)');
+
+    toast.className = `neural-glass toast active`;
+    toast.style.borderLeft = `4px solid ${color}`;
+    toast.style.padding = 'var(--s4)';
+    toast.style.display = 'flex';
+    toast.style.flexDirection = 'column';
+    toast.style.gap = 'var(--s1)';
+
     toast.innerHTML = `
-            <div class="toast-header">
-                <strong>${title}</strong>
-                <button class="toast-close">&times;</button>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong style="color: ${color}; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">${title}</strong>
+                <button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color: var(--text-mute); cursor:pointer;">&times;</button>
             </div>
-            <div class="toast-body">${message}</div>
+            <div style="font-size: 0.9rem; color: var(--text-main);">${message}</div>
         `;
 
     container.appendChild(toast);
 
-    // Auto remove
     setTimeout(() => {
       toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
+      toast.style.transform = 'translateY(-20px)';
       setTimeout(() => toast.remove(), 400);
     }, 4000);
-
-    // Manual close
-    toast.querySelector('.toast-close').onclick = () => toast.remove();
   }
 
   showModal(type) {
     if (type === 'settings') {
       this.renderSettingsModal();
     } else if (type === 'demo') {
-      this.showToast('System Demo', 'SYMPHONY_V7_VISUAL_REVEAL_STARTING', 'info');
       const modalContainer = document.getElementById('modalContainer');
       if (modalContainer) {
         modalContainer.innerHTML = `
                     <div class="modal-overlay active" onclick="closeModal(event)">
-                        <div class="modal animate-slide-up" onclick="event.stopPropagation()">
+                        <div class="bottom-sheet" onclick="event.stopPropagation()">
+                            <div class="sheet-handle"></div>
                             <div class="modal-header">
-                                <h2 class="modal-title">📺 SYMPHONY_V7_PREVIEW</h2>
-                                <button class="modal-close" onclick="closeModal()">×</button>
+                                <h2 class="modal-title">NEURAL_DEVEL_PREVIEW</h2>
+                                <button class="icon-btn" onclick="closeModal()">×</button>
                             </div>
-                            <div class="modal-body text-center">
-                                <div style="aspect-ratio: 16/9; background: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px solid var(--glass-border);">
-                                    <span style="font-size: 44px; filter: drop-shadow(0 0 10px var(--color-accent-500));">🌌</span>
-                                </div>
-                                <p style="color: var(--text-secondary);">Welcome to the VIP SYMPHONY v7.0 PLATINUM experience. This build features modernized core kernel, improved lifecycle management, and enterprise-grade testing infrastructure.</p>
+                            <div style="aspect-ratio: 16/9; background: var(--color-foundation); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; border: 2px solid var(--color-primary); box-shadow: var(--shadow-neon-primary);">
+                                <span style="font-size: 4rem; filter: drop-shadow(0 0 10px var(--color-primary));">⚡</span>
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" style="width: 100%;" onclick="closeModal()">INITIALIZE_VIEW</button>
-                            </div>
+                            <p style="color: var(--text-dim); margin-bottom: 32px; line-height: 1.6;">Welcome to VIP SYMPHONY 7.0. The first browser-based OS prototype utilizing our proprietary 'Neural Flux' design language. High-bandwidth interactions, zero-latency feedback, and an ultra-secure local kernel.</p>
+                            <button class="btn-neural btn-neural-primary" style="width: 100%;" onclick="closeModal()">ACKNOWLEDGE</button>
                         </div>
                     </div>
                 `;
       }
-    } else if (type === 'automation' || type === 'builder') {
-      if (window.openAutomationBuilder) window.openAutomationBuilder();
     }
   }
 
@@ -644,38 +641,34 @@ class VIPApp {
     const modalContainer = document.getElementById('modalContainer');
     if (!modalContainer) return;
 
-    const packageVersion = 'BUILD_7.0.0_SYMPHONY';
-
     modalContainer.innerHTML = `
             <div class="modal-overlay active" onclick="closeModal(event)">
-                <div class="modal modal-settings animate-slide-up" onclick="event.stopPropagation()" style="max-width: 760px; min-height: 520px; padding: 0;">
-                    <div class="settings-sidebar">
-                        <div class="settings-nav-item active" onclick="switchSettingsTab('general')"><span>⚡</span> GENERAL</div>
-                        <div class="settings-nav-item" onclick="switchSettingsTab('cognitive')"><span>🧠</span> NEURAL</div>
-                        <div class="settings-nav-item" onclick="switchSettingsTab('hardware')"><span>🛰️</span> TELEMETRY</div>
-                        <div class="settings-nav-item" onclick="switchSettingsTab('advanced')"><span>🛡️</span> SECURITY</div>
+                <div class="bottom-sheet" onclick="event.stopPropagation()" style="padding-top: var(--s12);">
+                    <div class="sheet-handle"></div>
+                    <div class="modal-header">
+                        <h2 class="modal-title">KERNEL_CONFIGURATION</h2>
+                        <button class="icon-btn" onclick="closeModal()">×</button>
                     </div>
                     
-                    <div class="settings-main">
-                        <div class="modal-header">
-                            <h2 class="modal-title">SYMPHONY_SYSTEM_SETTINGS</h2>
-                            <button class="modal-close" onclick="closeModal()">×</button>
-                        </div>
-                        
-                        <div class="modal-body" id="settingsTabContent">
-                            <!-- Initial tab content injected by JS -->
-                        </div>
-                        
-                        <div class="modal-footer">
-                            <div style="flex: 1; font-size: 10px; font-family: var(--font-family-mono); color: var(--color-accent-400);">${packageVersion}</div>
-                            <button class="btn btn-primary" onclick="closeModal(); showToast('Settings Synced', 'System baseline updated', 'success');">APPLY_CHANGES</button>
-                        </div>
+                    <div style="display: flex; gap: var(--s4); overflow-x: auto; padding-bottom: var(--s4); margin-bottom: var(--s6); scrollbar-width: none;">
+                        <button class="btn-neural btn-neural-glass" style="white-space: nowrap;" onclick="switchSettingsTab('general')">⚡ GENERAL</button>
+                        <button class="btn-neural btn-neural-glass" style="white-space: nowrap;" onclick="switchSettingsTab('cognitive')">🧠 NEURAL</button>
+                        <button class="btn-neural btn-neural-glass" style="white-space: nowrap;" onclick="switchSettingsTab('hardware')">🛰️ TELEMETRY</button>
+                        <button class="btn-neural btn-neural-glass" style="white-space: nowrap;" onclick="switchSettingsTab('advanced')">🛡️ SECURITY</button>
+                    </div>
+                    
+                    <div id="settingsTabContent" style="min-height: 300px; padding: var(--s4); background: var(--color-surface-800); border-radius: 24px; border: 1px solid var(--glass-border);">
+                        <!-- Tab content injected -->
+                    </div>
+                    
+                    <div style="margin-top: var(--s8); display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-family: var(--font-family-mono); font-size: 0.6rem; color: var(--text-mute);">CORE_STABLE_7.0.0</span>
+                        <button class="btn-neural btn-neural-primary" onclick="closeModal(); showToast('Sync Complete', 'Neural baseline localized', 'success');">COMMIT_CHANGES</button>
                     </div>
                 </div>
             </div>
         `;
 
-    // Inject first tab
     this.switchSettingsTab('general');
   }
 
@@ -1240,6 +1233,57 @@ class VIPApp {
   }
 
   /**
+   * Make mobile status pill draggable
+   */
+  startPillDrag(e) {
+    const container = document.getElementById('mobileStatusPill');
+    if (!container) return;
+
+    this.pillState = this.pillState || { isDragging: false };
+    this.pillState.isDragging = true;
+    const event = e.type.includes('touch') ? e.touches[0] : e;
+
+    this.pillState.startX = event.clientX - container.offsetLeft;
+    this.pillState.startY = event.clientY - container.offsetTop;
+
+    container.style.cursor = 'grabbing';
+    container.style.transition = 'none'; // Disable transition while dragging
+
+    const onMove = (moveEvent) => {
+      if (!this.pillState.isDragging) return;
+      const move = moveEvent.type.includes('touch') ? moveEvent.touches[0] : moveEvent;
+
+      let newX = move.clientX - this.pillState.startX;
+      let newY = move.clientY - this.pillState.startY;
+
+      // Keep within viewport
+      newX = Math.max(0, Math.min(window.innerWidth - container.offsetWidth, newX));
+      newY = Math.max(0, Math.min(window.innerHeight - container.offsetHeight, newY));
+
+      container.style.left = `${newX}px`;
+      container.style.top = `${newY}px`;
+      container.style.bottom = 'auto';
+      container.style.right = 'auto';
+      container.style.transform = 'none'; // Override initial centering transform
+    };
+
+    const onEnd = () => {
+      this.pillState.isDragging = false;
+      container.style.cursor = 'grab';
+      container.style.transition = 'all 0.3s ease'; // Re-enable transition
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  }
+
+  /**
    * proactive Monitoring
    */
   startProactiveMonitoring() {
@@ -1335,6 +1379,7 @@ window.applyTheme = (t) => app.applyTheme(t);
 window.toggleHUD = () => app.toggleHUD();
 window.toggleBoostMode = () => app.toggleBoostMode();
 window.startOrbDrag = (e) => app.startOrbDrag(e);
+window.startPillDrag = (e) => app.startPillDrag(e);
 window.syncNeuralOrb = () => app.syncNeuralOrb();
 window.scrollToSection = (id) => app.scrollToSection(id);
 window.executeSuggestion = (id) => app.executeSuggestion(id);

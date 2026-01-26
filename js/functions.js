@@ -221,17 +221,18 @@ const FunctionRegistry = {
 
     modalContainer.innerHTML = `
             <div class="modal-overlay active" onclick="window.closeModal(event)">
-                <div class="modal animate-slide-up" onclick="event.stopPropagation()">
+                <div class="bottom-sheet" onclick="event.stopPropagation()">
+                    <div class="sheet-handle"></div>
                     <div class="modal-header">
                         <h2 class="modal-title">${title.toUpperCase()}</h2>
-                        <button class="modal-close" onclick="window.closeModal()">×</button>
+                        <button class="icon-btn" onclick="window.closeModal()">×</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding: 0;">
                         ${resultHTML}
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-glass" style="flex: 1;" onclick="window.closeModal()">CLOSE</button>
-                        <button class="btn btn-primary" style="flex: 1;" onclick="window.showToast('Committing', 'Data synced to kernel', 'success'); window.closeModal();">COMMIT_DATA</button>
+                    <div style="display: flex; gap: var(--s4); margin-top: var(--s8);">
+                        <button class="btn-neural btn-neural-glass" style="flex: 1;" onclick="window.closeModal()">DISMISS</button>
+                        <button class="btn-neural btn-neural-primary" style="flex: 1;" onclick="window.showToast('Committing', 'Data synced to kernel', 'success'); window.closeModal();">SYNC_LOCAL</button>
                     </div>
                 </div>
             </div>
@@ -240,19 +241,17 @@ const FunctionRegistry = {
 
   generateResultHTML(functionId, result) {
     if (!result.data || typeof result.data !== 'object') {
-      return `<div class="glass-card"><p>${result.message || 'Operation complete.'}</p></div>`;
+      return `<div style="padding: var(--s6); background: var(--color-surface-800); border-radius: 20px;"><p>${result.message || 'Operation complete.'}</p></div>`;
     }
 
     return `
-            <div class="glass-card">
-                <div style="font-family: var(--font-family-mono); font-size: 12px; color: var(--text-secondary);">
-                    ${Object.entries(result.data).map(([key, value]) => `
-                        <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <span style="color: var(--text-tertiary); text-transform: uppercase; font-size: 10px;">${key.replace('_', ' ')}</span><br>
-                            <span style="color: var(--color-accent-400); font-weight: bold;">${typeof value === 'object' ? JSON.stringify(value) : value}</span>
-                        </div>
-                    `).join('')}
-                </div>
+            <div style="display: grid; gap: var(--s3);">
+                ${Object.entries(result.data).map(([key, value]) => `
+                    <div style="padding: var(--s4); background: var(--color-surface-800); border-radius: 16px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: var(--text-mute); text-transform: uppercase; font-size: 0.65rem; font-family: var(--font-family-mono); letter-spacing: 0.05em;">${key.replace('_', ' ')}</span>
+                        <span style="color: var(--color-primary); font-weight: 800; font-family: var(--font-family-mono); font-size: 0.85rem;">${typeof value === 'object' ? 'NESTED_DATA' : value}</span>
+                    </div>
+                `).join('')}
             </div>
         `;
   }
