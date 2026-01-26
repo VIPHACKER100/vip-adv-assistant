@@ -3,7 +3,7 @@
  * Enables Progressive Web App (PWA) functionality
  */
 
-const CACHE_NAME = 'vip-assistant-v6.2.0-mobile-upgrade';
+const CACHE_NAME = 'vip-assistant-v7.0.0-kernel-refactor';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -15,6 +15,8 @@ const urlsToCache = [
     '/css/face-recognition.css',
     '/js/app.js',
     '/js/functions.js',
+    '/js/utils.js',
+    '/js/error-handler.js',
     '/js/automation.js',
     '/js/voice-access.js',
     '/js/openai-handler.js',
@@ -32,12 +34,13 @@ const urlsToCache = [
     '/js/recent-functions.js',
     '/js/shortcut-editor.js',
     '/js/cognitive-stream.js',
+    '/js/cognitive-memory.js',
     '/js/face-recognition.js',
     '/libs/face-api.min.js',
-    '/assets/logo.png',
+    '/logo.png',
     '/icon-192.png',
     '/icon-512.png',
-    '/screenshot1.png',
+    '/manifest.json',
     '/models/face_landmark_68_model-shard1',
     '/models/face_landmark_68_model-weights_manifest.json',
     '/models/face_recognition_model-shard1',

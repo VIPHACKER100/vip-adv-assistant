@@ -65,7 +65,7 @@ class FaceRecognitionManager {
                 throw new Error('face-api.js library not loaded');
             }
 
-            const modelPath = './models';
+            const modelPath = '/models';
 
             console.log('📦 Loading face recognition models from:', modelPath);
 

@@ -23,13 +23,12 @@ export default defineConfig({
         assetsDir: 'assets',
         sourcemap: true,
         minify: 'terser',
-        target: 'es2022',
+        target: 'esnext',
         cssCodeSplit: true,
         rollupOptions: {
             output: {
                 manualChunks: {
-                    'face-api': ['./libs/face-api.min.js'],
-                    'vendor': ['dompurify', 'idb'],
+                    lib_vendor: ['dompurify', 'idb'],
                 },
             },
         },
@@ -62,19 +61,13 @@ export default defineConfig({
     plugins: [
         createHtmlPlugin({
             minify: true,
-            inject: {
-                data: {
-                    title: 'VIP SYMPHONY | Neural Mobile Interface',
-                    description: 'Premium AI assistant with 75+ functions, mobile-first design, voice control, AI chat, and automation',
-                },
-            },
         }),
 
         VitePWA({
             registerType: 'autoUpdate',
-            includeAssets: ['icon-192.png', 'icon-512.png', 'assets/logo.png'],
+            includeAssets: ['icon-192.png', 'icon-512.png', 'logo.png'],
             manifest: {
-                name: 'VIP Advanced Mobile AI Assistant v6.2',
+                name: 'VIP Advanced Mobile AI Assistant',
                 short_name: 'VIP AI',
                 description: 'Premium AI assistant with 75+ functions, mobile-first design, voice control, AI chat, and automation',
                 theme_color: '#22D3EE',
@@ -106,24 +99,7 @@ export default defineConfig({
                             cacheName: 'google-fonts-cache',
                             expiration: {
                                 maxEntries: 10,
-                                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-                            },
-                            cacheableResponse: {
-                                statuses: [0, 200],
-                            },
-                        },
-                    },
-                    {
-                        urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-                        handler: 'CacheFirst',
-                        options: {
-                            cacheName: 'gstatic-fonts-cache',
-                            expiration: {
-                                maxEntries: 10,
-                                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-                            },
-                            cacheableResponse: {
-                                statuses: [0, 200],
+                                maxAgeSeconds: 60 * 60 * 24 * 365,
                             },
                         },
                     },
@@ -133,10 +109,6 @@ export default defineConfig({
                         options: {
                             cacheName: 'openai-api-cache',
                             networkTimeoutSeconds: 10,
-                            expiration: {
-                                maxEntries: 50,
-                                maxAgeSeconds: 60 * 5, // 5 minutes
-                            },
                         },
                     },
                 ],
@@ -146,15 +118,11 @@ export default defineConfig({
         viteCompression({
             algorithm: 'gzip',
             ext: '.gz',
-            threshold: 10240,
-            deleteOriginFile: false,
         }),
 
         viteCompression({
             algorithm: 'brotliCompress',
             ext: '.br',
-            threshold: 10240,
-            deleteOriginFile: false,
         }),
     ],
 
@@ -163,7 +131,6 @@ export default defineConfig({
             '@': '/js',
             '@css': '/css',
             '@assets': '/assets',
-            '@tests': '/tests',
         },
     },
 
