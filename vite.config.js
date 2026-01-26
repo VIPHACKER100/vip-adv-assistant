@@ -13,6 +13,11 @@ export default defineConfig({
     base: '/',
     publicDir: 'assets',
 
+    // Dependency optimization settings
+    optimizeDeps: {
+        include: ['dompurify', 'idb'],
+    },
+
     build: {
         outDir: 'dist',
         assetsDir: 'assets',
@@ -41,6 +46,12 @@ export default defineConfig({
         host: true,
         open: true,
         cors: true,
+        watch: {
+            ignored: ['**/models/**', '**/libs/**', '**/node_modules/**']
+        },
+        hmr: {
+            overlay: true
+        }
     },
 
     preview: {
@@ -154,10 +165,6 @@ export default defineConfig({
             '@assets': '/assets',
             '@tests': '/tests',
         },
-    },
-
-    optimizeDeps: {
-        include: ['dompurify', 'idb'],
     },
 
     css: {

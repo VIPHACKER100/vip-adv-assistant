@@ -12,6 +12,8 @@
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="VIP AI">
@@ -61,7 +63,7 @@
     <div class="container">
       <div class="header-content">
         <div class="logo animate-fade-in">
-          <img src="assets/logo.png" alt="VIP AI" class="logo-icon"
+          <img src="logo.png" alt="VIP AI" class="logo-icon"
             style="height: 44px; width: 44px; border-radius: var(--radius-lg); box-shadow: var(--shadow-glow-accent); object-fit: cover;">
           <span>VIP AI <span style="color: var(--color-accent-400)">SYMPHONY</span></span>
         </div>
@@ -403,7 +405,7 @@
   <footer class="footer animate-fade-in">
     <div class="container footer-content">
       <div class="logo animate-fade-in" style="justify-content: center; margin-bottom: var(--space-6); opacity: 0.6;">
-        <img src="assets/logo.png" alt="VIP AI" class="logo-icon"
+        <img src="logo.png" alt="VIP AI" class="logo-icon"
           style="height: 32px; width: 32px; border-radius: var(--radius-sm); filter: grayscale(1);">
         <span style="font-size: var(--font-size-xl);">VIP AI <span
             style="color: var(--color-accent-400)">SYMPHONY</span></span>
@@ -436,8 +438,8 @@
   <!-- Scripts -->
   <!-- Face Recognition Library -->
   <script src="libs/face-api.min.js"></script>
-  <script src="js/app.js?v=6.2.0"></script>
-  <script src="js/functions.js?v=6.2.0"></script>
+  <script type="module" src="js/functions.js?v=7.0.0"></script>
+  <script type="module" src="js/app.js?v=7.0.0"></script>
   <script src="js/automation.js?v=6.2.0"></script>
   <script src="js/openai-handler.js?v=6.2.0"></script>
   <!-- Enhanced Voice System -->
@@ -470,57 +472,26 @@
   <script src="js/face-recognition.js?v=6.2.0"></script>
 
   <script>
-    // Initialize all features
-    document.addEventListener('DOMContentLoaded', () => {
-      // v2.1-2.3 features
-      themeManager.init();
-      initKeyboardShortcuts();
-      favoritesManager.updateUI();
-      performanceMonitor.init();
-      shortcutEditor.applyCustomShortcuts();
+    // System Initialization & Bridge for Legacy Modules
+    window.addEventListener('load', () => {
+      console.log('🚀 VIP_KERNEL_LOAD_COMPLETE');
 
-      // v2.5 features
-      chatManager.init();
-      notificationManager.init();
+      // Initialize managers if they exist (global scope)
+      if (window.themeManager) themeManager.init();
+      if (window.favoritesManager) favoritesManager.init();
+      if (window.keyboardShortcuts) keyboardShortcuts.init();
+      if (window.recentFunctionsManager) recentFunctionsManager.init();
+      if (window.shortcutEditor) shortcutEditor.applyCustomShortcuts();
+      if (window.chatManager) chatManager.init();
+      if (window.notificationManager) notificationManager.init();
 
-      // Register Service Worker for offline support
+      // Register Service Worker
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('✅ Service Worker registered:', registration.scope);
-          })
-          .catch(error => {
-            console.log('❌ Service Worker registration failed:', error);
-          });
+          .then(reg => console.log('✅ Service Worker Active'))
+          .catch(err => console.log('❌ Service Worker Error', err));
       }
     });
-
-    // Track performance metrics and recent functions
-    const originalExecuteFunction = window.executeFunction;
-    window.executeFunction = function (functionId) {
-      performanceMonitor.trackFunction(functionId);
-
-      // Get function title
-      const categories = getFunctionCategories();
-      let functionTitle = functionId;
-      for (const category of categories) {
-        const func = category.functions.find(f => f.id === functionId);
-        if (func) {
-          functionTitle = func.title;
-          break;
-        }
-      }
-
-      recentFunctionsManager.add(functionId, functionTitle);
-      return originalExecuteFunction.apply(this, arguments);
-    };
-
-    // Track search usage
-    const originalOpenSearch = window.openSearch;
-    window.openSearch = function () {
-      performanceMonitor.trackSearch();
-      return originalOpenSearch.apply(this, arguments);
-    };
   </script>
 </body>
 

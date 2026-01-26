@@ -125,7 +125,7 @@ const favoritesManager = {
         if (isFav && !star) {
           star = document.createElement('div');
           star.className = 'favorite-star';
-          star.innerHTML = 'â­';
+          star.innerHTML = '⭐';
           star.style.cssText = 'position: absolute; top: 8px; right: 8px; font-size: 16px; opacity: 0.8;';
           card.style.position = 'relative';
           card.appendChild(star);
@@ -134,6 +134,10 @@ const favoritesManager = {
         }
       }
     });
+  },
+
+  init() {
+    this.updateUI();
   }
 };
 
