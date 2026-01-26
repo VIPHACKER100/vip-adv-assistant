@@ -265,6 +265,13 @@ body.ghost-mode .hero-title {
     transform: none !important;
 }
 
+.btn:focus,
+.btn:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+}
+
 @media (max-width: 768px) {
     .btn {
         min-height: 52px;
@@ -320,6 +327,13 @@ body.ghost-mode .hero-title {
     background: var(--glass-bg-strong);
 }
 
+.input:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-color: var(--color-accessible-focus);
+    border-radius: var(--radius-lg);
+}
+
 .input::placeholder {
     color: var(--text-disabled);
 }
@@ -342,6 +356,12 @@ body.ghost-mode .hero-title {
     opacity: 0;
     width: 0;
     height: 0;
+}
+
+.toggle-switch input:focus-visible + .toggle-slider {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-full);
 }
 
 .toggle-slider {
@@ -495,6 +515,13 @@ body.ghost-mode .hero-title {
     color: var(--color-white);
     border-color: var(--color-error-400);
     transform: rotate(90deg) scale(1.1);
+}
+
+.modal-close:focus,
+.modal-close:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-full);
 }
 
 .modal-body {
@@ -710,6 +737,13 @@ body.ghost-mode .hero-title {
     transform: scale(1.1);
 }
 
+.icon-btn:focus,
+.icon-btn:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+}
+
 .icon-btn-sm {
     width: 36px;
     height: 36px;
@@ -751,6 +785,17 @@ body.ghost-mode .hero-title {
 
 .function-card:hover::before {
     transform: scaleX(1);
+}
+
+.function-card:focus,
+.function-card:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-xl);
+    background: var(--glass-bg-strong);
+    border-color: var(--color-white-20);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 .function-icon {
@@ -1296,6 +1341,13 @@ body.ghost-mode .hero-title {
     color: var(--color-gray-950);
 }
 
+.spotlight-item:focus,
+.spotlight-item:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+}
+
 .item-icon {
     font-size: 24px;
     width: 40px;
@@ -1442,6 +1494,13 @@ body.ghost-mode .hero-title {
 .chat-chip:hover {
     background: var(--glass-bg-strong);
     border-color: var(--color-accent-400);
+}
+
+.chat-chip:focus,
+.chat-chip:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-full);
 }
 
 /* HUD Overlay */
@@ -1957,6 +2016,14 @@ button,
     height: 100%;
 }
 
+.tab-item:focus,
+.tab-item:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg-strong);
+}
+
 .tab-item.active {
     color: var(--color-accent-400);
 }
@@ -2155,6 +2222,14 @@ button,
     transition: all 0.2s;
 }
 
+.settings-nav-item:focus,
+.settings-nav-item:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg-strong);
+}
+
 .settings-nav-item span {
     font-size: 18px;
 }
@@ -2218,6 +2293,13 @@ button,
     cursor: pointer;
     background: var(--bg-tertiary);
     transition: all 0.2s;
+}
+
+.theme-preview:focus,
+.theme-preview:focus-visible {
+    outline: 2px solid var(--color-accessible-focus);
+    outline-offset: 2px;
+    border-color: var(--color-accessible-focus);
 }
 
 .theme-preview:hover {

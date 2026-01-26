@@ -245,16 +245,16 @@
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
   --shadow-inner-lg: inset 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 
-  /* ===== Advanced Glassmorphism ===== */
-  --glass-bg-subtle: rgba(255, 255, 255, 0.03);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-bg-medium: rgba(255, 255, 255, 0.08);
-  --glass-bg-strong: rgba(255, 255, 255, 0.12);
-  --glass-bg-stronger: rgba(255, 255, 255, 0.15);
+  /* ===== Advanced Glassmorphism with Better Contrast ===== */
+  --glass-bg-subtle: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-medium: rgba(255, 255, 255, 0.12);
+  --glass-bg-strong: rgba(255, 255, 255, 0.18);
+  --glass-bg-stronger: rgba(255, 255, 255, 0.22);
 
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glass-border-strong: rgba(255, 255, 255, 0.25);
+  --glass-border-subtle: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.20);
+  --glass-border-strong: rgba(255, 255, 255, 0.30);
 
   --glass-blur-sm: 8px;
   --glass-blur: 12px;
@@ -287,22 +287,37 @@
   --z-tooltip: 800;
   --z-max: 9999;
 
-  /* ===== Semantic Colors - Enhanced ===== */
+  /* ===== Semantic Colors - Enhanced with Better Contrast ===== */
   --bg-primary: var(--color-gray-950);
   --bg-secondary: var(--color-gray-900);
   --bg-tertiary: var(--color-gray-850);
   --bg-quaternary: var(--color-gray-800);
 
-  --text-primary: var(--color-white-95);
-  --text-secondary: var(--color-white-70);
-  --text-tertiary: var(--color-white-50);
-  --text-quaternary: var(--color-white-30);
-  --text-disabled: var(--color-white-20);
-  --text-placeholder: var(--color-white-40);
+  --text-primary: var(--color-white-98);
+  --text-secondary: var(--color-white-80);
+  --text-tertiary: var(--color-white-60);
+  --text-quaternary: var(--color-white-40);
+  --text-disabled: var(--color-white-25);
+  --text-placeholder: var(--color-white-45);
 
-  --border-primary: var(--color-white-15);
-  --border-secondary: var(--color-white-10);
-  --border-tertiary: var(--color-white-5);
+  --border-primary: var(--color-white-20);
+  --border-secondary: var(--color-white-15);
+  --border-tertiary: var(--color-white-10);
+
+  /* ===== Accessibility-Focused Colors ===== */
+  --text-primary-high-contrast: #0f172a;
+  --text-secondary-high-contrast: #334155;
+  --text-tertiary-high-contrast: #475569;
+  --text-quaternary-high-contrast: #64748b;
+  --bg-primary-high-contrast: #ffffff;
+  --bg-secondary-high-contrast: #f8fafc;
+  --border-primary-high-contrast: #cbd5e1;
+  
+  /* Focus and accessibility colors */
+  --color-accessible-focus: #2563eb;
+  --color-accessible-focus-outline: #dbeafe;
+  --color-accessible-focus-bg: #eff6ff;
+  --color-accessible-focus-text: #1e3a8a;
 
   /* ===== Container Widths ===== */
   --container-xs: 480px;
@@ -362,7 +377,7 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--color-accent-500);
+  outline: 2px solid var(--color-accessible-focus);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -412,7 +427,7 @@ a:focus-visible {
 
 /* Focus visible styles */
 :focus-visible {
-  outline: 2px solid var(--color-accent-500);
+  outline: 2px solid var(--color-accessible-focus);
   outline-offset: 2px;
 }
 

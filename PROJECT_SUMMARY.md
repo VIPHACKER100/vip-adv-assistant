@@ -7,7 +7,12 @@ A premium, fully-functional web-based AI assistant prototype with 75+ simulated 
 
 ## ✨ Major Features Implemented
 
-### 0. **Neural Symphony (v5.0)**
+### 0. **Cognitive Memory (v6.2)**
+- **🧠 Vector-Based Memory**: Semantic memory storage and retrieval using cosine similarity.
+- **🔮 Cognitive Recall**: Advanced semantic search across stored memories.
+- **🗑️ Memory Management**: Ability to forget specific memories and view memory summaries.
+
+### 1. **Neural Symphony (v5.0)**
 - **👂 Always-Listening System**: Continuous voice interaction with auto-restart and wake word support.
 - **🎯 Command Center**: Unified command processing hub for voice, keyboard, and UI interactions.
 - **🔄 Auto-Restart**: Voice recognition automatically restarts if it stops.
@@ -64,5 +69,5 @@ A premium, fully-functional web-based AI assistant prototype with 75+ simulated 
 ---
 
 **Built with ❤️ by VipHacker100**
-**Current Version**: 5.0.0
-**Status**: Neural Symphony Build (Stable) - Always-Listening Edition
+**Current Version**: 6.2.0
+**Status**: Cognitive Memory Build (Stable) - Always-Listening Edition

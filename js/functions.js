@@ -72,6 +72,10 @@ function getFunctionCategories() {
         { id: 'context_analysis', icon: '📊', title: 'Context Analysis', description: 'Analyze device and user context' },
         { id: 'predict_next_action', icon: '🔮', title: 'Predict Next Action', description: 'AI predictions based on patterns' },
         { id: 'memory_recall', icon: '🧩', title: 'Memory Recall', description: 'Search through device history' },
+                { id: 'cognitive_memory_store', icon: '🧠', title: 'Cognitive Memory Store', description: 'Store contextual information in vector memory', badge: 'V6_ENGINE', badgeType: 'accent' },
+                { id: 'cognitive_memory_recall', icon: '🔮', title: 'Cognitive Recall', description: 'Retrieve relevant memories using semantic search', badge: 'V6_ENGINE', badgeType: 'accent' },
+                { id: 'cognitive_memory_forget', icon: '🗑️', title: 'Forget Memory', description: 'Remove specific memories from cognitive store', badge: 'V6_ENGINE', badgeType: 'error' },
+                { id: 'cognitive_memory_summary', icon: '📊', title: 'Memory Summary', description: 'View cognitive memory statistics and insights', badge: 'V6_ENGINE', badgeType: 'success' },
         { id: 'location_intelligence', icon: '📍', title: 'Location Intelligence', description: 'Context-aware location-based actions' },
         { id: 'behavior_patterns', icon: '📈', title: 'Behavior Patterns', description: 'Analyze and learn usage patterns' }
       ]
@@ -384,6 +388,43 @@ function simulateFunction(functionId) {
         type: 'URL',
         content: 'https://viphacker100.github.io/assistant',
         action: 'Open Link'
+      }
+    },
+    cognitive_memory_store: {
+      success: true,
+      data: {
+        status: 'Memory Stored Successfully',
+        timestamp: new Date().toISOString(),
+        vector_id: 'cm_' + Date.now().toString(36)
+      }
+    },
+    cognitive_memory_recall: {
+      success: true,
+      data: {
+        matches_found: 3,
+        top_matches: [
+          { content: 'User preferences for dark mode', confidence: 0.92 },
+          { content: 'Accessibility settings enabled', confidence: 0.87 },
+          { content: 'Frequently used automation features', confidence: 0.81 }
+        ],
+        query: 'user preferences'
+      }
+    },
+    cognitive_memory_forget: {
+      success: true,
+      data: {
+        status: 'Memory Removed',
+        memories_deleted: 1,
+        confirmation: 'Selected cognitive memory has been purged from vector store'
+      }
+    },
+    cognitive_memory_summary: {
+      success: true,
+      data: {
+        total_memories: window.cognitiveMemory?.getMemorySummary()?.totalMemories || 0,
+        last_accessed: new Date().toISOString(),
+        storage_utilization: '45%',
+        vector_dimension: 1536
       }
     },
     sos_alert: {
@@ -1185,6 +1226,81 @@ function showFunctionResult(functionId, title, result) {
         </div>
         <div style="font-size: 10px; color: var(--text-tertiary);">Current Location:</div>
         <div style="font-family: monospace; color: var(--text-primary); font-size: 12px;">${result.data.coordinates}</div>
+      </div>
+    `;
+  } else if (functionId === 'cognitive_memory_store') {
+    resultHTML = `
+      <div class="glass-card" style="border-left: 4px solid var(--color-primary-500);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">🧠 Cognitive Memory Stored</h4>
+        <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+          <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 2px;">Status</div>
+          <div style="color: var(--color-success-400); font-weight: bold; font-size: 16px;">${result.data.status}</div>
+        </div>
+        <div style="display: grid; gap: var(--space-3);">
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg);">
+            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Vector ID</div>
+            <div style="color: var(--color-accent-400); font-family: monospace; font-size: 12px;">${result.data.vector_id}</div>
+          </div>
+          <div style="background: var(--glass-bg-subtle); padding: var(--space-3); border-radius: var(--radius-lg);">
+            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Timestamp</div>
+            <div style="color: var(--text-secondary);">${result.data.timestamp}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (functionId === 'cognitive_memory_recall') {
+    resultHTML = `
+      <div class="glass-card" style="border-left: 4px solid var(--color-accent-500);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">🔮 Cognitive Memory Retrieved</h4>
+        <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4); text-align: center;">
+          <div style="font-size: 24px; font-weight: bold; color: var(--color-accent-400);">${result.data.matches_found}</div>
+          <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Matches Found</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+          ${result.data.top_matches.map(match => `
+            <div class="function-card" style="padding: var(--space-3); margin-bottom: 0;">
+              <div style="font-size: 12px; color: var(--text-primary); margin-bottom: var(--space-1);">${match.content}</div>
+              <div class="flex-between">
+                <span class="badge badge-accent" style="font-size: 10px; padding: var(--space-1) var(--space-2);">Query: ${result.data.query}</span>
+                <span class="badge badge-success" style="font-size: 10px; padding: var(--space-1) var(--space-2);">${(match.confidence * 100).toFixed(0)}% Match</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else if (functionId === 'cognitive_memory_forget') {
+    resultHTML = `
+      <div class="glass-card" style="border-left: 4px solid var(--color-error-500);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">🗑️ Cognitive Memory Purged</h4>
+        <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4); text-align: center;">
+          <div style="font-size: 24px; font-weight: bold; color: var(--color-error-400);">${result.data.memories_deleted}</div>
+          <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Memories Removed</div>
+        </div>
+        <div style="background: rgba(239, 68, 68, 0.1); padding: var(--space-4); border-radius: var(--radius-lg); border-left: 3px solid var(--color-error-500);">
+          <div style="font-size: 10px; color: var(--color-error-400); text-transform: uppercase; margin-bottom: 4px;">Confirmation</div>
+          <div style="color: var(--text-primary);">${result.data.confirmation}</div>
+        </div>
+      </div>
+    `;
+  } else if (functionId === 'cognitive_memory_summary') {
+    resultHTML = `
+      <div class="glass-card" style="border-left: 4px solid var(--color-success-500);">
+        <h4 style="margin-bottom: var(--space-4); color: var(--text-primary);">📊 Cognitive Memory Summary</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-bottom: var(--space-4);">
+          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: 18px; font-weight: bold; color: var(--color-success-400);">${result.data.total_memories}</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Total Memories</div>
+          </div>
+          <div style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-lg); text-align: center;">
+            <div style="font-size: 18px; font-weight: bold; color: var(--color-accent-400);">${result.data.vector_dimension}</div>
+            <div style="font-size: 10px; color: var(--text-tertiary); text-transform: uppercase;">Dimensions</div>
+          </div>
+        </div>
+        <div style="background: rgba(16, 185, 129, 0.1); padding: var(--space-3); border-radius: var(--radius-lg); border-left: 3px solid var(--color-success-500);">
+          <div style="font-size: 10px; color: var(--color-success-400); text-transform: uppercase; margin-bottom: 4px;">Storage Utilization</div>
+          <div style="color: var(--text-primary); font-weight: 500;">${result.data.storage_utilization}</div>
+        </div>
       </div>
     `;
   } else if (category && category.name === 'Hardware Control') {
