@@ -3,14 +3,16 @@
  * Enables Progressive Web App (PWA) functionality
  */
 
-const CACHE_NAME = 'vip-assistant-v5.1.0-context-sync';
+const CACHE_NAME = 'vip-assistant-v6.2.0-mobile-upgrade';
 const urlsToCache = [
     '/',
     '/index.html',
     '/css/variables.css',
+    '/css/layout.css',
     '/css/components.css',
     '/css/animations.css',
     '/css/voice-access.css',
+    '/css/face-recognition.css',
     '/js/app.js',
     '/js/functions.js',
     '/js/automation.js',
@@ -30,7 +32,19 @@ const urlsToCache = [
     '/js/recent-functions.js',
     '/js/shortcut-editor.js',
     '/js/cognitive-stream.js',
-    '/assets/logo.png'
+    '/js/face-recognition.js',
+    '/libs/face-api.min.js',
+    '/assets/logo.png',
+    '/icon-192.png',
+    '/icon-512.png',
+    '/screenshot1.png',
+    '/models/face_landmark_68_model-shard1',
+    '/models/face_landmark_68_model-weights_manifest.json',
+    '/models/face_recognition_model-shard1',
+    '/models/face_recognition_model-shard2',
+    '/models/face_recognition_model-weights_manifest.json',
+    '/models/tiny_face_detector_model-shard1',
+    '/models/tiny_face_detector_model-weights_manifest.json'
 ];
 
 // Install event - cache resources

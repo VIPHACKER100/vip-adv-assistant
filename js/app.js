@@ -33,6 +33,7 @@ const appState = window.appState;
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initApp();
+  initScrollReveal();
 });
 
 /**
@@ -89,9 +90,29 @@ async function initApp() {
   // v6.0 Proactive Monitoring
   startProactiveMonitoring();
 
+  // Standardize Branding
+  updateBranding();
+
   appState.isInitialized = true;
   console.log('✅ SYMPHONY_OS_ONLINE');
   showToast('Symphony OS', 'Neural Link Established. System Ready.', 'success');
+}
+
+/**
+ * Handle scrollreveal animations
+ */
+function initScrollReveal() {
+  const elements = document.querySelectorAll('.scroll-reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  elements.forEach(el => observer.observe(el));
 }
 
 /**
@@ -101,13 +122,19 @@ function initScrollHandler() {
   const header = document.querySelector('.header');
   if (!header) return;
 
+  let ticking = false;
   window.addEventListener('scroll', () => {
-    const isScrolled = window.scrollY > 20;
-    header.classList.toggle('scrolled', isScrolled);
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const isScrolled = window.scrollY > 20;
+        header.classList.toggle('scrolled', isScrolled);
 
-    // Mobile header hide/show on scroll
-    if (appState.context.device.isMobile) {
-      handleMobileHeaderScroll();
+        if (appState.context.device.isMobile) {
+          handleMobileHeaderScroll();
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   }, { passive: true });
 }
@@ -1406,10 +1433,11 @@ function startProactiveMonitoring() {
 }
 
 function updateBranding() {
-  const versionNodes = document.querySelectorAll('p, span, div');
+  const versionNodes = document.querySelectorAll('p, span, div, h1, h2, h3');
   versionNodes.forEach(node => {
-    if (node.textContent.includes('v5.0.0')) {
-      node.textContent = node.textContent.replace('v5.0.0', 'v5.1.0');
+    const text = node.textContent;
+    if (text.includes('v5.0.0') || text.includes('v5.1.0') || text.includes('v6.0')) {
+      node.innerHTML = node.innerHTML.replace(/(v5\.0\.0|v5\.1\.0|v6\.0)/g, 'v6.1');
     }
   });
 }

@@ -3,7 +3,7 @@
  * Animations & Motion Design
  */
 
-/* ===== Premium V6.0 Motion Design ===== */
+/* ===== Premium V6.1 Motion Design ===== */
 
 @keyframes fadeIn {
     from {
@@ -18,12 +18,34 @@
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.98);
+        transform: translateY(20px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
     }
 }
 
@@ -300,10 +322,10 @@
     animation: shimmer 2s linear infinite;
 }
 
-/* Stagger children animations */
+/* Stagger children animations (Optimized for v6.0) */
 .stagger-children>* {
     opacity: 0;
-    animation: fadeInUp 0.6s ease-out forwards;
+    animation: fadeInUp var(--transition-slow) cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .stagger-children>*:nth-child(1) {
@@ -311,31 +333,45 @@
 }
 
 .stagger-children>*:nth-child(2) {
-    animation-delay: 0.2s;
+    animation-delay: 0.15s;
 }
 
 .stagger-children>*:nth-child(3) {
-    animation-delay: 0.3s;
+    animation-delay: 0.2s;
 }
 
 .stagger-children>*:nth-child(4) {
-    animation-delay: 0.4s;
+    animation-delay: 0.25s;
 }
 
 .stagger-children>*:nth-child(5) {
-    animation-delay: 0.5s;
+    animation-delay: 0.3s;
 }
 
 .stagger-children>*:nth-child(6) {
-    animation-delay: 0.6s;
+    animation-delay: 0.35s;
 }
 
 .stagger-children>*:nth-child(7) {
-    animation-delay: 0.7s;
+    animation-delay: 0.4s;
 }
 
 .stagger-children>*:nth-child(8) {
-    animation-delay: 0.8s;
+    animation-delay: 0.45s;
+}
+
+/* Micro-interactions */
+.tap-feedback:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+.hover-glow:hover {
+    box-shadow: var(--shadow-glow-accent);
+}
+
+.hover-slide-right:hover {
+    transform: translateX(8px);
 }
 
 /* ===== Hover Effects ===== */

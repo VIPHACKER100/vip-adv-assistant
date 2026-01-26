@@ -142,7 +142,7 @@ const performanceMonitor = {
                     <div style="display: grid; gap: var(--space-3);">
                         <div class="flex-between">
                             <span style="font-size: 12px; color: var(--text-secondary);">SYMPHONY_VERSION</span>
-                            <span class="badge badge-accent">v6.0.0-GOLD</span>
+                            <span class="badge badge-accent">v6.1.0-GOLD</span>
                         </div>
                         <div class="flex-between">
                             <span style="font-size: 12px; color: var(--text-secondary);">BOOT_TIME</span>

@@ -1,5 +1,5 @@
 /**
- * VIP AI Assistant - SYMPHONY KERNEL v6.0
+ * VIP AI Assistant - SYMPHONY KERNEL v6.1
  * Neural Engine & Function Registry
  */
 
@@ -72,10 +72,10 @@ function getFunctionCategories() {
         { id: 'context_analysis', icon: '📊', title: 'Context Analysis', description: 'Analyze device and user context' },
         { id: 'predict_next_action', icon: '🔮', title: 'Predict Next Action', description: 'AI predictions based on patterns' },
         { id: 'memory_recall', icon: '🧩', title: 'Memory Recall', description: 'Search through device history' },
-                { id: 'cognitive_memory_store', icon: '🧠', title: 'Cognitive Memory Store', description: 'Store contextual information in vector memory', badge: 'V6_ENGINE', badgeType: 'accent' },
-                { id: 'cognitive_memory_recall', icon: '🔮', title: 'Cognitive Recall', description: 'Retrieve relevant memories using semantic search', badge: 'V6_ENGINE', badgeType: 'accent' },
-                { id: 'cognitive_memory_forget', icon: '🗑️', title: 'Forget Memory', description: 'Remove specific memories from cognitive store', badge: 'V6_ENGINE', badgeType: 'error' },
-                { id: 'cognitive_memory_summary', icon: '📊', title: 'Memory Summary', description: 'View cognitive memory statistics and insights', badge: 'V6_ENGINE', badgeType: 'success' },
+        { id: 'cognitive_memory_store', icon: '🧠', title: 'Cognitive Memory Store', description: 'Store contextual information in vector memory', badge: 'V6_ENGINE', badgeType: 'accent' },
+        { id: 'cognitive_memory_recall', icon: '🔮', title: 'Cognitive Recall', description: 'Retrieve relevant memories using semantic search', badge: 'V6_ENGINE', badgeType: 'accent' },
+        { id: 'cognitive_memory_forget', icon: '🗑️', title: 'Forget Memory', description: 'Remove specific memories from cognitive store', badge: 'V6_ENGINE', badgeType: 'error' },
+        { id: 'cognitive_memory_summary', icon: '📊', title: 'Memory Summary', description: 'View cognitive memory statistics and insights', badge: 'V6_ENGINE', badgeType: 'success' },
         { id: 'location_intelligence', icon: '📍', title: 'Location Intelligence', description: 'Context-aware location-based actions' },
         { id: 'behavior_patterns', icon: '📈', title: 'Behavior Patterns', description: 'Analyze and learn usage patterns' }
       ]

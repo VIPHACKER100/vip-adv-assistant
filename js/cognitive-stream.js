@@ -5,7 +5,7 @@
 
 const cognitiveStream = {
     lines: [
-        '> INITIALIZING_SYMPHONY_V6_KERNEL...',
+        '> INITIALIZING_SYMPHONY_V6_KERNEL v6.1...',
         '> SYNCING_NEURAL_WEAVE_PROTOCOLS...',
         '> GHOST_SHELL_INTERFACE_READY',
         '> BIO_METRIC_ACCELERATION_ENABLED'

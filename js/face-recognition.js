@@ -37,7 +37,7 @@ class FaceRecognitionManager {
             // Then load models with timeout protection
             await Promise.race([
                 this.loadModels(),
-                new Promise((_, reject) => 
+                new Promise((_, reject) =>
                     setTimeout(() => reject(new Error('Model loading timeout')), 30000)
                 )
             ]);
@@ -66,39 +66,50 @@ class FaceRecognitionManager {
             }
 
             const modelPath = './models';
-            
+
             console.log('📦 Loading face recognition models from:', modelPath);
 
-            const modelLoadPromises = [
-                faceapi.nets.tinyFaceDetector.loadFromUri(modelPath),
-                faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
-                faceapi.nets.faceRecognitionNet.loadFromUri(modelPath)
-            ];
+            // Load tiny face detector, landmarks and recognition models
+            await faceapi.nets.tinyFaceDetector.loadFromUri(modelPath);
+            await faceapi.nets.faceLandmark68Net.loadFromUri(modelPath);
+            await faceapi.nets.faceRecognitionNet.loadFromUri(modelPath);
 
-            await Promise.all(modelLoadPromises);
-            
             this.isModelLoaded = true;
             console.log('✅ Face Recognition Models Loaded Successfully');
-            
+
             // Update UI status
             const statusElem = document.getElementById('systemStatus');
             if (statusElem) {
                 statusElem.textContent = 'READY';
                 statusElem.style.color = 'var(--color-success-400)';
             }
-            
+
+            // Show the Face ID buttons in header and mobile tab
+            const faceIdBtn = document.getElementById('faceIdBtn');
+            const mobileFaceIdBtn = document.getElementById('tab-faceid');
+
+            if (faceIdBtn) {
+                faceIdBtn.style.display = 'flex';
+                faceIdBtn.classList.add('animate-fade-in');
+            }
+            if (mobileFaceIdBtn) {
+                mobileFaceIdBtn.style.display = 'flex';
+                mobileFaceIdBtn.classList.add('animate-fade-in');
+            }
+            console.log('🔓 Face ID interface unlocked');
+
             return true;
         } catch (error) {
             console.error('❌ Model Loading Error:', error);
             this.isModelLoaded = false;
-            
+
             // Update UI with error status
             const statusElem = document.getElementById('systemStatus');
             if (statusElem) {
                 statusElem.textContent = 'OFFLINE';
                 statusElem.style.color = 'var(--color-error-400)';
             }
-            
+
             throw new Error(`Failed to load face recognition models: ${error.message}`);
         }
     }
@@ -112,7 +123,10 @@ class FaceRecognitionManager {
         <div class="face-recognition-container animate-slide-up">
           <div class="face-recognition-header">
             <h2 class="face-recognition-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">🔐 BIOMETRIC_ID_VERIFICATION</h2>
-            <button class="face-recognition-close" onclick="faceRecognition.close()">✕</button>
+            <div style="display: flex; gap: var(--space-2);">
+              <button class="face-recognition-close" onclick="faceRecognition.showHelp()" title="Biometric Help" style="background: var(--glass-bg-strong); color: var(--color-accent-400);">?</button>
+              <button class="face-recognition-close" onclick="faceRecognition.close()">✕</button>
+            </div>
           </div>
 
           <div class="face-recognition-status" id="faceStatus">
@@ -137,6 +151,10 @@ class FaceRecognitionManager {
             <button class="btn btn-accent btn-sm" id="registerBtn" onclick="faceRecognition.registerFace()">
               <span>➕</span>
               <span>REGISTER_BIO_NODE</span>
+            </button>
+            <button class="btn btn-glass btn-sm" onclick="faceRecognition.clearRegisteredFaces()" title="Wipe all face data">
+              <span>🗑️</span>
+              <span>WIPE_DATA</span>
             </button>
           </div>
 
@@ -264,18 +282,22 @@ class FaceRecognitionManager {
     }
 
     /**
-     * Start face recognition
-     */
     async startRecognition() {
         if (!this.video || this.video.paused) {
             this.safeToast('Camera sensor offline', 'warning');
             return;
         }
 
+        if (this.registeredFaces.length === 0) {
+            this.safeToast('No registered faces found. Please register first.', 'info');
+        }
+
         this.isScanning = true;
         document.getElementById('scanningOverlay').classList.add('active');
         this.updateStatus('🔍', 'SCAN_IN_PROGRESS', 'ANALYZING_FACIAL_TOPOLOGY...');
-        document.getElementById('systemStatus').textContent = 'SCANNING';
+        
+        const systemStatus = document.getElementById('systemStatus');
+        if (systemStatus) systemStatus.textContent = 'SCANNING';
 
         if (window.cognitiveStream) {
             window.cognitiveStream.addLine('> BIO_ID: STARTING_SCAN_SEQUENCE');
@@ -297,7 +319,7 @@ class FaceRecognitionManager {
             }
 
             const detections = await faceapi
-                .detectAllFaces(this.video, new faceapi.TinyFaceDetectorOptions())
+                .detectAllFaces(this.video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 }))
                 .withFaceLandmarks()
                 .withFaceDescriptors();
 
@@ -307,33 +329,45 @@ class FaceRecognitionManager {
                 ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
                 if (detections.length > 0) {
-                    // Draw detections
-                    faceapi.draw.drawDetections(this.canvas, detections);
-                    faceapi.draw.drawFaceLandmarks(this.canvas, detections);
+                    // Match dimensions for accurate drawing
+                    const displaySize = { width: this.video.videoWidth, height: this.video.videoHeight };
+                    faceapi.matchDimensions(this.canvas, displaySize);
 
-                    // Try to recognize
+                    // Resize results to match canvas
+                    const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+                    // Draw detections
+                    faceapi.draw.drawDetections(this.canvas, resizedDetections);
+                    faceapi.draw.drawFaceLandmarks(this.canvas, resizedDetections);
+
+                    // Try to recognize using the first detection
                     const recognition = this.recognizeFace(detections[0].descriptor);
 
                     if (recognition) {
                         this.onRecognitionSuccess(recognition);
                     } else {
-                        this.updateStatus('👤', 'Face Detected', 'Unknown person - Register to identify');
+                        this.updateStatus('👤', 'UNKNOWN_ENTITY', 'Target not in bio-database');
                         const confidence = (detections[0].detection.score * 100).toFixed(1);
                         document.getElementById('confidenceValue').textContent = confidence + '%';
                     }
                 } else {
-                    this.updateStatus('🔍', 'Scanning...', 'No face detected');
+                    this.updateStatus('🔍', 'SCANNING...', 'No face detected in field');
                     document.getElementById('confidenceValue').textContent = '--';
                 }
             }
 
-            // Schedule next detection with proper cleanup
+            // Schedule next detection with proper cleanup and throttling
             if (this.isScanning) {
-                this.detectionTimeout = setTimeout(() => this.detectFaces(), 100);
+                this.detectionTimeout = setTimeout(() => {
+                    requestAnimationFrame(() => this.detectFaces());
+                }, 100);
             }
         } catch (error) {
             console.error('Detection Error:', error);
-            this.stopDetection();
+            // Don't stop on single error, but slow down
+            if (this.isScanning) {
+                this.detectionTimeout = setTimeout(() => this.detectFaces(), 1000);
+            }
         }
     }
 
@@ -350,13 +384,13 @@ class FaceRecognitionManager {
 
         try {
             const detection = await faceapi
-                .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions())
+                .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.5 }))
                 .withFaceLandmarks()
                 .withFaceDescriptor();
 
             if (!detection) {
                 this.safeToast('No face detected. Please try again.', 'warning');
-                this.updateStatus('❌', 'No Face Detected', 'Please position your face clearly');
+                this.updateStatus('❌', 'LOCK_FAILED', 'Target must be centered and clear');
                 return;
             }
 
@@ -410,8 +444,8 @@ class FaceRecognitionManager {
             try {
                 // Ensure both descriptors are proper format
                 const registeredDescriptor = new Float32Array(registered.descriptor);
-                const currentDescriptor = descriptor instanceof Float32Array 
-                    ? descriptor 
+                const currentDescriptor = descriptor instanceof Float32Array
+                    ? descriptor
                     : new Float32Array(descriptor);
 
                 const distance = faceapi.euclideanDistance(currentDescriptor, registeredDescriptor);
@@ -549,6 +583,21 @@ class FaceRecognitionManager {
                 timestamp: Date.now()
             });
         }
+    }
+    /**
+     * Show Face Recognition Help
+     */
+    showHelp() {
+        const helpMessage = `
+            BIOMETRIC SECURE LINK GUIDE:
+            
+            1. REGISTER_BIO_NODE: Capture your facial signature into the local neural database.
+            2. START_SCAN: Initialize real-time tracking to verify your identity.
+            3. WIPE_DATA: Securely erase all stored biometric signatures.
+            
+            Note: All biometric data stays strictly on this device kernel. No data is transmitted to the cloud.
+        `;
+        alert(helpMessage);
     }
 }
 

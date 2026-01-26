@@ -3,10 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <meta name="description"
-    content="VIP Symphony v6.0 - Premium Neural OS with 75+ automated control functions and real-time biometric intelligence">
-  <meta name="theme-color" content="#22D3EE">
+    content="VIP Symphony v6.2 - Premium Neural OS with 75+ automated control functions, enhanced mobile UI, and real-time biometric intelligence">
+  <meta name="theme-color" content="#22D3EE" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0EA5E9" media="(prefers-color-scheme: light)">
   <title>VIP SYMPHONY | Neural Mobile Interface</title>
 
   <!-- PWA Manifest -->
@@ -14,6 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="VIP AI">
+  <meta name="mobile-web-app-capable" content="yes">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,23 +61,25 @@
         </div>
         <nav class="header-actions" aria-label="Main controls">
           <div class="action-group hide-mobile">
-            <button class="icon-btn" id="searchBtn" title="Search (Ctrl+K)" onclick="openSearch()">
+            <button class="icon-btn" id="searchBtn" data-tooltip="Search (Ctrl+K)" onclick="openSearch()">
               <span>🔍</span>
             </button>
-            <button class="icon-btn" id="voiceAccessBtn" title="Voice Access (Ctrl+M)" onclick="toggleVoiceAccess()">
+            <button class="icon-btn" id="voiceAccessBtn" data-tooltip="Voice Access (Ctrl+M)"
+              onclick="toggleVoiceAccess()">
               <span>🎤</span>
             </button>
-            <button class="icon-btn" id="voiceSettingsBtn" title="Voice Settings"
+            <button class="icon-btn" id="voiceSettingsBtn" data-tooltip="Voice Settings"
               onclick="voiceManager.showVoiceSelector()">
               <span>🎙️</span>
             </button>
           </div>
 
           <div class="action-group">
-            <button class="icon-btn" id="aiChatBtn" title="AI Assistant (Ctrl+J)" onclick="chatManager.toggleChat()">
+            <button class="icon-btn" id="aiChatBtn" data-tooltip="AI Assistant (Ctrl+J)"
+              onclick="chatManager.toggleChat()">
               <span>💬</span>
             </button>
-            <button class="icon-btn" id="notificationBtn" title="Notifications"
+            <button class="icon-btn" id="notificationBtn" data-tooltip="Notifications"
               onclick="notificationManager.togglePanel()">
               <span>🔔</span>
               <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
@@ -83,24 +87,25 @@
           </div>
 
           <div class="action-group hide-mobile">
-            <button class="icon-btn" id="favoritesBtn" title="Favorites"
+            <button class="icon-btn" id="favoritesBtn" data-tooltip="Favorites"
               onclick="favoritesManager.showFavoritesModal()">
               <span>⭐</span>
             </button>
-            <button class="icon-btn" id="recentBtn" title="Recent (Ctrl+R)"
+            <button class="icon-btn" id="recentBtn" data-tooltip="Recent (Ctrl+R)"
               onclick="recentFunctionsManager.showHistoryModal()">
               <span>🕒</span>
             </button>
           </div>
 
           <div class="action-group">
-            <button class="icon-btn" id="hudBtn" title="Command Center HUD" onclick="toggleHUD()">
+            <button class="icon-btn" id="hudBtn" data-tooltip="Command Center HUD" onclick="toggleHUD()">
               <span>🛰️</span>
             </button>
-            <button class="icon-btn" id="faceIdBtn" title="Face ID Recognition" onclick="faceRecognition.open()" style="display: none;">
+            <button class="icon-btn" id="faceIdBtn" data-tooltip="Face ID Recognition" onclick="faceRecognition.open()"
+              style="display: none;">
               <span>🔐</span>
             </button>
-            <button class="icon-btn" id="settingsBtn" title="Settings (Ctrl+,)" onclick="showModal('settings')">
+            <button class="icon-btn" id="settingsBtn" data-tooltip="Settings (Ctrl+,)" onclick="showModal('settings')">
               <span>⚙️</span>
             </button>
           </div>
@@ -117,19 +122,20 @@
   <!-- Main Content -->
   <main>
     <!-- Hero Section -->
-    <section class="hero content-reveal">
+    <section class="hero scroll-reveal">
       <div class="container">
         <div class="hero-badge animate-fade-in">
-          <span class="badge badge-accent">V6.0 SYMPHONY RELEASE</span>
+          <span class="badge badge-accent">V6.2 MOBILE-FIRST EDITION</span>
         </div>
         <h1 class="hero-title animate-fade-in-up">
           The Future of <span style="color: var(--color-accent-400)">Neural Autonomy</span>
         </h1>
         <p class="hero-subtitle animate-fade-in-up" style="animation-delay: 0.1s;">
-          Experience SYMPHONY v6.0 — the elite neural companion with 75+ strategic control modules.
-          Orchestrate device hardware, synthetic workflows, and predictive intelligence via the Unified Command Center.
+          Experience SYMPHONY v6.2 — the elite neural companion with 75+ strategic control modules and enhanced
+          mobile-first design.
+          Orchestrate device hardware, synthetic workflows, and predictive intelligence via touch-optimized interfaces.
         </p>
-        <div class="hero-actions animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="hero-actions stagger-children" style="margin-top: var(--space-8);">
           <button class="btn btn-primary btn-lg hover-glow" onclick="window.scrollTo({top: 900, behavior: 'smooth'})">
             <span>🚀</span>
             <span>Initialize Hub</span>
@@ -143,8 +149,8 @@
     </section>
 
     <!-- Intelligence Widgets Section -->
-    <section class="intelligence-hub container">
-      <div class="widgets-grid">
+    <section class="intelligence-hub container scroll-reveal">
+      <div class="widgets-grid stagger-children">
         <!-- System Health Widget -->
         <div class="widget-card animate-fade-in-up" style="animation-delay: 0.3s;">
           <div class="widget-header">
@@ -317,7 +323,7 @@
     </aside>
 
     <!-- Quick Actions -->
-    <section class="quick-actions" id="quick-actions">
+    <section class="quick-actions scroll-reveal" id="quick-actions">
       <div class="container">
         <h2 class="section-title">⚡ Quick Actions</h2>
         <p class="section-subtitle">Most-used functions at your fingertips</p>
@@ -326,11 +332,11 @@
     </section>
 
     <!-- Function Categories -->
-    <section class="categories">
+    <section class="categories scroll-reveal">
       <div class="container">
         <h2 class="section-title">🎨 All Features</h2>
-        <p class="section-subtitle">Explore all 50+ AI-powered capabilities</p>
-        <div id="categoriesContainer"></div>
+        <p class="section-subtitle">Explore all 75+ AI-powered capabilities</p>
+        <div id="categoriesContainer" class="stagger-children"></div>
       </div>
     </section>
   </main>
@@ -352,13 +358,14 @@
         <span class="tab-icon">🎤</span>
       </div>
     </button>
+    <button class="tab-item" id="tab-faceid" onclick="faceRecognition.open(); setMobileTabActive('tab-faceid')"
+      style="display: none;">
+      <span class="tab-icon">🔐</span>
+      <span class="tab-label">FACE_ID</span>
+    </button>
     <button class="tab-item" id="tab-chat" onclick="chatManager.toggleChat(); setMobileTabActive('tab-chat')">
       <span class="tab-icon">💬</span>
       <span class="tab-label">AI_HUB</span>
-    </button>
-    <button class="tab-item" id="tab-settings" onclick="showModal('settings'); setMobileTabActive('tab-settings')">
-      <span class="tab-icon">⚙️</span>
-      <span class="tab-label">SYSTEM</span>
     </button>
   </nav>
 
@@ -398,7 +405,7 @@
       <p>&copy; 2026 VIP Advanced AI Ecosystem. Precision Control. Future Ready.</p>
       <p
         style="margin-top: var(--space-2); font-size: 11px; font-family: var(--font-family-mono); color: var(--color-accent-400); opacity: 0.8;">
-        KERNEL_OS: v6.0.0-SYMPHONY_BETA_GOLD
+        KERNEL_OS: v6.2.0-SYMPHONY_MOBILE_PLATINUM
       </p>
       <div
         style="margin-top: var(--space-6); display: flex; justify-content: center; gap: var(--space-6); font-size: var(--font-size-sm);">
@@ -423,38 +430,38 @@
   <!-- Scripts -->
   <!-- Face Recognition Library -->
   <script src="libs/face-api.min.js"></script>
-  <script src="js/app.js?v=6.0.0"></script>
-  <script src="js/functions.js?v=6.0.0"></script>
-  <script src="js/automation.js?v=6.0.0"></script>
-  <script src="js/openai-handler.js?v=6.0.0"></script>
+  <script src="js/app.js?v=6.2.0"></script>
+  <script src="js/functions.js?v=6.2.0"></script>
+  <script src="js/automation.js?v=6.2.0"></script>
+  <script src="js/openai-handler.js?v=6.2.0"></script>
   <!-- Enhanced Voice System -->
-  <script src="js/voice-manager.js?v=6.0.0"></script>
-  <script src="js/voice-access.js?v=6.0.0"></script>
-  <script src="js/about.js?v=6.0.0"></script>
-  <!-- v6.0 Command Center -->
-  <script src="js/command-center.js?v=6.0.0"></script>
-  <!-- v6.0 Enhanced Features -->
-  <script src="js/theme-manager.js?v=6.0.0"></script>
-  <script src="js/search.js?v=6.0.0"></script>
-  <script src="js/favorites.js?v=6.0.0"></script>
-  <script src="js/keyboard-shortcuts.js?v=6.0.0"></script>
-  <!-- v6.0 Advanced Features -->
-  <script src="js/export-import.js?v=6.0.0"></script>
-  <script src="js/performance-monitor.js?v=6.0.0"></script>
-  <!-- v6.0 Power User Features -->
-  <script src="js/recent-functions.js?v=6.0.0"></script>
-  <script src="js/shortcut-editor.js?v=6.0.0"></script>
-  <!-- v6.0 Smart Hub Features -->
-  <script src="js/chat-manager.js?v=6.0.0"></script>
-  <script src="js/notification-manager.js?v=6.0.0"></script>
-  <!-- v6.0 Always-Listening System -->
-  <script src="js/always-listening.js?v=6.0.0"></script>
-  <!-- v6.0 Cognitive Stream -->
-  <script src="js/cognitive-stream.js?v=6.0.0"></script>
-  <!-- v6.0 Cognitive Memory System -->
-  <script src="js/cognitive-memory.js?v=6.0.0"></script>
+  <script src="js/voice-manager.js?v=6.2.0"></script>
+  <script src="js/voice-access.js?v=6.2.0"></script>
+  <script src="js/about.js?v=6.2.0"></script>
+  <!-- v6.2 Command Center -->
+  <script src="js/command-center.js?v=6.2.0"></script>
+  <!-- v6.2 Enhanced Features -->
+  <script src="js/theme-manager.js?v=6.2.0"></script>
+  <script src="js/search.js?v=6.2.0"></script>
+  <script src="js/favorites.js?v=6.2.0"></script>
+  <script src="js/keyboard-shortcuts.js?v=6.2.0"></script>
+  <!-- v6.2 Advanced Features -->
+  <script src="js/export-import.js?v=6.2.0"></script>
+  <script src="js/performance-monitor.js?v=6.2.0"></script>
+  <!-- v6.2 Power User Features -->
+  <script src="js/recent-functions.js?v=6.2.0"></script>
+  <script src="js/shortcut-editor.js?v=6.2.0"></script>
+  <!-- v6.2 Smart Hub Features -->
+  <script src="js/chat-manager.js?v=6.2.0"></script>
+  <script src="js/notification-manager.js?v=6.2.0"></script>
+  <!-- v6.2 Always-Listening System -->
+  <script src="js/always-listening.js?v=6.2.0"></script>
+  <!-- v6.2 Cognitive Stream -->
+  <script src="js/cognitive-stream.js?v=6.2.0"></script>
+  <!-- v6.2 Cognitive Memory System -->
+  <script src="js/cognitive-memory.js?v=6.2.0"></script>
   <!-- Face Recognition System -->
-  <script src="js/face-recognition.js?v=6.0.0"></script>
+  <script src="js/face-recognition.js?v=6.2.0"></script>
 
   <script>
     // Initialize all features

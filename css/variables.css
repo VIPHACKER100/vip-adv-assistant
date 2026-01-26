@@ -1,9 +1,51 @@
 /**
- * VIP AI Assistant - Enhanced Design System v6.0
- * Premium dark theme with advanced glassmorphism and modern aesthetics
+ * VIP AI Assistant - Enhanced Design System v6.2
+ * Premium dark theme with advanced glassmorphism and mobile-first design
  */
 
 :root {
+  /* ===== Mobile-Specific Design Tokens ===== */
+  /* Touch Target Sizes (Apple HIG & Material Design compliant) */
+  --touch-target-min: 48px;
+  --touch-target-comfortable: 52px;
+  --touch-target-large: 56px;
+
+  /* Mobile Spacing Scale (optimized for smaller screens) */
+  --mobile-space-xs: 0.5rem;
+  /* 8px */
+  --mobile-space-sm: 0.75rem;
+  /* 12px */
+  --mobile-space-md: 1rem;
+  /* 16px */
+  --mobile-space-lg: 1.25rem;
+  /* 20px */
+  --mobile-space-xl: 1.5rem;
+  /* 24px */
+
+  /* Safe Area Insets (for notched devices) */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+
+  /* Mobile Font Sizes (optimized for readability) */
+  --mobile-font-xs: 0.75rem;
+  /* 12px */
+  --mobile-font-sm: 0.875rem;
+  /* 14px */
+  --mobile-font-base: 1rem;
+  /* 16px */
+  --mobile-font-lg: 1.125rem;
+  /* 18px */
+  --mobile-font-xl: 1.25rem;
+  /* 20px */
+
+  /* Mobile Blur Levels (reduced for performance) */
+  --mobile-blur-sm: 8px;
+  --mobile-blur-md: 12px;
+  --mobile-blur-lg: 16px;
+
+
   /* ===== Enhanced Color Palette ===== */
   /* Primary - Deep Purple/Blue with better contrast */
   --color-primary-950: hsl(250, 65%, 8%);
@@ -312,7 +354,7 @@
   --bg-primary-high-contrast: #ffffff;
   --bg-secondary-high-contrast: #f8fafc;
   --border-primary-high-contrast: #cbd5e1;
-  
+
   /* Focus and accessibility colors */
   --color-accessible-focus: #2563eb;
   --color-accessible-focus-outline: #dbeafe;

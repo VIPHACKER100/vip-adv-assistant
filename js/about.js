@@ -56,8 +56,11 @@ function showAboutModal() {
             </ul>
           </div>
 
-          <div class="about-footer-note">
+          <div class="about-footer-note" style="margin-top: 15px;">
             ${aboutData.legal}
+            <div style="margin-top: 10px;">
+              <a href="V6.1_QUICK_START.md" target="_blank" style="color: var(--color-accent-400); font-size: 12px; text-decoration: underline;">Open Quick Start Guide</a>
+            </div>
           </div>
         </div>
         <div class="modal-footer" style="justify-content: center;">
