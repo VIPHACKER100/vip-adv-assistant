@@ -1,6 +1,6 @@
 {
     "name": "vip-ai-symphony",
-    "version": "6.2.0",
+    "version": "7.0.0",
     "description": "Premium AI assistant with 75+ functions, mobile-first design, voice control, AI chat, and automation",
     "type": "module",
     "main": "index.html",
@@ -8,9 +8,9 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "test:coverage": "jest --coverage",
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+        "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
         "test:a11y": "jest --testMatch='**/*.a11y.test.js'",
@@ -81,11 +81,11 @@
         "lint-staged": "^15.2.0",
         "prettier": "^3.2.4",
         "typescript": "^5.3.3",
-        "vite": "^5.0.12",
+        "vite": "^7.3.1",
         "vite-bundle-visualizer": "^1.0.1",
         "vite-plugin-compression": "^0.5.1",
         "vite-plugin-html": "^3.2.2",
-        "vite-plugin-pwa": "^0.17.5",
+        "vite-plugin-pwa": "^1.2.0",
         "vite-plugin-webfont-dl": "^3.9.1",
         "workbox-build": "^7.0.0",
         "workbox-precaching": "^7.0.0",
@@ -117,7 +117,7 @@
             "!**/node_modules/**",
             "!**/vendor/**"
         ],
-        "coverageThresholds": {
+        "coverageThreshold": {
             "global": {
                 "branches": 70,
                 "functions": 70,

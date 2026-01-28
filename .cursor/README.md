@@ -1,10 +1,12 @@
 # Cursor MCP Configuration
 
-This directory contains MCP (Model Context Protocol) server configurations for Cursor IDE.
+This directory contains MCP (Model Context Protocol) server configurations for
+Cursor IDE.
 
 ## Current Configuration
 
 ### TestSprite MCP
+
 - **Status**: ✅ Installed and configured
 - **Config File**: `mcp.json`
 - **Package**: `@testsprite/testsprite-mcp@latest`
@@ -14,7 +16,8 @@ This directory contains MCP (Model Context Protocol) server configurations for C
 
 1. **Set API Key** (choose one method):
    - Run `setup_testsprite.ps1` script
-   - Or manually set: `[System.Environment]::SetEnvironmentVariable('TESTSPRITE_API_KEY', 'your-key', 'User')`
+   - Or manually set:
+     `[System.Environment]::SetEnvironmentVariable('TESTSPRITE_API_KEY', 'your-key', 'User')`
 
 2. **Restart Cursor IDE**
 
@@ -23,6 +26,7 @@ This directory contains MCP (Model Context Protocol) server configurations for C
 ## Usage
 
 Once configured, you can use TestSprite in Cursor chat:
+
 - "Run tests using TestSprite"
 - "Test my application"
 - "Generate test report"

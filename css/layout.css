@@ -5,163 +5,169 @@
 
 /* Main Container & Background Control */
 .app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: var(--nav-height);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--nav-height);
 }
 
 .app-background {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(circle at 50% 50%, var(--color-surface-900) 0%, var(--color-foundation) 100%);
-    overflow: hidden;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--color-surface-900) 0%,
+    var(--color-foundation) 100%
+  );
+  overflow: hidden;
 }
 
 .glow-orb {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.15;
-    pointer-events: none;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .orb-1 {
-    top: -150px;
-    left: -150px;
-    background: var(--color-primary);
+  top: -150px;
+  left: -150px;
+  background: var(--color-primary);
 }
 
 .orb-2 {
-    bottom: -150px;
-    right: -150px;
-    background: var(--color-secondary);
+  bottom: -150px;
+  right: -150px;
+  background: var(--color-secondary);
 }
 
 /* Unified Mobile Header */
 .header {
-    position: sticky;
-    top: 0;
-    z-index: var(--z-sticky);
-    padding: calc(var(--s4) + var(--safe-area-top)) var(--s6) var(--s4);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  padding: calc(var(--s4) + var(--safe-area-top)) var(--s6) var(--s4);
 }
 
 .header-blur {
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    background: hsla(230, 20%, 4%, 0.7);
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: hsla(230, 20%, 4%, 0.7);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
 .header-content {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: var(--s2);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
 }
 
 .logo-text {
-    font-size: 1.25rem;
-    font-weight: 800;
-    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Neural Mobile Navigation */
 .mobile-tab-bar {
-    position: fixed;
-    bottom: var(--s4);
-    left: var(--s4);
-    right: var(--s4);
-    height: 64px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: var(--z-fixed);
-    padding-bottom: var(--safe-area-bottom);
-    border-radius: 32px;
-    /* Super rounded for mobile */
+  position: fixed;
+  bottom: var(--s4);
+  left: var(--s4);
+  right: var(--s4);
+  height: 64px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: var(--z-fixed);
+  padding-bottom: var(--safe-area-bottom);
+  border-radius: 32px;
+  /* Super rounded for mobile */
 }
 
 .tab-item {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: var(--s1);
-    color: var(--text-mute);
-    transition: var(--t-neural);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s1);
+  color: var(--text-mute);
+  transition: var(--t-neural);
 }
 
 .tab-item.active {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .tab-icon {
-    font-size: 1.5rem;
-    transition: transform var(--t-bounce);
+  font-size: 1.5rem;
+  transition: transform var(--t-bounce);
 }
 
 .tab-item.active .tab-icon {
-    transform: translateY(-4px) scale(1.1);
-    text-shadow: var(--shadow-neon-primary);
+  transform: translateY(-4px) scale(1.1);
+  text-shadow: var(--shadow-neon-primary);
 }
 
 /* Floating Kernel Pill */
 .mobile-status-pill {
-    position: fixed;
-    bottom: calc(var(--nav-height) + var(--s2));
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 180px;
-    height: var(--pill-height);
-    display: none !important;
-    /* Hidden by default */
-    align-items: center;
-    justify-content: center;
-    gap: var(--s4);
-    padding: 0 var(--s4);
-    z-index: var(--z-overlay);
-    cursor: grab;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.30s ease;
+  position: fixed;
+  bottom: calc(var(--nav-height) + var(--s2));
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  height: var(--pill-height);
+  display: none !important;
+  /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  gap: var(--s4);
+  padding: 0 var(--s4);
+  z-index: var(--z-overlay);
+  cursor: grab;
+  transition:
+    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.3s ease;
 }
 
 /* Section Controls */
 .section {
-    padding: var(--s10) var(--s6);
+  padding: var(--s10) var(--s6);
 }
 
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Responsive Overrides (preserving mobile-first) */
 @media (min-width: 768px) {
-    .header {
-        padding: var(--s8) var(--s12);
-    }
+  .header {
+    padding: var(--s8) var(--s12);
+  }
 
-    .mobile-tab-bar {
-        max-width: 480px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+  .mobile-tab-bar {
+    max-width: 480px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }

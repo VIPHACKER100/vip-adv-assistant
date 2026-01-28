@@ -1,5 +1,9 @@
-import utils from './utils.js';
 import errorHandler from './error-handler.js';
+import store from './store.js';
+import themeHub from './theme-hub.js';
+import utils from './utils.js';
+import './gestures.js';
+import './spatial-nav.js';
 
 /**
  * VIP AI SYMPHONY - Core Kernel v7.0
@@ -8,29 +12,14 @@ import errorHandler from './error-handler.js';
 
 class VIPApp {
   constructor() {
-    this.state = {
-      theme: 'dark',
-      isSidebarOpen: false,
-      isNotificationPanelOpen: false,
-      isInitialized: false,
-      context: {
-        location: null,
-        battery: null,
-        network: null,
-        device: {
-          isMobile: false,
-          type: 'Desktop',
-          os: 'Windows/MacOS',
-          cores: navigator.hardwareConcurrency || 8
-        },
-        location: {
-          city: 'Detecting...',
-          lat: null,
-          lon: null,
-          weather: { temp: '--', desc: 'Syncing...' }
-        }
-      }
-    };
+    this.store = store;
+    this.state = store.state; // Link local state to store initially
+
+    // Subscribe to store changes
+    this.store.subscribe((newState) => {
+      this.state = newState;
+      window.appState = newState; // Keep global in sync
+    });
 
     this.lastScrollTop = 0;
 
@@ -49,11 +38,22 @@ class VIPApp {
 
       // Wait for DOM content to be fully loaded
       if (document.readyState === 'loading') {
-        await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve));
+        await new Promise((resolve) => document.addEventListener('DOMContentLoaded', resolve));
+      }
+
+      // Start Splash Progress
+      const splashProgress = document.querySelector('.splash-progress');
+      if (splashProgress) {
+        setTimeout(() => (splashProgress.style.width = '100%'), 100);
       }
 
       // Setup device info
       this.detectDevice();
+
+      // Initialize automation engine
+      if (window.initAutomation) {
+        window.initAutomation();
+      }
 
       // Initialize UI components
       this.initParticles();
@@ -61,6 +61,8 @@ class VIPApp {
       this.setupEventListeners();
       this.initScrollHandler();
       this.initScrollReveal();
+      this.initMotionParallax();
+      this.initPullToRefresh(); // Added for mobile feel
 
       // Initialize Performance Monitor
       if (window.performanceMonitor) {
@@ -110,11 +112,22 @@ class VIPApp {
       // Standardize Branding
       this.updateBranding();
 
-      this.state.isInitialized = true;
+      this.store.set({ isInitialized: true });
       console.log('✅ SYMPHONY_OS_ONLINE');
 
+      // Finalize Splash Sequence
+      const splash = document.getElementById('splashScreen');
+      if (splash) {
+        setTimeout(() => {
+          splash.classList.add('fade-out');
+          setTimeout(() => splash.remove(), 800);
+        }, 2200); // Allow progress bar to finish
+      }
+
       if (window.showToast) {
-        window.showToast('Symphony OS', 'Neural Link Established. System Ready.', 'success');
+        setTimeout(() => {
+          window.showToast('Symphony OS', 'Neural Link Established. System Ready.', 'success');
+        }, 3000);
       }
     } catch (error) {
       errorHandler.handleError(error, { context: 'app-init' });
@@ -126,16 +139,19 @@ class VIPApp {
    */
   initScrollReveal() {
     const elements = document.querySelectorAll('.scroll-reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-    elements.forEach(el => observer.observe(el));
+    elements.forEach((el) => observer.observe(el));
   }
 
   /**
@@ -143,23 +159,117 @@ class VIPApp {
    */
   initScrollHandler() {
     const header = document.querySelector('.header');
-    if (!header) return;
+    if (!header) {
+      return;
+    }
 
-    window.addEventListener('scroll', utils.throttle(() => {
-      window.requestAnimationFrame(() => {
-        const isScrolled = window.scrollY > 20;
-        header.classList.toggle('scrolled', isScrolled);
+    window.addEventListener(
+      'scroll',
+      utils.throttle(() => {
+        window.requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 20;
+          header.classList.toggle('scrolled', isScrolled);
 
-        if (this.state.context.device.isMobile) {
-          this.handleMobileHeaderScroll();
+          if (this.state.context.device.isMobile) {
+            this.handleMobileHeaderScroll();
+          }
+        });
+      }, 100),
+      { passive: true }
+    );
+  }
+
+  /**
+   * Pull-to-Refresh Implementation (v7.0)
+   * Premium mobile interaction for context synchronization
+   */
+  initPullToRefresh() {
+    let startY = 0;
+    let currentY = 0;
+    let isPulling = false;
+    const threshold = 80;
+    const container = document.querySelector('.app-container');
+
+    // Create indicator
+    const indicator = document.createElement('div');
+    indicator.className = 'ptr-indicator';
+    indicator.innerHTML = `
+      <div class="ptr-spinner"></div>
+      <div class="ptr-text">SYNCING_KERNEL...</div>
+    `;
+    document.body.prepend(indicator);
+
+    window.addEventListener('touchstart', (e) => {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].pageY;
+        isPulling = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isPulling) return;
+      currentY = e.touches[0].pageY;
+      const diff = currentY - startY;
+
+      if (diff > 0 && diff < threshold * 2) {
+        indicator.style.transform = `translateY(${Math.min(diff - 50, threshold - 40)}px)`;
+        indicator.style.opacity = Math.min(diff / threshold, 1);
+        if (diff > threshold) {
+          indicator.classList.add('ready');
+        } else {
+          indicator.classList.remove('ready');
         }
-      });
-    }, 100), { passive: true });
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', async () => {
+      if (!isPulling) return;
+      const diff = currentY - startY;
+      isPulling = false;
+
+      if (diff > threshold) {
+        indicator.classList.add('refreshing');
+        indicator.style.transform = `translateY(20px)`;
+
+        // Provide haptic feedback
+        if (utils.haptics) utils.haptics.medium();
+
+        // Simulate refresh
+        await this.refreshApplicationContext();
+
+        setTimeout(() => {
+          indicator.classList.remove('refreshing', 'ready');
+          indicator.style.transform = `translateY(-100%)`;
+          indicator.style.opacity = '0';
+        }, 1000);
+      } else {
+        indicator.style.transform = `translateY(-100%)`;
+        indicator.style.opacity = '0';
+      }
+    });
+  }
+
+  async refreshApplicationContext() {
+    console.log('🔄 REFRESHING_SYMPHONY_CONTEXT...');
+
+    // Sequence core updates
+    await Promise.all([
+      this.updateDashboardWidgets(),
+      this.fetchLiveLocationData(),
+      this.updateWeather(),
+      new Promise(r => setTimeout(r, 800)) // Min simulation time
+    ]);
+
+    if (window.showToast) {
+      window.showToast('Kernel Sync', 'Neural context successfully synchronized.', 'success');
+    }
   }
 
   handleMobileHeaderScroll() {
     const header = document.querySelector('.header');
-    if (!header) return;
+    if (!header) {
+      return;
+    }
 
     const st = window.pageYOffset || document.documentElement.scrollTop;
     if (st > this.lastScrollTop && st > 100) {
@@ -168,6 +278,44 @@ class VIPApp {
       header.style.transform = 'translateY(0)';
     }
     this.lastScrollTop = st <= 0 ? 0 : st;
+  }
+
+  /**
+   * Immersive parallax movement for background orbs (v7.0)
+   */
+  initMotionParallax() {
+    const orbs = document.querySelectorAll('.glow-orb');
+    if (!orbs.length) {
+      return;
+    }
+
+    // Use mousemove for desktop as fallback
+    if (!this.state.context.device.isMobile) {
+      window.addEventListener('mousemove', (e) => {
+        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+
+        orbs.forEach((orb, i) => {
+          const depth = (i + 1) * 2;
+          orb.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
+        });
+      });
+    } else if (window.DeviceOrientationEvent) {
+      // Mobile orientation parallax
+      window.addEventListener(
+        'deviceorientation',
+        (e) => {
+          const moveX = (e.gamma || 0) * 0.5; // -90 to 90
+          const moveY = (e.beta || 0) * 0.5; // -180 to 180 (clamped nearby)
+
+          orbs.forEach((orb, i) => {
+            const depth = (i + 1) * 3;
+            orb.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
+          });
+        },
+        true
+      );
+    }
   }
 
   /**
@@ -192,10 +340,18 @@ class VIPApp {
   }
 
   detectOS(ua) {
-    if (ua.indexOf('Win') !== -1) return 'Windows Kernel';
-    if (ua.indexOf('Mac') !== -1) return 'Darwin Core';
-    if (ua.indexOf('Android') !== -1) return 'Android Linux';
-    if (ua.indexOf('Linux') !== -1) return 'Generic Linux';
+    if (ua.indexOf('Win') !== -1) {
+      return 'Windows Kernel';
+    }
+    if (ua.indexOf('Mac') !== -1) {
+      return 'Darwin Core';
+    }
+    if (ua.indexOf('Android') !== -1) {
+      return 'Android Linux';
+    }
+    if (ua.indexOf('Linux') !== -1) {
+      return 'Generic Linux';
+    }
     return 'VIP Hybrid OS';
   }
 
@@ -204,9 +360,17 @@ class VIPApp {
    */
   initParticles() {
     const container = document.getElementById('particles');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     const particleCount = this.state.context.device.isMobile ? 10 : 40;
+
+    // Low Power Mode Optimization
+    if (document.body.classList.contains('low-power-mode')) {
+      console.log('🔋 LOW_POWER_MODE: DISABLING_PARTICLES');
+      return;
+    }
 
     for (let i = 0; i < particleCount; i++) {
       this.createParticle(container);
@@ -227,12 +391,11 @@ class VIPApp {
       height: `${size}px`,
       left: `${left}%`,
       animationDuration: `${duration}s`,
-      animationDelay: `-${delay}s`
+      animationDelay: `-${delay}s`,
     });
 
     container.appendChild(particle);
   }
-
 
   /**
    * Theme initialization
@@ -260,14 +423,14 @@ class VIPApp {
    */
   setupEventListeners() {
     // Navigation scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = anchor.getAttribute('href');
         const target = document.querySelector(targetId);
         if (target) {
           target.scrollIntoView({
-            behavior: 'smooth'
+            behavior: 'smooth',
           });
         }
       });
@@ -278,7 +441,9 @@ class VIPApp {
       // Ctrl+K for search
       if (e.ctrlKey && e.key === 'k') {
         e.preventDefault();
-        if (window.openSearch) window.openSearch();
+        if (window.openSearch) {
+          window.openSearch();
+        }
       }
 
       // Ctrl+Shift+G for Ghost Mode
@@ -287,16 +452,30 @@ class VIPApp {
         this.toggleGhostMode();
       }
     });
+
+    // Global Haptic Feedback for buttons/interactive elements
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button, .neural-card, .tab-item, .suggestion-chip');
+      if (target) {
+        utils.haptics.light();
+      }
+    });
   }
 
   toggleGhostMode() {
     const isGhost = document.body.classList.toggle('ghost-mode');
     if (window.showToast) {
-      window.showToast('Visual Interface', isGhost ? '?? GHOST_MODE_ACTIVE' : 'Standard UI Restored', isGhost ? 'warning' : 'success');
+      window.showToast(
+        'Visual Interface',
+        isGhost ? '?? GHOST_MODE_ACTIVE' : 'Standard UI Restored',
+        isGhost ? 'warning' : 'success'
+      );
     }
 
     if (window.cognitiveStream) {
-      window.cognitiveStream.addLine(isGhost ? '> WARN: SYSTEM_VISIBILITY_ALTERED' : '> INFO: UI_CALIBRATION_STANDARD');
+      window.cognitiveStream.addLine(
+        isGhost ? '> WARN: SYSTEM_VISIBILITY_ALTERED' : '> INFO: UI_CALIBRATION_STANDARD'
+      );
     }
   }
 
@@ -306,7 +485,7 @@ class VIPApp {
   startHardwareMonitoring() {
     // Battery API
     if ('getBattery' in navigator) {
-      navigator.getBattery().then(battery => {
+      navigator.getBattery().then((battery) => {
         this.updateBatteryInfo(battery);
         battery.addEventListener('levelchange', () => this.updateBatteryInfo(battery));
         battery.addEventListener('chargingchange', () => this.updateBatteryInfo(battery));
@@ -316,7 +495,9 @@ class VIPApp {
     // Network API
     if (navigator.connection) {
       this.updateNetworkInfo(navigator.connection);
-      navigator.connection.addEventListener('change', () => this.updateNetworkInfo(navigator.connection));
+      navigator.connection.addEventListener('change', () =>
+        this.updateNetworkInfo(navigator.connection)
+      );
     }
 
     // Time update
@@ -334,15 +515,21 @@ class VIPApp {
     this.state.context.battery = { level, isCharging };
 
     const displays = ['contextBattery', 'mBatteryVal'];
-    displays.forEach(id => {
+    displays.forEach((id) => {
       const el = document.getElementById(id);
       if (el) {
         if (id === 'contextBattery') {
           el.innerHTML = `<span class="badge ${level < 20 ? 'badge-error' : 'badge-success'}" style="font-family: var(--font-family-mono);">${isCharging ? '⚡' : ''}${level}%</span>`;
           if (level < 20 && !isCharging) {
-            document.body.classList.add('low-power-mode');
+            if (!document.body.classList.contains('low-power-mode')) {
+              document.body.classList.add('low-power-mode');
+              this.applyLowPowerOptimizations(true);
+            }
           } else {
-            document.body.classList.remove('low-power-mode');
+            if (document.body.classList.contains('low-power-mode')) {
+              document.body.classList.remove('low-power-mode');
+              this.applyLowPowerOptimizations(false);
+            }
           }
         } else {
           el.textContent = `${isCharging ? '⚡' : ''}${level}%`;
@@ -356,12 +543,40 @@ class VIPApp {
     }
   }
 
+  /**
+   * Apply hardware-level optimizations for battery saving
+   */
+  applyLowPowerOptimizations(enabled) {
+    if (enabled) {
+      // Clear particles
+      const container = document.getElementById('particles');
+      if (container) {
+        container.innerHTML = '';
+      }
+
+      if (window.showToast) {
+        window.showToast(
+          'Power Management',
+          'Low Power Mode activated. Motion reduced.',
+          'warning'
+        );
+      }
+    } else {
+      // Re-init particles
+      this.initParticles();
+
+      if (window.showToast) {
+        window.showToast('Power Management', 'Standard performance restored.', 'success');
+      }
+    }
+  }
+
   updateNetworkInfo(connection) {
     const type = (connection.effectiveType || '5G').toUpperCase();
     this.state.context.network = type;
 
     const displays = ['contextNetwork', 'mNetworkVal'];
-    displays.forEach(id => {
+    displays.forEach((id) => {
       const el = document.getElementById(id);
       if (el) {
         el.innerHTML = `<span class="badge badge-accent" style="font-family: var(--font-family-mono); letter-spacing: 1px;">${type}</span>`;
@@ -371,14 +586,23 @@ class VIPApp {
 
   updateLocalTime() {
     const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    const timeStr = now.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    });
     const compactTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     const desktopDisplay = document.getElementById('currentTime');
     const mobileDisplay = document.getElementById('mTimeVal');
 
-    if (desktopDisplay) desktopDisplay.textContent = timeStr;
-    if (mobileDisplay) mobileDisplay.textContent = compactTime;
+    if (desktopDisplay) {
+      desktopDisplay.textContent = timeStr;
+    }
+    if (mobileDisplay) {
+      mobileDisplay.textContent = compactTime;
+    }
 
     // v6.0 Pulse tab bar active state
     if (this.state.context.device.isMobile) {
@@ -396,9 +620,13 @@ class VIPApp {
   }
 
   setMobileTabActive(tabId) {
-    document.querySelectorAll('.mobile-tab-bar .tab-item').forEach(t => t.classList.remove('active'));
+    document
+      .querySelectorAll('.mobile-tab-bar .tab-item')
+      .forEach((t) => t.classList.remove('active'));
     const activeTab = document.getElementById(tabId);
-    if (activeTab) activeTab.classList.add('active');
+    if (activeTab) {
+      activeTab.classList.add('active');
+    }
   }
 
   /**
@@ -426,7 +654,8 @@ class VIPApp {
       dailyCmds.textContent = count;
     }
     if (aiLatency && window.openaiHandler) {
-      const latency = window.openaiHandler.usage?.lastResponseTime || Math.floor(Math.random() * 50 + 100);
+      const latency =
+        window.openaiHandler.usage?.lastResponseTime || Math.floor(Math.random() * 50 + 100);
       aiLatency.textContent = `${latency}ms`;
     }
 
@@ -445,9 +674,17 @@ class VIPApp {
 
   updateEnvironment() {
     const envDetail = document.getElementById('envDetail');
-    if (!envDetail) return;
+    if (!envDetail) {
+      return;
+    }
 
-    const contexts = ['Home Network', 'Secure Office', 'Transit Node', 'Public Gateway', 'Mobile Data Hub'];
+    const contexts = [
+      'Home Network',
+      'Secure Office',
+      'Transit Node',
+      'Public Gateway',
+      'Mobile Data Hub',
+    ];
     const currentCtx = contexts[Math.floor(Math.random() * contexts.length)];
     envDetail.textContent = currentCtx;
   }
@@ -455,52 +692,63 @@ class VIPApp {
   /**
    * Fetch real geolocation and reverse geocode info
    */
-  async fetchLiveLocationData() {
+  fetchLiveLocationData() {
     if (!navigator.geolocation) {
       console.warn('Geolocation not supported');
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const { latitude, longitude } = position.coords;
-      this.state.context.location.lat = latitude;
-      this.state.context.location.lon = longitude;
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        this.state.context.location.lat = latitude;
+        this.state.context.location.lon = longitude;
 
-      try {
-        // Free Client-side Reverse Geocode
-        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-        const data = await res.json();
+        try {
+          // Free Client-side Reverse Geocode
+          const res = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          const data = await res.json();
 
-        const city = data.city || data.locality || 'Unknown Sector';
-        this.state.context.location.city = city;
+          const city = data.city || data.locality || 'Unknown Sector';
+          this.state.context.location.city = city;
 
-        console.log(`📍 Location Acquired: ${city} (${latitude.toFixed(2)}, ${longitude.toFixed(2)})`);
-        if (window.showToast) {
-          window.showToast('Location Sync', `Synchronized to ${city} Node`, 'success');
+          console.log(
+            `📍 Location Acquired: ${city} (${latitude.toFixed(2)}, ${longitude.toFixed(2)})`
+          );
+          if (window.showToast) {
+            window.showToast('Location Sync', `Synchronized to ${city} Node`, 'success');
+          }
+
+          // Update Weather immediately after location is found
+          if (window.updateWeather) {
+            window.updateWeather();
+          }
+        } catch (e) {
+          console.error('Reverse geocode failed', e);
+          this.state.context.location.city = 'Global Node';
         }
-
-        // Update Weather immediately after location is found
-        if (window.updateWeather) window.updateWeather();
-      } catch (e) {
-        console.error('Reverse geocode failed', e);
-        this.state.context.location.city = 'Global Node';
+      },
+      (error) => {
+        console.warn('Location Access Denied:', error.message);
+        this.state.context.location.city = 'Secure Hub';
       }
-    }, (error) => {
-      console.warn('Location Access Denied:', error.message);
-      this.state.context.location.city = 'Secure Hub';
-    });
+    );
   }
 
   generateSuggestions() {
     const container = document.getElementById('suggestions');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     const context = this.state.context;
     const weatherDesc = document.getElementById('wDesc')?.textContent?.toLowerCase() || '';
 
     const suggestions = [
       { text: 'Analyze Data Usage', action: 'usage_analytics' },
-      { text: 'Optimize Resources', action: 'optimize_resources' }
+      { text: 'Optimize Resources', action: 'optimize_resources' },
     ];
 
     // Location based
@@ -523,11 +771,15 @@ class VIPApp {
     // Shuffle and pick 3
     const shuffled = suggestions.sort(() => 0.5 - Math.random()).slice(0, 3);
 
-    container.innerHTML = shuffled.map(s => `
+    container.innerHTML = shuffled
+      .map(
+        (s) => `
             <div class="suggestion-chip" onclick="executeSuggestion('${s.action}')">
                 ${s.text}
             </div>
-        `).join('');
+        `
+      )
+      .join('');
   }
 
   /**
@@ -536,12 +788,16 @@ class VIPApp {
   renderFunctionCategories() {
     const container = document.getElementById('categoriesContainer');
     const quickGrid = document.getElementById('quickActionsGrid');
-    if (!container || !window.getFunctionCategories) return;
+    if (!container || !window.getFunctionCategories) {
+      return;
+    }
 
     const categories = window.getFunctionCategories();
 
     // Render Categories
-    container.innerHTML = categories.map(cat => `
+    container.innerHTML = categories
+      .map(
+        (cat) => `
             <div class="category-section animate-fade-in-up" style="margin-bottom: var(--s10);">
                 <div style="display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s6);">
                     <div class="card-icon" style="background: var(--color-primary-dim); color: var(--color-primary);">${cat.icon}</div>
@@ -551,7 +807,9 @@ class VIPApp {
                     </div>
                 </div>
                 <div class="node-grid">
-                    ${cat.functions.map(f => `
+                    ${cat.functions
+            .map(
+              (f) => `
                         <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div class="card-icon">${f.icon}</div>
@@ -560,20 +818,31 @@ class VIPApp {
                             <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
                             <p style="font-size: 0.7rem; opacity: 0.7;">${f.description}</p>
                         </div>
-                    `).join('')}
+                    `
+            )
+            .join('')}
                 </div>
             </div>
-        `).join('');
+        `
+      )
+      .join('');
 
     // Populate Quick Actions
     if (quickGrid) {
-      const popular = categories.flatMap(c => c.functions).filter(f => f.badge === 'Popular' || f.isPopular).slice(0, 4);
-      quickGrid.innerHTML = popular.map(f => `
+      const popular = categories
+        .flatMap((c) => c.functions)
+        .filter((f) => f.badge === 'Popular' || f.isPopular)
+        .slice(0, 4);
+      quickGrid.innerHTML = popular
+        .map(
+          (f) => `
                 <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
                     <div class="card-icon" style="background: var(--color-secondary-glow); color: var(--color-secondary);">${f.icon}</div>
                     <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
                 </div>
-            `).join('');
+            `
+        )
+        .join('');
     }
   }
 
@@ -582,10 +851,17 @@ class VIPApp {
    */
   showToast(title, message, type = 'info') {
     const container = document.getElementById('toastContainer');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     const toast = document.createElement('div');
-    const color = type === 'error' ? 'var(--color-error)' : (type === 'success' ? 'var(--color-success)' : 'var(--color-primary)');
+    const color =
+      type === 'error'
+        ? 'var(--color-error)'
+        : type === 'success'
+          ? 'var(--color-success)'
+          : 'var(--color-primary)';
 
     toast.className = `neural-glass toast active`;
     toast.style.borderLeft = `4px solid ${color}`;
@@ -603,6 +879,14 @@ class VIPApp {
         `;
 
     container.appendChild(toast);
+
+    // Provide haptic feedback for notifications
+    if (utils.haptics) {
+      if (type === 'success') utils.haptics.success();
+      else if (type === 'error') utils.haptics.error();
+      else if (type === 'warning') utils.haptics.medium();
+      else utils.haptics.light();
+    }
 
     setTimeout(() => {
       toast.style.opacity = '0';
@@ -639,7 +923,9 @@ class VIPApp {
 
   renderSettingsModal() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+    if (!modalContainer) {
+      return;
+    }
 
     modalContainer.innerHTML = `
             <div class="modal-overlay active" onclick="closeModal(event)">
@@ -677,17 +963,27 @@ class VIPApp {
    */
   switchSettingsTab(tabId) {
     const content = document.getElementById('settingsTabContent');
-    if (!content) return;
+    if (!content) {
+      return;
+    }
 
     // Remove active classes
-    document.querySelectorAll('.settings-nav-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.settings-nav-item').forEach((el) => el.classList.remove('active'));
 
     // Set calling element active
     const items = document.querySelectorAll('.settings-nav-item');
-    if (tabId === 'general') items[0].classList.add('active');
-    if (tabId === 'cognitive') items[1].classList.add('active');
-    if (tabId === 'hardware') items[2].classList.add('active');
-    if (tabId === 'advanced') items[3].classList.add('active');
+    if (tabId === 'general') {
+      items[0].classList.add('active');
+    }
+    if (tabId === 'cognitive') {
+      items[1].classList.add('active');
+    }
+    if (tabId === 'hardware') {
+      items[2].classList.add('active');
+    }
+    if (tabId === 'advanced') {
+      items[3].classList.add('active');
+    }
 
     const apiKey = localStorage.getItem('openai_api_key') || '';
     const wakeWord = window.alwaysListening?.wakeWord || 'hey symphony';
@@ -711,13 +1007,22 @@ class VIPApp {
                             </div>
                         </div>
                         <div class="settings-group" style="margin-top: 24px;">
+                            <label>Neural Accent Color</label>
+                            <div style="display: flex; gap: 10px; margin-top: 8px;">
+                                <input type="range" min="0" max="360" value="${themeHub.primaryHue}" 
+                                    oninput="window.themeHub.setPrimaryHue(this.value)" 
+                                    style="flex: 1; accent-color: var(--color-primary);">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--color-primary);"></div>
+                            </div>
+                        </div>
+                        <div class="settings-group" style="margin-top: 24px;">
                             <label>Interface Scaling</label>
                             <input type="range" min="80" max="120" value="100" class="progress-bar" style="height: 6px; margin-top: 10px;">
                         </div>
                     </div>
                 `;
         break;
-      case 'cognitive':
+      case 'cognitive': {
         const currentPersona = window.chatManager?.personality || 'professional';
         html = `
                     <div class="settings-tab-pane active">
@@ -742,6 +1047,7 @@ class VIPApp {
                     </div>
                 `;
         break;
+      }
       case 'hardware':
         html = `
                     <div class="settings-tab-pane active">
@@ -787,11 +1093,11 @@ class VIPApp {
     content.innerHTML = html;
   }
 
-  closeModal(event) {
+  closeModal() {
     const modalOverlay = document.querySelector('.modal-overlay');
     if (modalOverlay) {
       modalOverlay.classList.remove('active');
-      setTimeout(() => (modalOverlay.remove()), 300);
+      setTimeout(() => modalOverlay.remove(), 300);
     }
   }
 
@@ -818,7 +1124,9 @@ class VIPApp {
     const wDesc = document.getElementById('wDesc');
     const wHum = document.getElementById('wHumidity');
     const wAQI = document.getElementById('wAQI');
-    if (!wTemp || !wDesc) return;
+    if (!wTemp || !wDesc) {
+      return;
+    }
 
     const lat = this.state.context.location.lat;
     const lon = this.state.context.location.lon;
@@ -841,7 +1149,9 @@ class VIPApp {
     }
 
     try {
-      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&relative_humidity_2m=true&temperature_unit=fahrenheit`);
+      const res = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&relative_humidity_2m=true&temperature_unit=fahrenheit`
+      );
       const data = await res.json();
 
       if (data.current_weather) {
@@ -850,18 +1160,32 @@ class VIPApp {
 
         // Basic weather code mapping
         let condition = 'Clear';
-        if (code >= 1 && code <= 3) condition = 'Partly Cloudy';
-        if (code >= 45 && code <= 48) condition = 'Foggy';
-        if (code >= 51 && code <= 67) condition = 'Rainy';
-        if (code >= 71 && code <= 77) condition = 'Snowy';
-        if (code >= 80 && code <= 82) condition = 'Showers';
-        if (code >= 95) condition = 'Stormy';
+        if (code >= 1 && code <= 3) {
+          condition = 'Partly Cloudy';
+        }
+        if (code >= 45 && code <= 48) {
+          condition = 'Foggy';
+        }
+        if (code >= 51 && code <= 67) {
+          condition = 'Rainy';
+        }
+        if (code >= 71 && code <= 77) {
+          condition = 'Snowy';
+        }
+        if (code >= 80 && code <= 82) {
+          condition = 'Showers';
+        }
+        if (code >= 95) {
+          condition = 'Stormy';
+        }
 
         wTemp.textContent = `${temp}°F`;
         wDesc.textContent = `${condition} • ${city}`;
 
         if (wHum) {
-          const humidity = data.hourly?.relative_humidity_2m ? data.hourly.relative_humidity_2m[0] : Math.floor(Math.random() * 20 + 40);
+          const humidity = data.hourly?.relative_humidity_2m
+            ? data.hourly.relative_humidity_2m[0]
+            : Math.floor(Math.random() * 20 + 40);
           wHum.textContent = `${humidity}%`;
         }
 
@@ -882,7 +1206,9 @@ class VIPApp {
    */
   toggleHUD() {
     const overlay = document.getElementById('hudOverlay');
-    if (!overlay) return;
+    if (!overlay) {
+      return;
+    }
 
     const isActive = overlay.classList.toggle('active');
 
@@ -1004,12 +1330,14 @@ class VIPApp {
       neural: Array(50).fill(0),
       net: Array(50).fill(0),
       security: Array(50).fill(0),
-      maxPoints: 100
+      maxPoints: 100,
     };
 
-    charts.forEach(chartId => {
+    charts.forEach((chartId) => {
       const canvas = document.getElementById(chartId);
-      if (!canvas) return;
+      if (!canvas) {
+        return;
+      }
 
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -1029,9 +1357,9 @@ class VIPApp {
   updateTelemetry() {
     const memoryInfo = this.getMemoryInfo();
     const ramPercent = memoryInfo.percent;
-    const cpuPercent = Math.min(100, (Math.random() * 20 + ramPercent * 0.3 + 10));
-    const neuralVal = (Math.random() * 30 + 15);
-    const netVal = (Math.random() * 50 + 5);
+    const cpuPercent = Math.min(100, Math.random() * 20 + ramPercent * 0.3 + 10);
+    const neuralVal = Math.random() * 30 + 15;
+    const netVal = Math.random() * 50 + 5;
     const securityVal = Math.random() * 0.5;
 
     this.telemetryData.ram.push(ramPercent);
@@ -1040,8 +1368,11 @@ class VIPApp {
     this.telemetryData.net.push(netVal);
     this.telemetryData.security.push(securityVal);
 
-    Object.keys(this.telemetryData).forEach(key => {
-      if (Array.isArray(this.telemetryData[key]) && this.telemetryData[key].length > this.telemetryData.maxPoints) {
+    Object.keys(this.telemetryData).forEach((key) => {
+      if (
+        Array.isArray(this.telemetryData[key]) &&
+        this.telemetryData[key].length > this.telemetryData.maxPoints
+      ) {
         this.telemetryData[key].shift();
       }
     });
@@ -1054,21 +1385,31 @@ class VIPApp {
     utils.safeSetTextContent('threatLevel', `${securityVal.toFixed(3)}% (NULL)`);
 
     if (this.telemetryData.ram.length > 0) {
-      const ramValues = this.telemetryData.ram.map(v => (v / 100) * memoryInfo.total);
+      const ramValues = this.telemetryData.ram.map((v) => (v / 100) * memoryInfo.total);
       utils.safeSetTextContent('ramPeak', Math.round(Math.max(...ramValues)));
-      utils.safeSetTextContent('ramAvg', Math.round(ramValues.reduce((a, b) => a + b, 0) / ramValues.length));
+      utils.safeSetTextContent(
+        'ramAvg',
+        Math.round(ramValues.reduce((a, b) => a + b, 0) / ramValues.length)
+      );
     }
 
     this.drawCanvasChart('ramChart', this.telemetryData.ram, '#3B82F6', '#1E40AF');
     this.drawCanvasChart('cpuChart', this.telemetryData.cpu, '#10B981', '#059669');
     this.drawCanvasChart('neuralChart', this.telemetryData.neural, '#8B5CF6', '#6D28D9');
     this.drawCanvasChart('netChart', this.telemetryData.net, '#F59E0B', '#D97706');
-    this.drawCanvasChart('securityChart', this.telemetryData.security.map(v => v * 100), '#EF4444', '#DC2626');
+    this.drawCanvasChart(
+      'securityChart',
+      this.telemetryData.security.map((v) => v * 100),
+      '#EF4444',
+      '#DC2626'
+    );
   }
 
   drawCanvasChart(chartId, data, color, fillColor) {
     const chart = this.canvasCharts?.[chartId];
-    if (!chart || !data?.length) return;
+    if (!chart || !data?.length) {
+      return;
+    }
 
     const { ctx, width, height } = chart;
     const padding = 4;
@@ -1093,8 +1434,8 @@ class VIPApp {
       const maxValue = Math.max(...data, 100);
 
       const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
-      gradient.addColorStop(0, fillColor + '80');
-      gradient.addColorStop(1, fillColor + '00');
+      gradient.addColorStop(0, `${fillColor}80`);
+      gradient.addColorStop(1, `${fillColor}00`);
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
@@ -1103,7 +1444,7 @@ class VIPApp {
       data.forEach((value, index) => {
         const x = padding + index * stepX;
         const normalizedValue = Math.min(100, value) / maxValue;
-        const y = height - padding - (normalizedValue * chartHeight);
+        const y = height - padding - normalizedValue * chartHeight;
         ctx.lineTo(x, y);
       });
 
@@ -1117,7 +1458,7 @@ class VIPApp {
       data.forEach((value, index) => {
         const x = padding + index * stepX;
         const normalizedValue = Math.min(100, value) / maxValue;
-        const y = height - padding - (normalizedValue * chartHeight);
+        const y = height - padding - normalizedValue * chartHeight;
         index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       });
       ctx.stroke();
@@ -1134,7 +1475,9 @@ class VIPApp {
 
     if (this.state.isBoostActive) {
       body.classList.add('boost-active');
-      if (logo) logo.style.filter = 'drop-shadow(0 0 20px var(--color-accent-400)) hue-rotate(45deg)';
+      if (logo) {
+        logo.style.filter = 'drop-shadow(0 0 20px var(--color-accent-400)) hue-rotate(45deg)';
+      }
       this.showToast('?? Boost Mode', 'Neural Cores Overclocked to 120%', 'accent');
       this.state.context.device.cores *= 1.5;
 
@@ -1151,10 +1494,12 @@ class VIPApp {
       utils.haptic([100, 50, 100]);
     } else {
       body.classList.remove('boost-active');
-      if (logo) logo.style.filter = '';
+      if (logo) {
+        logo.style.filter = '';
+      }
       this.showToast('System Normalized', 'Returning to power-save cycles', 'info');
       this.state.context.device.cores /= 1.5;
-      document.querySelectorAll('.boost-particle').forEach(p => p.remove());
+      document.querySelectorAll('.boost-particle').forEach((p) => p.remove());
     }
   }
 
@@ -1163,10 +1508,14 @@ class VIPApp {
    */
   syncNeuralOrb() {
     const orb = document.getElementById('neuralOrb');
-    if (!orb) return;
+    if (!orb) {
+      return;
+    }
 
     setInterval(() => {
-      const isListening = (window.alwaysListening?.enabled && !window.alwaysListening?.isProcessing) || (window.voiceState?.isListening);
+      const isListening =
+        (window.alwaysListening?.enabled && !window.alwaysListening?.isProcessing) ||
+        window.voiceState?.isListening;
       const isTyping = window.chatManager?.isTyping || false;
 
       orb.classList.toggle('listening', isListening);
@@ -1181,13 +1530,17 @@ class VIPApp {
     }, 500);
 
     orb.addEventListener('dblclick', () => {
-      if (window.toggleVoiceAccess) window.toggleVoiceAccess();
+      if (window.toggleVoiceAccess) {
+        window.toggleVoiceAccess();
+      }
     });
   }
 
   startOrbDrag(e) {
     const container = document.getElementById('neuralOrbContainer');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     this.orbState = this.orbState || { isDragging: false };
     this.orbState.isDragging = true;
@@ -1198,10 +1551,14 @@ class VIPApp {
 
     container.style.cursor = 'grabbing';
     const orb = container.querySelector('.neural-orb');
-    if (orb) orb.style.animationPlayState = 'paused';
+    if (orb) {
+      orb.style.animationPlayState = 'paused';
+    }
 
     const onMove = (moveEvent) => {
-      if (!this.orbState.isDragging) return;
+      if (!this.orbState.isDragging) {
+        return;
+      }
       const move = moveEvent.type.includes('touch') ? moveEvent.touches[0] : moveEvent;
 
       let newX = move.clientX - this.orbState.startX;
@@ -1219,7 +1576,9 @@ class VIPApp {
     const onEnd = () => {
       this.orbState.isDragging = false;
       container.style.cursor = 'grab';
-      if (orb) orb.style.animationPlayState = 'running';
+      if (orb) {
+        orb.style.animationPlayState = 'running';
+      }
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onEnd);
       document.removeEventListener('touchmove', onMove);
@@ -1237,7 +1596,9 @@ class VIPApp {
    */
   startPillDrag(e) {
     const container = document.getElementById('mobileStatusPill');
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     this.pillState = this.pillState || { isDragging: false };
     this.pillState.isDragging = true;
@@ -1250,7 +1611,9 @@ class VIPApp {
     container.style.transition = 'none'; // Disable transition while dragging
 
     const onMove = (moveEvent) => {
-      if (!this.pillState.isDragging) return;
+      if (!this.pillState.isDragging) {
+        return;
+      }
       const move = moveEvent.type.includes('touch') ? moveEvent.touches[0] : moveEvent;
 
       let newX = move.clientX - this.pillState.startX;
@@ -1295,7 +1658,9 @@ class VIPApp {
       const lastProactive = parseInt(localStorage.getItem('last_proactive_alert') || '0');
       const now = Date.now();
 
-      if (now - lastProactive < 600000) return;
+      if (now - lastProactive < 600000) {
+        return;
+      }
 
       let alert = null;
 
@@ -1304,28 +1669,28 @@ class VIPApp {
           title: '?? Optimized Power Mode',
           message: `Battery at ${battery.level}%. Should I enable system-wide power saving?`,
           type: 'warning',
-          action: 'performance_optimization'
+          action: 'performance_optimization',
         };
       } else if (weather.includes('rain') || weather.includes('storm')) {
         alert = {
           title: '?? Weather Advisory',
           message: 'Precipitation detected in your area. Enabling outdoor safety routines?',
           type: 'info',
-          action: 'weather_check'
+          action: 'weather_check',
         };
       } else if (performance.memory && performance.memory.usedJSHeapSize > 100000000) {
         alert = {
           title: '🚀 Resource Peak',
           message: 'AI Hub detected high heap usage. Run resource optimizer?',
           type: 'info',
-          action: 'optimize_resources'
+          action: 'optimize_resources',
         };
       } else if (new Date().getHours() >= 19) {
         alert = {
           title: '🌙 Evening Transition',
           message: 'Daylight is fading. Activate night shift and relaxation routines?',
           type: 'info',
-          action: 'focus_mode'
+          action: 'focus_mode',
         };
       }
       // Condition 5: Productive morning (8 AM - 10 AM)
@@ -1334,7 +1699,7 @@ class VIPApp {
           title: '☀️ Peak productivity',
           message: 'Good morning! Would you like to review your calendar and start focus mode?',
           type: 'success',
-          action: 'calendar_sync'
+          action: 'calendar_sync',
         };
       }
 
@@ -1345,14 +1710,14 @@ class VIPApp {
         const orb = document.getElementById('neuralOrb');
         if (orb) {
           orb.style.animation = 'orbActive 0.3s 5';
-          setTimeout(() => orb.style.animation = '', 1500);
+          setTimeout(() => (orb.style.animation = ''), 1500);
         }
       }
     }, 30000);
   }
 
   updateBranding() {
-    document.querySelectorAll('p, span, div, h1, h2, h3').forEach(node => {
+    document.querySelectorAll('p, span, div, h1, h2, h3').forEach((node) => {
       const text = node.textContent;
       if (/(v5\.0\.0|v5\.1\.0|v6\.0)/.test(text)) {
         node.innerHTML = node.innerHTML.replace(/(v5\.0\.0|v5\.1\.0|v6\.0)/g, 'v7.0');

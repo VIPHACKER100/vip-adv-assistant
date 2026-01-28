@@ -4,408 +4,404 @@
  * Optimized with parallel model loading (2-3x faster) and mobile-first UI
  */
 .face-recognition-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: var(--z-modal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .face-recognition-modal.active {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 }
 
 .face-recognition-container {
-    position: relative;
-    max-width: 800px;
-    width: 90%;
-    background: var(--glass-bg-strong);
-    border: 2px solid var(--glass-border);
-    border-radius: var(--radius-2xl);
-    padding: var(--space-6);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  max-width: 800px;
+  width: 90%;
+  background: var(--glass-bg-strong);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .face-recognition-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
 }
 
 .face-recognition-title {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    background: var(--gradient-vibrant);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-vibrant);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .face-recognition-close {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: var(--font-size-xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-xl);
 }
 
 .face-recognition-close:hover {
-    background: var(--glass-bg-strong);
-    transform: scale(1.1);
+  background: var(--glass-bg-strong);
+  transform: scale(1.1);
 }
 
 .video-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: #000;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    margin-bottom: var(--space-4);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: var(--space-4);
 }
 
 #faceVideo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #faceCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .scanning-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .scanning-overlay.active {
-    opacity: 1;
+  opacity: 1;
 }
 
 .scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            var(--color-accent-400) 50%,
-            transparent 100%);
-    box-shadow: 0 0 20px var(--color-accent-400);
-    animation: scan 2s linear infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-accent-400) 50%, transparent 100%);
+  box-shadow: 0 0 20px var(--color-accent-400);
+  animation: scan 2s linear infinite;
 }
 
 @keyframes scan {
-    0% {
-        top: 0;
-    }
+  0% {
+    top: 0;
+  }
 
-    100% {
-        top: 100%;
-    }
+  100% {
+    top: 100%;
+  }
 }
 
 .face-recognition-status {
-    text-align: center;
-    padding: var(--space-4);
-    background: var(--glass-bg);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--space-4);
-    border: 1px solid var(--glass-border);
+  text-align: center;
+  padding: var(--space-4);
+  background: var(--glass-bg);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--glass-border);
 }
 
 .status-icon {
-    font-size: var(--font-size-3xl);
-    margin-bottom: var(--space-2);
-    display: block;
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-2);
+  display: block;
 }
 
 .status-text {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    margin-bottom: var(--space-1);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
 }
 
 .status-subtext {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
 }
 
 .face-recognition-actions {
-    display: flex;
-    gap: var(--space-3);
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .face-recognition-info {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
-    margin-top: var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
 }
 
 .info-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-2) 0;
-    border-bottom: 1px solid var(--border-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .info-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .info-label {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
 }
 
 .info-value {
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-family: var(--font-family-mono);
 }
 
 /* Recognition Success Animation */
 .recognition-success {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--glass-bg-strong);
-    border: 2px solid var(--color-success-500);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8);
-    text-align: center;
-    box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-    animation: successPulse 0.5s ease;
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--glass-bg-strong);
+  border: 2px solid var(--color-success-500);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  text-align: center;
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+  animation: successPulse 0.5s ease;
+  z-index: 10;
 }
 
 @keyframes successPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
 
-    0%,
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-    }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 .recognition-success-icon {
-    font-size: 64px;
-    margin-bottom: var(--space-4);
+  font-size: 64px;
+  margin-bottom: var(--space-4);
 }
 
 .recognition-success-text {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-success-400);
-    margin-bottom: var(--space-2);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-success-400);
+  margin-bottom: var(--space-2);
 }
 
 .recognition-success-name {
-    font-size: var(--font-size-xl);
-    color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
 }
 
 /* Loading Animation */
 .loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--glass-border);
-    border-top-color: var(--color-accent-400);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-left: var(--space-2);
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--glass-border);
+  border-top-color: var(--color-accent-400);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: var(--space-2);
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ===== RESPONSIVE STYLES ===== */
 
 /* Responsive */
 @media (max-width: 768px) {
-    .face-recognition-modal {
-        align-items: flex-end;
-        padding: 0;
-    }
+  .face-recognition-modal {
+    align-items: flex-end;
+    padding: 0;
+  }
 
-    .face-recognition-container {
-        width: 100%;
-        max-width: 100%;
-        padding: var(--space-5);
-        border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
+  .face-recognition-container {
+    width: 100%;
+    max-width: 100%;
+    padding: var(--space-5);
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 
-    .face-recognition-header {
-        margin-bottom: var(--space-4);
-    }
+  .face-recognition-header {
+    margin-bottom: var(--space-4);
+  }
 
-    .face-recognition-title {
-        font-size: var(--font-size-lg);
-    }
+  .face-recognition-title {
+    font-size: var(--font-size-lg);
+  }
 
-    .face-recognition-close {
-        width: 44px;
-        height: 44px;
-        font-size: var(--font-size-2xl);
-    }
+  .face-recognition-close {
+    width: 44px;
+    height: 44px;
+    font-size: var(--font-size-2xl);
+  }
 
-    .video-container {
-        aspect-ratio: 3/4;
-        margin-bottom: var(--space-3);
-    }
+  .video-container {
+    aspect-ratio: 3/4;
+    margin-bottom: var(--space-3);
+  }
 
-    .face-recognition-status {
-        padding: var(--space-3);
-        margin-bottom: var(--space-3);
-    }
+  .face-recognition-status {
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
 
-    .status-icon {
-        font-size: var(--font-size-2xl);
-        margin-bottom: var(--space-1);
-    }
+  .status-icon {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-1);
+  }
 
-    .status-text {
-        font-size: var(--font-size-base);
-    }
+  .status-text {
+    font-size: var(--font-size-base);
+  }
 
-    .status-subtext {
-        font-size: var(--font-size-xs);
-    }
+  .status-subtext {
+    font-size: var(--font-size-xs);
+  }
 
-    .face-recognition-actions {
-        flex-direction: column;
-        gap: var(--space-2);
-    }
+  .face-recognition-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
 
-    .face-recognition-actions .btn {
-        width: 100%;
-        min-height: 48px;
-        font-size: var(--font-size-base);
-        padding: var(--space-3) var(--space-4);
-    }
+  .face-recognition-actions .btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: var(--font-size-base);
+    padding: var(--space-3) var(--space-4);
+  }
 
-    .face-recognition-info {
-        padding: var(--space-3);
-        margin-top: var(--space-3);
-    }
+  .face-recognition-info {
+    padding: var(--space-3);
+    margin-top: var(--space-3);
+  }
 
-    .info-item {
-        padding: var(--space-2) 0;
-    }
+  .info-item {
+    padding: var(--space-2) 0;
+  }
 
-    .info-label {
-        font-size: var(--font-size-xs);
-    }
+  .info-label {
+    font-size: var(--font-size-xs);
+  }
 
-    .info-value {
-        font-size: var(--font-size-sm);
-    }
+  .info-value {
+    font-size: var(--font-size-sm);
+  }
 
-    .recognition-success {
-        padding: var(--space-6);
-        width: 90%;
-    }
+  .recognition-success {
+    padding: var(--space-6);
+    width: 90%;
+  }
 
-    .recognition-success-icon {
-        font-size: 48px;
-        margin-bottom: var(--space-3);
-    }
+  .recognition-success-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-3);
+  }
 
-    .recognition-success-text {
-        font-size: var(--font-size-xl);
-    }
+  .recognition-success-text {
+    font-size: var(--font-size-xl);
+  }
 
-    .recognition-success-name {
-        font-size: var(--font-size-lg);
-    }
+  .recognition-success-name {
+    font-size: var(--font-size-lg);
+  }
 }
 
 /* Extra small screens (phones in portrait) */
 @media (max-width: 480px) {
-    .face-recognition-container {
-        padding: var(--space-4);
-    }
+  .face-recognition-container {
+    padding: var(--space-4);
+  }
 
-    .face-recognition-title {
-        font-size: var(--font-size-base);
-    }
+  .face-recognition-title {
+    font-size: var(--font-size-base);
+  }
 
-    .face-recognition-close {
-        width: 40px;
-        height: 40px;
-    }
+  .face-recognition-close {
+    width: 40px;
+    height: 40px;
+  }
 
-    .status-icon {
-        font-size: var(--font-size-xl);
-    }
+  .status-icon {
+    font-size: var(--font-size-xl);
+  }
 
-    .face-recognition-actions .btn {
-        min-height: 44px;
-        font-size: var(--font-size-sm);
-    }
+  .face-recognition-actions .btn {
+    min-height: 44px;
+    font-size: var(--font-size-sm);
+  }
 
-    .recognition-success {
-        width: 95%;
-        padding: var(--space-4);
-    }
+  .recognition-success {
+    width: 95%;
+    padding: var(--space-4);
+  }
 
-    .recognition-success-icon {
-        font-size: 40px;
-    }
+  .recognition-success-icon {
+    font-size: 40px;
+  }
 
-    .recognition-success-text {
-        font-size: var(--font-size-lg);
-    }
+  .recognition-success-text {
+    font-size: var(--font-size-lg);
+  }
 
-    .recognition-success-name {
-        font-size: var(--font-size-base);
-    }
+  .recognition-success-name {
+    font-size: var(--font-size-base);
+  }
 }

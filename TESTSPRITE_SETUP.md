@@ -2,7 +2,8 @@
 
 ## ✅ Installation Complete
 
-TestSprite MCP has been installed globally. Now you need to configure it with your API key.
+TestSprite MCP has been installed globally. Now you need to configure it with
+your API key.
 
 ## 🔑 Getting Your TestSprite API Key
 
@@ -20,11 +21,13 @@ TestSprite MCP has been installed globally. Now you need to configure it with yo
 ### Option 1: Environment Variable (Recommended)
 
 1. **Windows (PowerShell)**:
+
    ```powershell
    [System.Environment]::SetEnvironmentVariable('TESTSPRITE_API_KEY', 'your-api-key-here', 'User')
    ```
 
 2. **Windows (Command Prompt)**:
+
    ```cmd
    setx TESTSPRITE_API_KEY "your-api-key-here"
    ```
@@ -33,17 +36,15 @@ TestSprite MCP has been installed globally. Now you need to configure it with yo
 
 ### Option 2: Direct Configuration
 
-Edit `.cursor/mcp.json` and replace `${TESTSPRITE_API_KEY}` with your actual API key:
+Edit `.cursor/mcp.json` and replace `${TESTSPRITE_API_KEY}` with your actual API
+key:
 
 ```json
 {
   "mcpServers": {
     "testsprite": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@testsprite/testsprite-mcp@latest"
-      ],
+      "args": ["-y", "@testsprite/testsprite-mcp@latest"],
       "env": {
         "TESTSPRITE_API_KEY": "your-actual-api-key-here"
       }
@@ -57,6 +58,7 @@ Edit `.cursor/mcp.json` and replace `${TESTSPRITE_API_KEY}` with your actual API
 Once configured, you can use TestSprite in Cursor by:
 
 1. **Starting your app**:
+
    ```bash
    python -m http.server 8000
    ```
@@ -75,6 +77,7 @@ Once configured, you can use TestSprite in Cursor by:
 ## 📋 Existing Test Files
 
 Your project already has test files in `testsprite_tests/`:
+
 - 14 test cases covering all major features
 - Test plan: `testsprite_frontend_test_plan.json`
 - Previous report: `testsprite-mcp-test-report.md`
@@ -97,15 +100,19 @@ To verify TestSprite MCP is working:
 ## 🐛 Troubleshooting
 
 **Issue**: TestSprite not appearing in Cursor
+
 - **Solution**: Restart Cursor IDE after setting environment variable
 
 **Issue**: API Key not working
+
 - **Solution**: Verify API key is correct and account is active
 
 **Issue**: Tests not running
+
 - **Solution**: Ensure local server is running on port 8000
 
 **Issue**: MCP server connection failed
+
 - **Solution**: Check Node.js version (requires >= 22) and npm installation
 
 ## 📝 Next Steps
@@ -118,6 +125,5 @@ To verify TestSprite MCP is working:
 
 ---
 
-**Status**: ✅ TestSprite MCP installed
-**Configuration**: ✅ `.cursor/mcp.json` created
-**Next**: Set your API key and restart Cursor para v5.0.0
+**Status**: ✅ TestSprite MCP installed **Configuration**: ✅ `.cursor/mcp.json`
+created **Next**: Set your API key and restart Cursor para v5.0.0

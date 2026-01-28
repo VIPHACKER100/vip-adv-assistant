@@ -4,14 +4,13 @@
  */
 
 const exportImportManager = {
-
   // Export automations to JSON file
   exportAutomations() {
     const automations = JSON.parse(localStorage.getItem('automations') || '[]');
     const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     const settings = {
       theme: localStorage.getItem('theme') || 'dark',
-      openai_api_key: '***REDACTED***' // Never export API keys
+      openai_api_key: '***REDACTED***', // Never export API keys
     };
 
     const exportData = {
@@ -19,7 +18,7 @@ const exportImportManager = {
       exportDate: new Date().toISOString(),
       automations: automations,
       favorites: favorites,
-      settings: settings
+      settings: settings,
     };
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
@@ -43,7 +42,9 @@ const exportImportManager = {
 
     input.onchange = (e) => {
       const file = e.target.files[0];
-      if (!file) return;
+      if (!file) {
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -57,7 +58,6 @@ const exportImportManager = {
 
           // Show confirmation modal
           this.showImportConfirmation(data);
-
         } catch (error) {
           console.error('Import error:', error);
           showToast('Import Failed', 'Invalid backup file', 'error');
@@ -73,7 +73,9 @@ const exportImportManager = {
   // Show import confirmation modal
   showImportConfirmation(data) {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+    if (!modalContainer) {
+      return;
+    }
 
     const automationsCount = data.automations?.length || 0;
     const favoritesCount = data.favorites?.length || 0;
@@ -156,7 +158,6 @@ const exportImportManager = {
 
       // Reload page to apply changes
       setTimeout(() => location.reload(), 1500);
-
     } catch (error) {
       console.error('Import error:', error);
       showToast('Import Failed', 'Could not restore data', 'error');
@@ -166,7 +167,9 @@ const exportImportManager = {
   // Show export/import modal
   showExportImportModal() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+    if (!modalContainer) {
+      return;
+    }
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
@@ -215,7 +218,7 @@ const exportImportManager = {
         </div>
       </div>
     `;
-  }
+  },
 };
 
 // Export for global access

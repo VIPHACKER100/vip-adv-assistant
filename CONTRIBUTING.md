@@ -1,12 +1,14 @@
 # Contributing to VIP Advanced Mobile AI Assistant
 
-Thank you for your interest in contributing to the **Omni-Core Platform**! This guide will help you get started.
+Thank you for your interest in contributing to the **Omni-Core Platform**! This
+guide will help you get started.
 
 ---
 
 ## 🎯 Ways to Contribute
 
-- **Report Bugs** - Found an issue in the Telemetry HUD or Glyph engine? Let us know!
+- **Report Bugs** - Found an issue in the Telemetry HUD or Glyph engine? Let us
+  know!
 - **Submit Code** - Add new hardware simulator protocols or AI personas.
 - **Improve Documentation** - Help refine our architectural deep-dives.
 - **Test** - Try the assistant on new mobile browsers or PWA environments.
@@ -16,12 +18,14 @@ Thank you for your interest in contributing to the **Omni-Core Platform**! This 
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/viphacker100/vip-ai-assistant.git
    cd vip-ai-assistant
    ```
 
 2. **Start local server**
+
    ```bash
    python -m http.server 8000
    ```
@@ -54,26 +58,34 @@ vip-adv-assistant/
 ## 📝 Coding Standards
 
 ### Glyphs & UI
-- **Native Icons Only**: Use standard emojis or UTF-8 characters. DO NOT use hex entities or unicode escapes in UI strings.
-- **Glassmorphism**: Follow the 20px / 40px blur tokens defined in `variables.css`.
+
+- **Native Icons Only**: Use standard emojis or UTF-8 characters. DO NOT use hex
+  entities or unicode escapes in UI strings.
+- **Glassmorphism**: Follow the 20px / 40px blur tokens defined in
+  `variables.css`.
 
 ### JavaScript
+
 - **ES6+**: Use async/await for simulated hardware delays.
-- **Global State**: Respect the `appState` and `voiceState` objects for synchronization.
+- **Global State**: Respect the `appState` and `voiceState` objects for
+  synchronization.
 
 ---
 
 ## 🔒 Security
-**DO NOT** commit API keys. Sanitize all user-input used in voice command mapping.
+
+**DO NOT** commit API keys. Sanitize all user-input used in voice command
+mapping.
 
 ---
 
 ## 🙏 Thank You!
-Every contribution helps transform the assistant into a more powerful cognitive ecosystem.
+
+Every contribution helps transform the assistant into a more powerful cognitive
+ecosystem.
 
 **Happy Coding!** 🚀
 
 ---
 
-**Current Kernel**: 5.0.0
-**Status**: Neural Symphony Build
+**Current Kernel**: 5.0.0 **Status**: Neural Symphony Build

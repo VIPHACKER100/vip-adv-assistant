@@ -1,12 +1,15 @@
 # 🚀 Quick Start Guide - Legacy Features
 
-> **⚠️ Note**: This document covers baseline features established in v2.1.0. For the latest **v4.7.0 Omni-Core** capabilities (Voice Access, HUD, Autonomous Triggers), please refer to the [README.md](README.md).
+> **⚠️ Note**: This document covers baseline features established in v2.1.0. For
+> the latest **v4.7.0 Omni-Core** capabilities (Voice Access, HUD, Autonomous
+> Triggers), please refer to the [README.md](README.md).
 
 ---
 
 ## ⌨️ Keyboard Shortcuts
 
 ### Essential Shortcuts
+
 Press these keys anytime:
 
 ```
@@ -18,6 +21,7 @@ Escape         → Close Modal
 ```
 
 ### Quick Actions
+
 ```
 Ctrl + 1       → Image Analysis
 Ctrl + 2       → Smart Reply
@@ -32,10 +36,12 @@ Ctrl + 6       → Smart Home
 ## 🔍 Using Search
 
 ### Open Search
+
 - **Keyboard**: Press `Ctrl + K`
 - **Mouse**: Click 🔍 icon in header
 
 ### Search Tips
+
 1. **Type anything** - Searches titles, descriptions, and categories.
 2. **Use arrow keys** - Navigate results.
 3. **Press Enter** - Execute selected function.
@@ -45,6 +51,7 @@ Ctrl + 6       → Smart Home
 ## ⭐ Managing Favorites
 
 ### View Favorites
+
 - **Click** ⭐ icon in header.
 - See all your bookmarked functions.
 - Click any favorite to execute instantly.
@@ -54,10 +61,12 @@ Ctrl + 6       → Smart Home
 ## 🎨 Changing Themes
 
 ### Quick Toggle
+
 - **Keyboard**: Press `Ctrl + Shift + L`.
 - Switches between Dark and Light.
 
 ### Choose Theme
+
 1. Click ⚙️ Settings.
 2. Select theme from dropdown (Dark, Light, or Auto).
 
@@ -66,7 +75,9 @@ Ctrl + 6       → Smart Home
 ## 🎯 Pro Tips
 
 ### Keyboard-Only Navigation
+
 You can use the entire app without touching your mouse:
+
 1. `Ctrl + K` → Search.
 2. Type → Find function.
 3. `Enter` → Execute.
@@ -82,5 +93,4 @@ You can use the entire app without touching your mouse:
 
 ---
 
-**Original Version**: 2.1.0
-**Historical Reference**: 2026-01-24
+**Original Version**: 2.1.0 **Historical Reference**: 2026-01-24

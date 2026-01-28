@@ -3,17 +3,21 @@
 ## Current Status
 
 ### ✅ Completed
+
 1. **TestSprite MCP Installed** - Package installed globally via npm
 2. **MCP Configuration Created** - `.cursor/mcp.json` configured
 3. **Local Server Running** - HTTP server on port 8000 ✅
-49. Playwright Installed - Python package installed
-10. **Test Files Ready** - 14 test cases in `testsprite_tests/`
+4. Playwright Installed - Python package installed
+5. **Test Files Ready** - 14 test cases in `testsprite_tests/`
 6. **Test Runner Created** - `run_all_tests.py` and PowerShell script
 
 ### ⚠️ In Progress
-- **Playwright Browsers** - Chromium download in progress (may take a few minutes)
+
+- **Playwright Browsers** - Chromium download in progress (may take a few
+  minutes)
 
 ### ❌ Pending
+
 - **TestSprite API Key** - Not set yet (required for MCP integration)
 - **Cursor IDE Restart** - Needed to load MCP configuration
 
@@ -22,12 +26,15 @@
 ### Option 1: Using TestSprite MCP (Recommended)
 
 **Prerequisites:**
+
 1. Get API key from https://testsprite.com
-2. Run: `.\setup_testsprite.ps1` (or set `TESTSPRITE_API_KEY` environment variable)
+2. Run: `.\setup_testsprite.ps1` (or set `TESTSPRITE_API_KEY` environment
+   variable)
 3. Restart Cursor IDE
 4. Ensure server is running: `python -m http.server 8000`
 
 **Usage:**
+
 - In Cursor chat, say: "Run tests using TestSprite"
 - TestSprite will automatically:
   - Analyze your project
@@ -38,10 +45,12 @@
 ### Option 2: Direct Test Execution
 
 **Prerequisites:**
+
 1. Playwright browsers installed: `python -m playwright install chromium`
 2. Server running on port 8000
 
 **Run Tests:**
+
 ```powershell
 # Run all tests
 cd testsprite_tests
@@ -71,6 +80,7 @@ python TC003_Keyboard_shortcut_default_behaviors.py
 ## Quick Start
 
 ### For TestSprite MCP:
+
 ```powershell
 # 1. Set API key
 .\setup_testsprite.ps1
@@ -84,6 +94,7 @@ python -m http.server 8000
 ```
 
 ### For Direct Execution:
+
 ```powershell
 # 1. Install browsers (if not done)
 python -m playwright install chromium
@@ -99,6 +110,7 @@ python run_all_tests.py
 ## Current Server Status
 
 ✅ **Server Running**: Port 8000 is active
+
 - URL: http://localhost:8000
 - Process ID: Check with `netstat -ano | findstr :8000`
 
@@ -120,19 +132,22 @@ python run_all_tests.py
 ## Troubleshooting
 
 **Issue**: Playwright browsers not found
+
 - **Solution**: Run `python -m playwright install chromium`
 
 **Issue**: Server not accessible
+
 - **Solution**: Start with `python -m http.server 8000`
 
 **Issue**: TestSprite MCP not available
+
 - **Solution**: Set API key and restart Cursor IDE
 
 **Issue**: Tests timeout
+
 - **Solution**: Increase timeout in test files or check server response
 
 ---
 
-**Last Updated**: Current session
-**Server Status**: ✅ Running on port 8000
+**Last Updated**: Current session **Server Status**: ✅ Running on port 8000
 **TestSprite MCP**: ⚠️ Needs API key and Cursor restart

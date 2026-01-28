@@ -1,40 +1,32 @@
 ﻿/**
- * VIP AI SYMPHONY - Priority Registry v6.0
+ * VIP AI SYMPHONY - Priority Registry v7.0
  * Selective Sub-modular Bookmark & Priority Link Manager
+ * Optimized for "NEURAL FLUX" visuals
  */
 
 const favoritesManager = {
   favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
 
-  add(functionId) {
-    if (!this.favorites.includes(functionId)) {
-      this.favorites.push(functionId);
+  add(id) {
+    if (!this.favorites.includes(id)) {
+      this.favorites.push(id);
       this.save();
-      showToast('Favorites', 'Added to favorites', 'success');
+      if (window.showToast) window.showToast('Priority Link', 'Module tagged for immediate recall.', 'success');
       this.updateUI();
-
-      // Track telemetry
       if (window.performanceMonitor) window.performanceMonitor.trackFavorite();
     }
   },
 
-  remove(functionId) {
-    this.favorites = this.favorites.filter(id => id !== functionId);
+  remove(id) {
+    this.favorites = this.favorites.filter(favId => favId !== id);
     this.save();
-    showToast('Favorites', 'Removed from favorites', 'info');
+    if (window.showToast) window.showToast('Link Severed', 'Module removed from priority buffer.', 'info');
     this.updateUI();
   },
 
-  toggle(functionId) {
-    if (this.isFavorite(functionId)) {
-      this.remove(functionId);
-    } else {
-      this.add(functionId);
-    }
-  },
-
-  isFavorite(functionId) {
-    return this.favorites.includes(functionId);
+  toggle(id) {
+    if (this.favorites.includes(id)) this.remove(id);
+    else this.add(id);
   },
 
   save() {
@@ -42,72 +34,49 @@ const favoritesManager = {
   },
 
   getFavorites() {
-    const categories = getFunctionCategories();
-    const allFunctions = [];
-
-    categories.forEach(category => {
-      category.functions.forEach(func => {
-        if (this.favorites.includes(func.id)) {
-          allFunctions.push({
-            ...func,
-            category: category.name,
-            categoryIcon: category.icon
-          });
-        }
-      });
-    });
-
-    return allFunctions;
+    if (typeof getFunctionCategories !== 'function') return [];
+    const all = getFunctionCategories().flatMap(cat => cat.functions.map(f => ({ ...f, category: cat.name, catIcon: cat.icon })));
+    return all.filter(f => this.favorites.includes(f.id));
   },
 
   showFavoritesModal() {
     const modalContainer = document.getElementById('modalContainer');
     if (!modalContainer) return;
 
-    const favorites = this.getFavorites();
+    const favs = this.getFavorites();
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 720px; padding: 0; overflow: hidden;">
-          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
-            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⭐ SYMPHONY_PRIORITY_LINKS</h2>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 600px; padding: 0;">
+          <div class="modal-header" style="padding: var(--s6);">
+            <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">⭐ PRIORITY_LINKS_v7</h2>
             <button class="modal-close" onclick="closeModal()">×</button>
           </div>
-          <div class="modal-body">
-            ${favorites.length === 0 ? `
-              <div style="text-align: center; padding: var(--space-10); color: var(--text-tertiary);">
-                <div style="font-size: 3rem; margin-bottom: var(--space-4); opacity: 0.3;">⭐</div>
-                <h3 style="margin-bottom: var(--space-2); color: var(--text-primary); font-family: var(--font-family-display); letter-spacing: 1px;">BUFFER_EMPTY</h3>
-                <p style="font-size: 13px;">Specify functions for immediate neural recall by tagging them with the priority star.</p>
+          <div class="modal-body" style="padding: var(--s6); max-height: 60vh; overflow-y: auto;">
+            ${favs.length === 0 ? `
+              <div style="text-align: center; padding: 40px; opacity: 0.3;">
+                <div style="font-size: 3rem;">⭐</div>
+                <div style="font-size: 10px; font-family: var(--font-family-mono); margin-top: 12px;">BUFFER_EMPTY: TAG_MODULES_FOR_RECALL</div>
               </div>
             ` : `
-              <div style="display: grid; gap: var(--space-3);">
-                ${favorites.map(func => `
-                  <div class="glass-card-subtle flex-between hover-lift" style="cursor: pointer; padding: var(--space-4);" onclick="executeFunction('${func.id}')">
-                    <div style="display: flex; align-items: center; gap: var(--space-4);">
-                      <span style="font-size: 24px;">${func.icon}</span>
-                      <div>
-                        <div style="font-weight: 800; color: var(--text-primary); font-size: 14px; letter-spacing: 0.5px;">${func.title.toUpperCase()}</div>
-                        <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 4px; font-family: var(--font-family-mono);">
-                          ${func.categoryIcon} LINK_SUB: ${func.category.toUpperCase()}
+              <div style="display: grid; gap: 12px;">
+                ${favs.map(f => `
+                  <div class="neural-glass" style="padding: var(--s4); display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="executeFunction('${f.id}'); closeModal();">
+                     <div style="display: flex; gap: 16px; align-items: center;">
+                        <div class="card-icon" style="width: 40px; height: 40px; font-size: 1.2rem; margin: 0;">${f.icon}</div>
+                        <div>
+                           <div style="font-weight: 800; font-size: 14px; color: var(--text-main);">${f.title.toUpperCase()}</div>
+                           <div style="font-size: 10px; color: var(--color-primary); font-family: var(--font-family-mono);">${f.catIcon} :: ${f.category.toUpperCase()}</div>
                         </div>
-                      </div>
-                    </div>
-                    <button 
-                      class="icon-btn" 
-                      style="color: var(--color-accent-400);"
-                      onclick="event.stopPropagation(); favoritesManager.remove('${func.id}'); favoritesManager.showFavoritesModal();"
-                      title="TERMINATE_PRIORITY_LINK"
-                    >
-                      <span>⭐</span>
-                    </button>
+                     </div>
+                     <button class="icon-btn" style="color: var(--color-primary);" onclick="event.stopPropagation(); favoritesManager.remove('${f.id}'); favoritesManager.showFavoritesModal();">⭐</button>
                   </div>
                 `).join('')}
               </div>
             `}
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-glass" onclick="closeModal()">Close</button>
+          <div class="modal-footer" style="padding: var(--s6);">
+            <button class="btn-neural-glass" style="width: 100%;" onclick="closeModal()">DISMISS</button>
           </div>
         </div>
       </div>
@@ -115,19 +84,17 @@ const favoritesManager = {
   },
 
   updateUI() {
-    // Update favorite stars on function cards
-    document.querySelectorAll('.function-card').forEach(card => {
-      const functionId = card.dataset.function || card.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
-      if (functionId) {
-        const isFav = this.isFavorite(functionId);
-        // Add star indicator if favorite
-        let star = card.querySelector('.favorite-star');
+    // Legacy support for cards with stars
+    document.querySelectorAll('.neural-card').forEach(card => {
+      const id = card.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+      if (id) {
+        const isFav = this.favorites.includes(id);
+        let star = card.querySelector('.favorite-indicator');
         if (isFav && !star) {
           star = document.createElement('div');
-          star.className = 'favorite-star';
+          star.className = 'favorite-indicator';
           star.innerHTML = '⭐';
-          star.style.cssText = 'position: absolute; top: 8px; right: 8px; font-size: 16px; opacity: 0.8;';
-          card.style.position = 'relative';
+          star.style.cssText = 'position: absolute; top: 12px; right: 12px; font-size: 12px; filter: drop-shadow(0 0 5px var(--color-primary));';
           card.appendChild(star);
         } else if (!isFav && star) {
           star.remove();
@@ -137,10 +104,8 @@ const favoritesManager = {
   },
 
   init() {
-    this.updateUI();
+    setTimeout(() => this.updateUI(), 1000);
   }
 };
-
-// Export for global access
 
 window.favoritesManager = favoritesManager;

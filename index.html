@@ -31,6 +31,17 @@
 </head>
 
 <body>
+  <!-- Neural Splash Screen -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-orb">⚡</div>
+      <div class="splash-loader">
+        <div class="splash-progress"></div>
+      </div>
+      <div class="splash-text">INITIALIZING_SYMPHONY_KERNEL</div>
+    </div>
+  </div>
+
   <!-- Neural Infrastructure -->
   <div class="app-background">
     <div class="glow-orb orb-1"></div>
@@ -49,9 +60,14 @@
               style="opacity: 0.5; font-weight: 400; font-size: 0.8rem;">V7.0</span></span>
         </div>
         <div style="display: flex; gap: var(--s3);">
-          <button class="icon-btn" onclick="openSearch()">🔍</button>
-          <button class="icon-btn" onclick="chatManager.toggleChat()">💬</button>
-          <button class="icon-btn" id="notificationBtn" onclick="notificationManager.togglePanel()">🔔</button>
+          <button class="icon-btn" onclick="openSearch()" aria-label="Search modules">🔍</button>
+          <button class="icon-btn" onclick="chatManager.toggleChat()" aria-label="Open AI Gateway">💬</button>
+          <button class="icon-btn" id="notificationBtn" onclick="notificationManager.togglePanel()"
+            aria-label="System Notifications" style="position: relative;">
+            <span>🔔</span>
+            <span id="notificationBadge" class="notification-badge">0</span>
+          </button>
+
         </div>
       </div>
     </header>
@@ -130,20 +146,21 @@
 
     <!-- Navigation: Orbital Base -->
     <nav class="mobile-tab-bar neural-glass">
-      <button class="tab-item active" id="tab-home" onclick="setMobileTabActive('tab-home')">
+      <button class="tab-item active" id="tab-home" onclick="setMobileTabActive('tab-home')"
+        aria-label="Home Dashboard">
         <span class="tab-icon">🏠</span>
       </button>
-      <button class="tab-item" id="tab-search" onclick="openSearch()">
+      <button class="tab-item" id="tab-search" onclick="openSearch()" aria-label="Search">
         <span class="tab-icon">🔍</span>
       </button>
-      <button class="tab-item" id="tab-voice" onclick="toggleVoiceAccess()"
+      <button class="tab-item" id="tab-voice" onclick="toggleVoiceAccess()" aria-label="Voice Activation"
         style="background: var(--color-primary); border-radius: 50%; width: 56px; height: 56px; margin-top: -30px; border: 4px solid var(--color-foundation); color: var(--color-foundation); box-shadow: var(--shadow-neon-primary);">
         <span class="tab-icon" style="font-size: 1.8rem;">🎤</span>
       </button>
-      <button class="tab-item" id="tab-chat" onclick="chatManager.toggleChat()">
+      <button class="tab-item" id="tab-chat" onclick="chatManager.toggleChat()" aria-label="AI Chat">
         <span class="tab-icon">💬</span>
       </button>
-      <button class="tab-item" id="tab-faceid" onclick="faceRecognition.open()">
+      <button class="tab-item" id="tab-faceid" onclick="faceRecognition.open()" aria-label="Face Authentication">
         <span class="tab-icon">👤</span>
       </button>
     </nav>
@@ -169,35 +186,36 @@
   <div id="hudOverlay" class="hud-overlay"></div>
 
   <!-- Core Scripts -->
-  <script src="/libs/face-api.min.js"></script>
   <script type="module" src="/js/functions.js"></script>
   <script type="module" src="/js/app.js"></script>
 
   <!-- Subsystem Scripts -->
-  <script src="/js/automation.js"></script>
-  <script src="/js/openai-handler.js"></script>
-  <script src="/js/voice-manager.js"></script>
-  <script src="/js/voice-access.js"></script>
-  <script src="/js/about.js"></script>
-  <script src="/js/command-center.js"></script>
-  <script src="/js/theme-manager.js"></script>
-  <script src="/js/search.js"></script>
-  <script src="/js/favorites.js"></script>
-  <script src="/js/keyboard-shortcuts.js"></script>
-  <script src="/js/export-import.js"></script>
-  <script src="/js/performance-monitor.js"></script>
-  <script src="/js/recent-functions.js"></script>
-  <script src="/js/shortcut-editor.js"></script>
-  <script src="/js/chat-manager.js"></script>
-  <script src="/js/notification-manager.js"></script>
-  <script src="/js/always-listening.js"></script>
-  <script src="/js/cognitive-stream.js"></script>
-  <script src="/js/cognitive-memory.js"></script>
-  <script src="/js/face-recognition.js"></script>
+  <script type="module" src="/js/automation.js"></script>
+  <script type="module" src="/js/openai-handler.js"></script>
+  <script type="module" src="/js/voice-manager.js"></script>
+  <script type="module" src="/js/voice-access.js"></script>
+  <script type="module" src="/js/about.js"></script>
+  <script type="module" src="/js/command-center.js"></script>
+  <script type="module" src="/js/theme-manager.js"></script>
+  <script type="module" src="/js/search.js"></script>
+  <script type="module" src="/js/favorites.js"></script>
+  <script type="module" src="/js/keyboard-shortcuts.js"></script>
+  <script type="module" src="/js/export-import.js"></script>
+  <script type="module" src="/js/performance-monitor.js"></script>
+  <script type="module" src="/js/recent-functions.js"></script>
+  <script type="module" src="/js/shortcut-editor.js"></script>
+  <script type="module" src="/js/chat-manager.js"></script>
+  <script type="module" src="/js/notification-manager.js"></script>
+  <script type="module" src="/js/always-listening.js"></script>
+  <script type="module" src="/js/cognitive-stream.js"></script>
+  <script type="module" src="/js/cognitive-memory.js"></script>
+  <script type="module" src="/js/face-recognition.js"></script>
 
   <script>
     window.addEventListener('load', () => {
-      console.log('🚀 NEURAL_KERNEL_7.1_BOOTLOAD_COMPLETE');
+      console.log('🚀 NEURAL_KERNEL_7.0_BOOTLOAD_COMPLETE');
+
+      // Initialize Modular Subsystems
       if (window.themeManager) themeManager.init();
       if (window.favoritesManager) favoritesManager.init();
       if (window.keyboardShortcuts) keyboardShortcuts.init();
@@ -205,6 +223,11 @@
       if (window.shortcutEditor) shortcutEditor.applyCustomShortcuts();
       if (window.chatManager) chatManager.init();
       if (window.notificationManager) notificationManager.init();
+      if (window.initAutomation) window.initAutomation();
+      if (window.cognitiveStream) {
+        window.cognitiveStream.addLine('> KERNEL_STATE: SYSTEM_ONLINE');
+        window.cognitiveStream.addLine('> MODULE_LOAD: ALL_SYSTEMS_GO');
+      }
 
       // Mobile Visibility Override
       const pill = document.getElementById('mobileStatusPill');
@@ -213,6 +236,7 @@
       }
     });
   </script>
+
 </body>
 
 </html>

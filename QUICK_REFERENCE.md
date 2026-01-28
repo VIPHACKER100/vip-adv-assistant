@@ -16,6 +16,7 @@ npx http-server -p 8000
 ## 🎤 Voice Commands Cheat Sheet
 
 ### Navigation & Panels
+
 - "hey assistant" - Wake word activation
 - "go home" - Scroll to top
 - "show hud" - Command Center HUD
@@ -24,6 +25,7 @@ npx http-server -p 8000
 - "close" - Close current modal
 
 ### Popular Functions
+
 - "flashlight on/off" - Hardware control
 - "lock system" - Security protocol
 - "sos alert" - Emergency broadcast
@@ -32,6 +34,7 @@ npx http-server -p 8000
 - "smart home" - IoT management
 
 ### System & Intelligence
+
 - "always listening" - Toggle continuous mode
 - "command palette" - Open registry
 - "analyze image" - AI Vision
@@ -56,7 +59,7 @@ npx http-server -p 8000
 
 ```javascript
 // 1. Add to category in js/functions.js
-{ 
+{
   id: 'my_function',
   icon: '🎯',
   title: 'My Function',
@@ -74,7 +77,7 @@ case 'my_function':
 ```javascript
 // In js/voice-access.js
 voiceState.commands = {
-  'my command': () => executeFunction('my_function')
+  'my command': () => executeFunction('my_function'),
 };
 ```
 
@@ -113,33 +116,36 @@ showModal('settings'); // or 'demo'
 ## 🎨 CSS Custom Properties
 
 ### Colors
+
 ```css
---color-primary-500: #7C3AED;
---color-accent-500: #06B6D4;
---color-success-500: #10B981;
---color-error-500: #EF4444;
---color-warning-500: #F59E0B;
+--color-primary-500: #7c3aed;
+--color-accent-500: #06b6d4;
+--color-success-500: #10b981;
+--color-error-500: #ef4444;
+--color-warning-500: #f59e0b;
 --glass-bg: rgba(15, 23, 42, 0.7);
 ```
 
 ### Spacing
+
 ```css
---space-1: 0.25rem;  /* 4px */
---space-2: 0.5rem;   /* 8px */
---space-3: 0.75rem;  /* 12px */
---space-4: 1rem;     /* 16px */
---space-6: 1.5rem;   /* 24px */
---space-8: 2rem;     /* 32px */
+--space-1: 0.25rem; /* 4px */
+--space-2: 0.5rem; /* 8px */
+--space-3: 0.75rem; /* 12px */
+--space-4: 1rem; /* 16px */
+--space-6: 1.5rem; /* 24px */
+--space-8: 2rem; /* 32px */
 ```
 
 ### Typography
+
 ```css
---font-size-xs: 0.75rem;   /* 12px */
---font-size-sm: 0.875rem;  /* 14px */
---font-size-base: 1rem;    /* 16px */
---font-size-lg: 1.125rem;  /* 18px */
---font-size-xl: 1.25rem;   /* 20px */
---font-size-2xl: 1.5rem;   /* 24px */
+--font-size-xs: 0.75rem; /* 12px */
+--font-size-sm: 0.875rem; /* 14px */
+--font-size-base: 1rem; /* 16px */
+--font-size-lg: 1.125rem; /* 18px */
+--font-size-xl: 1.25rem; /* 20px */
+--font-size-2xl: 1.5rem; /* 24px */
 ```
 
 ---
@@ -147,15 +153,17 @@ showModal('settings'); // or 'demo'
 ## 🌐 Browser API Reference
 
 ### Battery Status
+
 ```javascript
 if ('getBattery' in navigator) {
-  navigator.getBattery().then(battery => {
+  navigator.getBattery().then((battery) => {
     console.log(battery.level * 100 + '%');
   });
 }
 ```
 
 ### Network Information
+
 ```javascript
 if (navigator.connection) {
   console.log(navigator.connection.effectiveType); // '4g', 'wifi', etc.
@@ -163,8 +171,11 @@ if (navigator.connection) {
 ```
 
 ### Speech Recognition
+
 ```javascript
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+const recognition = new (
+  window.SpeechRecognition || window.webkitSpeechRecognition
+)();
 recognition.start();
 recognition.onresult = (event) => {
   console.log(event.results[0][0].transcript);
@@ -172,6 +183,7 @@ recognition.onresult = (event) => {
 ```
 
 ### Speech Synthesis
+
 ```javascript
 const utterance = new SpeechSynthesisUtterance('Hello');
 window.speechSynthesis.speak(utterance);
@@ -182,6 +194,7 @@ window.speechSynthesis.speak(utterance);
 ## 🔍 Debugging Tips
 
 ### Console Logging
+
 ```javascript
 console.log('Debug:', value);
 console.error('Error:', error);
@@ -190,6 +203,7 @@ console.table(arrayOfObjects);
 ```
 
 ### Check API Support
+
 ```javascript
 console.log('Battery API:', 'getBattery' in navigator);
 console.log('Speech API:', 'SpeechRecognition' in window);
@@ -197,6 +211,7 @@ console.log('Network API:', 'connection' in navigator);
 ```
 
 ### Monitor Events
+
 ```javascript
 // In browser DevTools Console
 monitorEvents(document.getElementById('voiceAccessBtn'));
@@ -208,16 +223,20 @@ monitorEvents(document.getElementById('voiceAccessBtn'));
 
 ```css
 /* Mobile */
-@media (max-width: 640px) { }
+@media (max-width: 640px) {
+}
 
 /* Tablet */
-@media (min-width: 768px) { }
+@media (min-width: 768px) {
+}
 
 /* Desktop side-panels */
-@media (min-width: 1024px) { }
+@media (min-width: 1024px) {
+}
 
 /* Large Desktop */
-@media (min-width: 1280px) { }
+@media (min-width: 1280px) {
+}
 ```
 
 ---
@@ -225,18 +244,21 @@ monitorEvents(document.getElementById('voiceAccessBtn'));
 ## 🛠️ Common Tasks
 
 ### Clear localStorage
+
 ```javascript
 localStorage.clear();
 location.reload();
 ```
 
 ### Force Refresh
+
 ```
 Ctrl + Shift + R (Windows/Linux)
 Cmd + Shift + R (macOS)
 ```
 
 ### Open DevTools
+
 ```
 F12 or Ctrl + Shift + I (Windows/Linux)
 Cmd + Option + I (macOS)
@@ -246,19 +268,19 @@ Cmd + Option + I (macOS)
 
 ## 📚 File Locations
 
-| What | Where |
-|------|-------|
-| Main HTML | `index.html` |
-| Core Logic | `js/app.js` |
-| Command Center | `js/command-center.js` |
+| What             | Where                    |
+| ---------------- | ------------------------ |
+| Main HTML        | `index.html`             |
+| Core Logic       | `js/app.js`              |
+| Command Center   | `js/command-center.js`   |
 | Always Listening | `js/always-listening.js` |
-| Functions | `js/functions.js` |
-| Voice | `js/voice-access.js` |
-| Automation | `js/automation.js` |
-| AI Integration | `js/openai-handler.js` |
-| Design Tokens | `css/variables.css` |
-| Components | `css/components.css` |
-| Animations | `css/animations.css` |
+| Functions        | `js/functions.js`        |
+| Voice            | `js/voice-access.js`     |
+| Automation       | `js/automation.js`       |
+| AI Integration   | `js/openai-handler.js`   |
+| Design Tokens    | `css/variables.css`      |
+| Components       | `css/components.css`     |
+| Animations       | `css/animations.css`     |
 
 ---
 
@@ -288,5 +310,4 @@ Cmd + Option + I (macOS)
 
 ---
 
-**Last Updated**: 2026-01-25
-**Version**: 5.0.0 (Neural Symphony)
+**Last Updated**: 2026-01-25 **Version**: 5.0.0 (Neural Symphony)

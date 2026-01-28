@@ -40,12 +40,14 @@
 If TestSprite MCP isn't available yet, you can run tests directly:
 
 ### Prerequisites:
+
 ```powershell
 # Install Playwright browsers (if not done)
 python -m playwright install chromium
 ```
 
 ### Run Tests:
+
 ```powershell
 # Navigate to test directory
 cd testsprite_tests
@@ -77,18 +79,21 @@ python TC003_Keyboard_shortcut_default_behaviors.py
 ## 🎯 Quick Start
 
 ### For TestSprite MCP:
+
 1. ✅ API key is already configured
 2. **Restart Cursor IDE** ← Important!
 3. Ensure server is running: `python -m http.server 8000`
 4. In Cursor chat: **"Run tests using TestSprite"**
 
 ### For Direct Execution:
+
 1. Wait for Playwright browsers to finish installing
 2. Run: `cd testsprite_tests && python run_all_tests.py`
 
 ## 📊 Expected Results
 
 When using TestSprite MCP, you'll get:
+
 - **Test Execution Report** - Pass/fail status for each test
 - **Coverage Analysis** - What was tested
 - **Performance Metrics** - Execution times
@@ -98,16 +103,19 @@ When using TestSprite MCP, you'll get:
 ## 🔍 Troubleshooting
 
 **TestSprite MCP not appearing?**
+
 - ✅ API key is configured correctly
 - ⚠️ **Restart Cursor IDE** (most common issue)
 - Check `.cursor/mcp.json` syntax is valid JSON
 
 **Tests not running?**
+
 - Verify server is running: `netstat -ano | findstr :8000`
 - Check Playwright browsers: `python -m playwright install chromium`
 - Ensure test files exist in `testsprite_tests/`
 
 **API Key issues?**
+
 - Key is configured in `.cursor/mcp.json`
 - Format: `"TESTSPRITE_API_KEY": "your-key-here"` (no ${})
 - Restart Cursor after any config changes
@@ -115,13 +123,12 @@ When using TestSprite MCP, you'll get:
 ## 📝 Next Steps
 
 1. **Restart Cursor IDE** to activate TestSprite MCP
-2. **Wait for Playwright browsers** to finish installing (if using direct execution)
+2. **Wait for Playwright browsers** to finish installing (if using direct
+   execution)
 3. **Run tests** using either method above
 4. **Review results** and address any issues found
 
 ---
 
-**Status**: ✅ Ready to test
-**API Key**: ✅ Configured
-**Server**: ✅ Running
+**Status**: ✅ Ready to test **API Key**: ✅ Configured **Server**: ✅ Running
 **Action Required**: Restart Cursor IDE to activate TestSprite MCP

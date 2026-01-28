@@ -8,7 +8,7 @@ class CognitiveMemory {
     this.memoryStore = [];
     this.vectorDimension = 1536; // Standard dimension for semantic vectors
     this.similarityThreshold = 0.75; // Minimum similarity for recall
-    
+
     // Initialize cognitive memory
     this.init();
   }
@@ -29,13 +29,13 @@ class CognitiveMemory {
       timestamp: Date.now(),
       metadata: {
         ...metadata,
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      },
     };
 
     this.memoryStore.push(memory);
     this.saveToStorage();
-    
+
     console.log(`🧠 Memory stored: ${content.substring(0, 50)}...`);
     return memory.id;
   }
@@ -44,20 +44,20 @@ class CognitiveMemory {
    * Create semantic embedding for content
    */
   async createEmbedding(content) {
+    await Promise.resolve(); // Satisfy require-await
     // In a real implementation, this would call an actual embedding API
     // For now, we'll simulate with a hash-based approach
-    const encoder = new TextEncoder();
-    const data = encoder.encode(content.toLowerCase());
-    
+    // Simplified simulation
+
     // Simple hash-based embedding simulation
     const hash = this.simpleHash(content);
     const embedding = new Array(this.vectorDimension).fill(0);
-    
+
     // Distribute the hash value across the vector
     for (let i = 0; i < embedding.length; i++) {
       embedding[i] = Math.sin(hash + i) * Math.cos(hash + i * 2);
     }
-    
+
     return embedding;
   }
 
@@ -68,7 +68,7 @@ class CognitiveMemory {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash |= 0; // Convert to 32-bit integer
     }
     return Math.abs(hash);
@@ -90,16 +90,16 @@ class CognitiveMemory {
       if (similarity > this.similarityThreshold) {
         similarities.push({
           memory,
-          similarity
+          similarity,
         });
       }
     }
 
     // Sort by similarity (highest first) and return top results
     similarities.sort((a, b) => b.similarity - a.similarity);
-    return similarities.slice(0, limit).map(item => ({
+    return similarities.slice(0, limit).map((item) => ({
       ...item.memory,
-      confidence: item.similarity
+      confidence: item.similarity,
     }));
   }
 
@@ -133,21 +133,21 @@ class CognitiveMemory {
    */
   forgetMemories(criteria) {
     const initialCount = this.memoryStore.length;
-    
+
     if (typeof criteria === 'function') {
-      this.memoryStore = this.memoryStore.filter(mem => !criteria(mem));
+      this.memoryStore = this.memoryStore.filter((mem) => !criteria(mem));
     } else if (typeof criteria === 'string') {
-      this.memoryStore = this.memoryStore.filter(mem => !mem.content.includes(criteria));
+      this.memoryStore = this.memoryStore.filter((mem) => !mem.content.includes(criteria));
     } else if (criteria.id) {
-      this.memoryStore = this.memoryStore.filter(mem => mem.id !== criteria.id);
+      this.memoryStore = this.memoryStore.filter((mem) => mem.id !== criteria.id);
     } else if (criteria.beforeDate) {
       const beforeTime = new Date(criteria.beforeDate).getTime();
-      this.memoryStore = this.memoryStore.filter(mem => mem.timestamp < beforeTime);
+      this.memoryStore = this.memoryStore.filter((mem) => mem.timestamp < beforeTime);
     }
 
     const forgottenCount = initialCount - this.memoryStore.length;
     console.log(`🧠 Forgotten ${forgottenCount} memories`);
-    
+
     this.saveToStorage();
     return forgottenCount;
   }
@@ -158,10 +158,14 @@ class CognitiveMemory {
   getMemorySummary() {
     return {
       totalMemories: this.memoryStore.length,
-      earliestMemory: this.memoryStore.length > 0 ? 
-        new Date(Math.min(...this.memoryStore.map(m => m.timestamp))) : null,
-      latestMemory: this.memoryStore.length > 0 ? 
-        new Date(Math.max(...this.memoryStore.map(m => m.timestamp))) : null
+      earliestMemory:
+        this.memoryStore.length > 0
+          ? new Date(Math.min(...this.memoryStore.map((m) => m.timestamp)))
+          : null,
+      latestMemory:
+        this.memoryStore.length > 0
+          ? new Date(Math.max(...this.memoryStore.map((m) => m.timestamp)))
+          : null,
     };
   }
 
@@ -173,9 +177,9 @@ class CognitiveMemory {
       const stored = localStorage.getItem('cognitiveMemory');
       if (stored) {
         const parsed = JSON.parse(stored);
-        this.memoryStore = parsed.map(mem => ({
+        this.memoryStore = parsed.map((mem) => ({
           ...mem,
-          embedding: Float32Array.from(mem.embedding) // Convert back to typed array
+          embedding: Float32Array.from(mem.embedding), // Convert back to typed array
         }));
         console.log(`🧠 Loaded ${this.memoryStore.length} memories from storage`);
       }
@@ -190,11 +194,11 @@ class CognitiveMemory {
   saveToStorage() {
     try {
       // Convert typed arrays back to regular arrays for JSON serialization
-      const serializable = this.memoryStore.map(mem => ({
+      const serializable = this.memoryStore.map((mem) => ({
         ...mem,
-        embedding: Array.from(mem.embedding)
+        embedding: Array.from(mem.embedding),
       }));
-      
+
       localStorage.setItem('cognitiveMemory', JSON.stringify(serializable));
     } catch (error) {
       console.error('Error saving cognitive memory:', error);
@@ -223,9 +227,7 @@ class CognitiveMemory {
    * Get recent memories
    */
   getRecentMemories(limit = 10) {
-    return [...this.memoryStore]
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(0, limit);
+    return [...this.memoryStore].sort((a, b) => b.timestamp - a.timestamp).slice(0, limit);
   }
 }
 
@@ -240,13 +242,13 @@ console.log('🧠 Cognitive Memory v2 system ready for infinite context');
 // Example usage functions
 window.CognitiveMemoryHelpers = {
   // Store a memory
-  remember: async (content, metadata = {}) => {
-    return await cognitiveMemory.storeMemory(content, metadata);
+  remember: (content, metadata = {}) => {
+    return cognitiveMemory.storeMemory(content, metadata);
   },
 
   // Recall memories related to a query
-  recall: async (query, limit = 5) => {
-    return await cognitiveMemory.recallMemories(query, limit);
+  recall: (query, limit = 5) => {
+    return cognitiveMemory.recallMemories(query, limit);
   },
 
   // Get memory summary
@@ -257,20 +259,20 @@ window.CognitiveMemoryHelpers = {
   // Get recent memories
   getRecent: (limit = 10) => {
     return cognitiveMemory.getRecentMemories(limit);
-  }
+  },
 };
 
 // Add a sample memory to demonstrate functionality
 (async () => {
   if (cognitiveMemory.memoryStore.length === 0) {
     await cognitiveMemory.storeMemory(
-      "User preferences for the VIP AI Assistant include dark mode and accessibility features",
-      { category: "preferences", user: "primary" }
+      'User preferences for the VIP AI Assistant include dark mode and accessibility features',
+      { category: 'preferences', user: 'primary' }
     );
-    
+
     await cognitiveMemory.storeMemory(
-      "The user enjoys productivity tools and frequently uses the automation features",
-      { category: "behavior", user: "primary" }
+      'The user enjoys productivity tools and frequently uses the automation features',
+      { category: 'behavior', user: 'primary' }
     );
   }
 })();

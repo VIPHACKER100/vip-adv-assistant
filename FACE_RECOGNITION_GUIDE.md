@@ -12,6 +12,7 @@
 ## 📋 Voice Commands
 
 Say any of these to open Face ID:
+
 - "face recognition"
 - "face id"
 - "open face id"
@@ -19,33 +20,33 @@ Say any of these to open Face ID:
 
 ## 🎯 Features
 
-✅ Real-time face detection with bounding boxes
-✅ 68 facial landmark tracking
-✅ User registration with names
-✅ Face recognition with confidence %
-✅ Stores data locally (no cloud)
-✅ Premium animated UI
-✅ Voice greetings on recognition
+✅ Real-time face detection with bounding boxes ✅ 68 facial landmark tracking
+✅ User registration with names ✅ Face recognition with confidence % ✅ Stores
+data locally (no cloud) ✅ Premium animated UI ✅ Voice greetings on recognition
 
 ## 🔧 Troubleshooting
 
 **Camera not working?**
+
 - Check browser permissions (click 🔒 in address bar)
 - Use Chrome, Edge, or Safari
 - Make sure no other app is using the camera
 
 **Models not loading?**
+
 - Check browser console (F12) for errors
 - Verify all files in `models/` folder exist
 - Make sure `libs/face-api.min.js` is present
 
 **Face not detected?**
+
 - Ensure good lighting
 - Face the camera directly
 - Move closer to the camera
 - Remove glasses/hats if needed
 
 **Not recognizing registered face?**
+
 - Try registering again in similar lighting
 - Ensure you're facing the camera the same way
 - Check confidence threshold (default: 60%)
@@ -69,6 +70,7 @@ vip adv assistant/
 ## 🎨 UI Elements
 
 **Status Icons:**
+
 - 📷 = Camera initializing
 - 🔍 = Scanning for faces
 - ✅ = Face recognized
@@ -76,6 +78,7 @@ vip adv assistant/
 - 👤 = Face detected (unknown)
 
 **Buttons:**
+
 - 🔍 Start Recognition = Begin scanning
 - ➕ Register New Face = Add new person
 - 🗑️ Clear All = Delete all registered faces
@@ -83,12 +86,14 @@ vip adv assistant/
 ## 💾 Data Storage
 
 Face data is stored in browser's localStorage:
+
 - **Key**: `vip_registered_faces`
 - **Format**: JSON array of face descriptors
 - **Size**: ~2KB per registered face
 - **Privacy**: Never leaves your device
 
 To clear data:
+
 1. Click "Clear All" button, OR
 2. Open DevTools → Application → Local Storage → Clear
 
@@ -134,6 +139,7 @@ To clear data:
 **Need help?** Check the browser console (F12) for detailed error messages.
 
 **Want to customize?** Edit `js/face-recognition.js` to adjust:
+
 - Recognition threshold (line 264): `const threshold = 0.6;`
 - Detection interval (line 234): `setTimeout(..., 100);`
 - Camera resolution (line 157): `width: 640, height: 480`

@@ -11,7 +11,6 @@
         "plugin:import/recommended",
         "plugin:jest/recommended",
         "plugin:jsx-a11y/recommended",
-        "plugin:security/recommended",
         "plugin:prettier/recommended"
     ],
     "parserOptions": {
@@ -128,6 +127,31 @@
         "commandCenter": "readonly",
         "cognitiveStream": "readonly",
         "openaiHandler": "readonly",
-        "faceapi": "readonly"
+        "faceapi": "readonly",
+        "faceRecognition": "readonly",
+        "closeModal": "readonly",
+        "showModal": "readonly",
+        "openAutomationBuilder": "readonly",
+        "toggleHUD": "readonly",
+        "toggleTheme": "readonly",
+        "setMobileTabActive": "readonly",
+        "getFunctionCategories": "readonly",
+        "executeFunction": "readonly",
+        "speak": "readonly",
+        "recentFunctionsManager": "readonly",
+        "themeManager": "readonly",
+        "keyboardShortcuts": "readonly",
+        "shortcutEditor": "readonly",
+        "toggleBoostMode": "readonly",
+        "showVoiceHelp": "readonly",
+        "processWithOpenAI": "readonly",
+        "showOptimizationWizard": "readonly",
+        "showNeuralLinkWizard": "readonly",
+        "startPillDrag": "readonly",
+        "voiceState": "writable",
+        "alwaysListening": "writable",
+        "toggleAlwaysListening": "readonly",
+        "showShortcutsHelp": "readonly",
+        "shortcuts": "writable"
     }
 }

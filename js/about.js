@@ -12,14 +12,16 @@ const aboutData = {
   contributors: [
     'DeepMind Antigravity AI Agent',
     'OpenAI GPT-4o-mini',
-    'Vanilla Web Infrastructure'
+    'Vanilla Web Infrastructure',
   ],
-  legal: 'SYMPHONY OS - Proprietary Research Build. All neural pathways verified.'
+  legal: 'SYMPHONY OS - Proprietary Research Build. All neural pathways verified.',
 };
 
 function showAboutModal() {
   const modalContainer = document.getElementById('modalContainer');
-  if (!modalContainer) return;
+  if (!modalContainer) {
+    return;
+  }
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
@@ -52,7 +54,7 @@ function showAboutModal() {
           <div class="about-section">
             <h4>🤝 Core Contributors</h4>
             <ul class="list-none" style="padding: 0; font-size: 14px; opacity: 0.8;">
-              ${aboutData.contributors.map(c => `<li>${c}</li>`).join('')}
+              ${aboutData.contributors.map((c) => `<li>${c}</li>`).join('')}
             </ul>
           </div>
 

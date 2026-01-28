@@ -8,31 +8,38 @@
 
 ## 📋 Overview
 
-This guide will help you upgrade from v6.2.0 to v7.0.0, which includes comprehensive modernization with new tooling, testing infrastructure, and development workflows.
+This guide will help you upgrade from v6.2.0 to v7.0.0, which includes
+comprehensive modernization with new tooling, testing infrastructure, and
+development workflows.
 
 ---
 
 ## ⚠️ Breaking Changes
 
 ### 1. **Build System**
+
 - **Old**: Direct file serving via Python HTTP server
 - **New**: Vite build system with optimized bundles
 - **Action Required**: Use `npm run dev` instead of `python -m http.server`
 
 ### 2. **Dependencies**
+
 - **Old**: No package.json, single external library (face-api.js)
 - **New**: Full npm dependency management
 - **Action Required**: Run `npm install` to install all dependencies
 
 ### 3. **Environment Variables**
+
 - **Old**: API keys in localStorage
 - **New**: Environment variables via .env file
 - **Action Required**: Create `.env` file from `.env.example`
 
 ### 4. **File Structure**
+
 - **New Files**: 20+ configuration and tooling files
 - **New Directories**: `tests/`, `scripts/`, `.github/workflows/`
-- **Action Required**: Review new structure in [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md)
+- **Action Required**: Review new structure in
+  [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md)
 
 ---
 
@@ -47,7 +54,7 @@ Before upgrading, backup your current data:
 const backup = {
   timestamp: new Date().toISOString(),
   localStorage: {},
-  sessionStorage: {}
+  sessionStorage: {},
 };
 
 for (let i = 0; i < localStorage.length; i++) {
@@ -101,6 +108,7 @@ cp .env.example .env
 ```
 
 **Required Configuration:**
+
 ```env
 VITE_OPENAI_API_KEY=your_api_key_here
 VITE_OPENAI_MODEL=gpt-4o-mini
@@ -108,12 +116,13 @@ VITE_OPENAI_MODEL=gpt-4o-mini
 
 ### Step 6: Run Migration
 
-The migration will automatically run on first load, but you can also run it manually:
+The migration will automatically run on first load, but you can also run it
+manually:
 
 ```javascript
 // In browser console after loading the app
-window.migrations.backup();  // Create backup
-window.migrations.run('7.0.0');  // Run migration
+window.migrations.backup(); // Create backup
+window.migrations.run('7.0.0'); // Run migration
 ```
 
 ### Step 7: Verify Installation
@@ -135,12 +144,14 @@ npm run dev
 ### Step 8: Update Your Workflow
 
 **Old Workflow:**
+
 ```bash
 cd "vip-adv-assistant"
 python -m http.server 8000
 ```
 
 **New Workflow:**
+
 ```bash
 cd "vip-adv-assistant"
 npm run dev
@@ -192,17 +203,20 @@ window.migrations.restore(backupKey);
 ### 1. API Key Storage
 
 **Old Method (Insecure):**
+
 ```javascript
 localStorage.setItem('openai_api_key', 'sk-...');
 ```
 
 **New Method (Secure):**
+
 ```env
 # In .env file
 VITE_OPENAI_API_KEY=sk-...
 ```
 
 **Access in Code:**
+
 ```javascript
 const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 ```
@@ -277,6 +291,7 @@ npm run test:watch
 ### Issue: `npm install` fails
 
 **Solution:**
+
 ```bash
 # Clear npm cache
 npm cache clean --force
@@ -291,6 +306,7 @@ npm install
 ### Issue: Port 8000 already in use
 
 **Solution:**
+
 ```bash
 # Change port in .env
 VITE_DEV_SERVER_PORT=8001
@@ -303,6 +319,7 @@ VITE_DEV_SERVER_PORT=8001
 ### Issue: Tests fail
 
 **Solution:**
+
 ```bash
 # Install Playwright browsers
 npx playwright install --with-deps
@@ -314,6 +331,7 @@ npm test
 ### Issue: Build fails
 
 **Solution:**
+
 ```bash
 # Check for linting errors
 npm run lint:fix
@@ -328,6 +346,7 @@ npm run build
 ### Issue: Migration fails
 
 **Solution:**
+
 ```javascript
 // Restore from backup
 const backups = window.migrations.list();
@@ -342,12 +361,14 @@ window.migrations.restore(backups[0].key);
 ## 📊 Performance Comparison
 
 ### Before (v6.2.0)
+
 - **Load Time**: ~2-3s
 - **Bundle Size**: Unoptimized
 - **Caching**: Basic service worker
 - **Build Process**: None
 
 ### After (v7.0.0)
+
 - **Load Time**: ~1-1.5s (50% faster)
 - **Bundle Size**: <500KB gzipped
 - **Caching**: Advanced Workbox strategies
@@ -373,12 +394,16 @@ window.migrations.restore(backups[0].key);
 ## 🆘 Getting Help
 
 ### Documentation
-- [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md) - Complete modernization details
-- [`MODERNIZATION_ASSESSMENT.md`](./MODERNIZATION_ASSESSMENT.md) - Initial assessment
+
+- [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md) - Complete
+  modernization details
+- [`MODERNIZATION_ASSESSMENT.md`](./MODERNIZATION_ASSESSMENT.md) - Initial
+  assessment
 - [`README.md`](./README.md) - Updated README
 - [`TECHNICAL_DETAILS.md`](./TECHNICAL_DETAILS.md) - Technical documentation
 
 ### Support Channels
+
 - GitHub Issues: Report bugs or ask questions
 - Team Chat: Contact development team
 - Email: support@example.com
@@ -390,11 +415,13 @@ window.migrations.restore(backups[0].key);
 If you need to rollback to v6.2.0:
 
 ### 1. Restore Code
+
 ```bash
 git checkout v6.2.0
 ```
 
 ### 2. Restore Data
+
 ```javascript
 // Use backup from Step 1
 const backup = JSON.parse('your_backup_json_here');
@@ -406,6 +433,7 @@ Object.entries(backup.localStorage).forEach(([key, value]) => {
 ```
 
 ### 3. Start Old Server
+
 ```bash
 python -m http.server 8000
 ```
@@ -417,21 +445,25 @@ python -m http.server 8000
 ### Recommended Schedule
 
 **Week 1: Preparation**
+
 - Review documentation
 - Backup data
 - Test in development environment
 
 **Week 2: Development Environment**
+
 - Upgrade development environment
 - Train team on new tools
 - Fix any issues
 
 **Week 3: Staging Environment**
+
 - Upgrade staging
 - Run full test suite
 - Performance testing
 
 **Week 4: Production**
+
 - Schedule maintenance window
 - Upgrade production
 - Monitor for issues
@@ -467,4 +499,5 @@ Enjoy the improved development workflow and enhanced capabilities!
 
 ---
 
-**Questions?** Check [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md) or open an issue on GitHub.
+**Questions?** Check [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md)
+or open an issue on GitHub.

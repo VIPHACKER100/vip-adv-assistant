@@ -12,7 +12,7 @@ const performanceMonitor = {
     favoritesClicked: 0,
     themeChanges: 0,
     sessionStart: Date.now(),
-    lastActivity: Date.now()
+    lastActivity: Date.now(),
   },
 
   init() {
@@ -43,7 +43,6 @@ const performanceMonitor = {
     setInterval(() => {
       const memLabel = document.getElementById('perfMemoryLabel');
       const cpuLabel = document.getElementById('perfCPULabel');
-      const latencyLabel = document.getElementById('aiLatency');
 
       if (memLabel && window.performance && performance.memory) {
         memLabel.textContent = `${(performance.memory.usedJSHeapSize / 1048576).toFixed(2)} MB`;
@@ -61,7 +60,7 @@ const performanceMonitor = {
     }, 1500);
   },
 
-  trackFunction(functionId) {
+  trackFunction() {
     this.metrics.functionsExecuted++;
     this.saveMetrics();
   },
@@ -96,16 +95,18 @@ const performanceMonitor = {
 
   showDashboard() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+    if (!modalContainer) {
+      return;
+    }
 
     const sessionDuration = this.getSessionDuration();
     const minutes = Math.floor(sessionDuration / 60);
     const seconds = sessionDuration % 60;
 
     // Calculate browser performance
-    const memory = performance.memory ?
-      `${(performance.memory.usedJSHeapSize / 1048576).toFixed(2)} MB` :
-      'N/A';
+    const memory = performance.memory
+      ? `${(performance.memory.usedJSHeapSize / 1048576).toFixed(2)} MB`
+      : 'N/A';
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
@@ -142,7 +143,7 @@ const performanceMonitor = {
                     <div style="display: grid; gap: var(--space-3);">
                         <div class="flex-between">
                             <span style="font-size: 12px; color: var(--text-secondary);">SYMPHONY_VERSION</span>
-                            <span class="badge badge-accent">v6.1.0-GOLD</span>
+                            <span class="badge badge-accent">v7.0.0-PLATINUM</span>
                         </div>
                         <div class="flex-between">
                             <span style="font-size: 12px; color: var(--text-secondary);">BOOT_TIME</span>
@@ -201,10 +202,18 @@ const performanceMonitor = {
 
   getBrowserName() {
     const ua = navigator.userAgent;
-    if (ua.includes('Chrome')) return 'Chrome';
-    if (ua.includes('Firefox')) return 'Firefox';
-    if (ua.includes('Safari')) return 'Safari';
-    if (ua.includes('Edge')) return 'Edge';
+    if (ua.includes('Chrome')) {
+      return 'Chrome';
+    }
+    if (ua.includes('Firefox')) {
+      return 'Firefox';
+    }
+    if (ua.includes('Safari')) {
+      return 'Safari';
+    }
+    if (ua.includes('Edge')) {
+      return 'Edge';
+    }
     return 'Unknown';
   },
 
@@ -218,13 +227,13 @@ const performanceMonitor = {
         favoritesClicked: 0,
         themeChanges: 0,
         sessionStart: Date.now(),
-        lastActivity: Date.now()
+        lastActivity: Date.now(),
       };
       this.saveMetrics();
       showToast('Stats Reset', 'Performance statistics cleared', 'success');
       this.showDashboard();
     }
-  }
+  },
 };
 
 // Export for global access

@@ -4,87 +4,89 @@
  */
 
 const themeManager = {
-    current: localStorage.getItem('theme') || 'dark',
+  current: localStorage.getItem('theme') || 'dark',
 
-    themes: {
-        dark: {
-            '--bg-primary': '#0F172A',
-            '--bg-secondary': '#1E293B',
-            '--bg-tertiary': '#334155',
-            '--text-primary': '#F1F5F9',
-            '--text-secondary': '#CBD5E1',
-            '--text-tertiary': '#94A3B8'
-        },
-        light: {
-            '--bg-primary': '#FFFFFF',
-            '--bg-secondary': '#F8FAFC',
-            '--bg-tertiary': '#F1F5F9',
-            '--text-primary': '#0F172A',
-            '--text-secondary': '#475569',
-            '--text-tertiary': '#64748B'
-        }
+  themes: {
+    dark: {
+      '--bg-primary': '#0F172A',
+      '--bg-secondary': '#1E293B',
+      '--bg-tertiary': '#334155',
+      '--text-primary': '#F1F5F9',
+      '--text-secondary': '#CBD5E1',
+      '--text-tertiary': '#94A3B8',
     },
-
-    init() {
-        this.apply(this.current);
-        this.watchSystemPreference();
+    light: {
+      '--bg-primary': '#FFFFFF',
+      '--bg-secondary': '#F8FAFC',
+      '--bg-tertiary': '#F1F5F9',
+      '--text-primary': '#0F172A',
+      '--text-secondary': '#475569',
+      '--text-tertiary': '#64748B',
     },
+  },
 
-    apply(theme) {
-        const root = document.documentElement;
+  init() {
+    this.apply(this.current);
+    this.watchSystemPreference();
+  },
 
-        if (theme === 'auto') {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            theme = prefersDark ? 'dark' : 'light';
-        }
+  apply(theme) {
+    const root = document.documentElement;
 
-        const colors = this.themes[theme];
-        if (colors) {
-            Object.entries(colors).forEach(([property, value]) => {
-                root.style.setProperty(property, value);
-            });
-        }
-
-        this.current = theme;
-        localStorage.setItem('theme', theme);
-
-        // Update UI if settings modal is open
-        this.updateThemeUI();
-
-        // Track telemetry
-        if (window.performanceMonitor) window.performanceMonitor.trackThemeChange();
-    },
-
-    toggle() {
-        const next = this.current === 'dark' ? 'light' : 'dark';
-        this.apply(next);
-        showToast('Spectrum Shift', `NODE_CALIBRATION: ${next.toUpperCase()}_MODE`, 'success');
-    },
-
-    watchSystemPreference() {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (this.current === 'auto') {
-                this.apply('auto');
-            }
-        });
-    },
-
-    updateThemeUI() {
-        const themeSelect = document.getElementById('themeSelect');
-        if (themeSelect) {
-            themeSelect.value = this.current;
-        }
+    if (theme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      theme = prefersDark ? 'dark' : 'light';
     }
+
+    const colors = this.themes[theme];
+    if (colors) {
+      Object.entries(colors).forEach(([property, value]) => {
+        root.style.setProperty(property, value);
+      });
+    }
+
+    this.current = theme;
+    localStorage.setItem('theme', theme);
+
+    // Update UI if settings modal is open
+    this.updateThemeUI();
+
+    // Track telemetry
+    if (window.performanceMonitor) {
+      window.performanceMonitor.trackThemeChange();
+    }
+  },
+
+  toggle() {
+    const next = this.current === 'dark' ? 'light' : 'dark';
+    this.apply(next);
+    showToast('Spectrum Shift', `NODE_CALIBRATION: ${next.toUpperCase()}_MODE`, 'success');
+  },
+
+  watchSystemPreference() {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (this.current === 'auto') {
+        this.apply('auto');
+      }
+    });
+  },
+
+  updateThemeUI() {
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+      themeSelect.value = this.current;
+    }
+  },
 };
 
 // Toggle theme (for keyboard shortcut)
 function toggleTheme() {
-    themeManager.toggle();
+  themeManager.toggle();
 }
 
 // Set theme from settings
 function setTheme(theme) {
-    themeManager.apply(theme);
+  themeManager.apply(theme);
 }
 
 // Export for global access

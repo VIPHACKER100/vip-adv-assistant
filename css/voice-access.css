@@ -1,112 +1,72 @@
 /**
- * VIP AI Symphony v6.2 - Mobile-First Platinum
- * Voice Access & Control System
- * Optimized for mobile voice interactions with 68px touch targets
+ * VIP AI SYMPHONY - Acoustic Interface v7.0
+ * Styling for the Neural Voice Hub
  */
 
-#voiceAccessBtn {
-    position: relative;
-    transition: all 0.3s ease;
+.voice-overlay {
+  position: fixed;
+  inset: 0;
+  background: hsla(230, 20%, 4%, 0.85);
+  backdrop-filter: blur(20px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#voiceAccessBtn.listening {
-    background: var(--gradient-accent);
-    animation: pulse-glow 1.5s ease-in-out infinite;
+.voice-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-#voiceAccessBtn .pulse {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: var(--color-accent-500);
-    opacity: 0;
-    animation: pulse-ring 1.5s ease-out infinite;
+.voice-orb-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s8);
+  animation: scaleIn 0.5s var(--ease-bounce);
 }
 
-@keyframes pulse-glow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px var(--color-accent-500);
-    }
-
-    50% {
-        box-shadow: 0 0 40px var(--color-accent-400);
-    }
+#voiceCanvas {
+  filter: drop-shadow(0 0 30px var(--color-primary-glow));
 }
 
-@keyframes pulse-ring {
-    0% {
-        transform: translate(-50%, -50%) scale(0.8);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0;
-    }
+.voice-status {
+  font-family: var(--font-family-mono);
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: pulse 1.5s infinite;
 }
 
-/* Voice command indicator */
-.voice-indicator {
-    position: fixed;
-    bottom: var(--space-6);
-    right: var(--space-6);
-    padding: var(--space-4);
-    background: var(--glass-bg-strong);
-    backdrop-filter: blur(var(--glass-blur-strong));
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xl);
-    z-index: var(--z-modal);
-    animation: slideInRight 0.3s ease-out;
+/* Tab Bar Listening State */
+.tab-item.listening {
+  color: var(--color-foundation) !important;
+  animation: pulse-glow-v7 2s infinite ease-in-out;
 }
 
-.voice-waveform {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    height: 40px;
+@keyframes pulse-glow-v7 {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-primary-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 50px var(--color-primary);
+  }
 }
 
-.voice-waveform span {
-    width: 4px;
-    background: var(--gradient-accent);
-    border-radius: 2px;
-    animation: wave 1s ease-in-out infinite;
-}
-
-.voice-waveform span:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.voice-waveform span:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.voice-waveform span:nth-child(3) {
-    animation-delay: 0.2s;
-}
-
-.voice-waveform span:nth-child(4) {
-    animation-delay: 0.3s;
-}
-
-.voice-waveform span:nth-child(5) {
-    animation-delay: 0.4s;
-}
-
-@keyframes wave {
-
-    0%,
-    100% {
-        height: 10px;
-    }
-
-    50% {
-        height: 40px;
-    }
+/* Microphone pulse ripple */
+.tab-item.listening::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: ripple 1.5s infinite;
 }

@@ -7,16 +7,16 @@ const shortcutEditor = {
   customShortcuts: JSON.parse(localStorage.getItem('customShortcuts') || '{}'),
 
   defaultShortcuts: {
-    'search': 'ctrl+k',
-    'voice': 'ctrl+m',
-    'automation': 'ctrl+b',
-    'settings': 'ctrl+,',
-    'help': 'ctrl+/',
-    'theme': 'ctrl+shift+l',
-    'home': 'ctrl+h',
-    'favorites': 'ctrl+shift+f',
-    'recent': 'ctrl+r',
-    'performance': 'ctrl+shift+p'
+    search: 'ctrl+k',
+    voice: 'ctrl+m',
+    automation: 'ctrl+b',
+    settings: 'ctrl+,',
+    help: 'ctrl+/',
+    theme: 'ctrl+shift+l',
+    home: 'ctrl+h',
+    favorites: 'ctrl+shift+f',
+    recent: 'ctrl+r',
+    performance: 'ctrl+shift+p',
   },
 
   getShortcut(action) {
@@ -44,7 +44,7 @@ const shortcutEditor = {
     // Rebuild shortcuts with custom bindings
     const newBindings = {};
 
-    Object.entries(this.defaultShortcuts).forEach(([action, defaultKey]) => {
+    Object.entries(this.defaultShortcuts).forEach(([action]) => {
       const key = this.getShortcut(action);
 
       switch (action) {
@@ -86,13 +86,15 @@ const shortcutEditor = {
 
     // Update global shortcuts
     if (window.shortcuts) {
-      shortcuts.bindings = newBindings;
+      window.shortcuts.bindings = newBindings;
     }
   },
 
   showEditor() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) return;
+    if (!modalContainer) {
+      return;
+    }
 
     const actions = [
       { id: 'search', name: 'Open Search', icon: '🔍' },
@@ -104,7 +106,7 @@ const shortcutEditor = {
       { id: 'home', name: 'Scroll to Top', icon: '🏠' },
       { id: 'favorites', name: 'Show Favorites', icon: '⭐' },
       { id: 'recent', name: 'Recent Functions', icon: '🕒' },
-      { id: 'performance', name: 'Performance Dashboard', icon: '📊' }
+      { id: 'performance', name: 'Performance Dashboard', icon: '📊' },
     ];
 
     modalContainer.innerHTML = `
@@ -123,7 +125,9 @@ const shortcutEditor = {
             </div>
 
             <div style="display: grid; gap: var(--space-3);">
-              ${actions.map(action => `
+              ${actions
+                .map(
+                  (action) => `
                 <div class="glass-card-subtle" style="padding: var(--space-4);">
                   <div style="display: flex; align-items: center; gap: var(--space-4);">
                     <span style="font-size: 24px;">${action.icon}</span>
@@ -145,7 +149,9 @@ const shortcutEditor = {
                     >
                   </div>
                 </div>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
 
             <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
@@ -167,7 +173,7 @@ const shortcutEditor = {
         </div>
       </div>
     `;
-  }
+  },
 };
 
 // Export for global access

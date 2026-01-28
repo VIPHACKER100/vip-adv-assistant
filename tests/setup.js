@@ -1,133 +1,63 @@
-/**
- * Jest Test Setup
- * Configures the testing environment for all tests
- */
-
+import { jest } from '@jest/globals';
 import '@testing-library/jest-dom';
 
-// Mock localStorage
-const localStorageMock = {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
-};
-global.localStorage = localStorageMock;
-
-// Mock sessionStorage
-const sessionStorageMock = {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    clear: jest.fn(),
-};
-global.sessionStorage = sessionStorageMock;
-
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-    })),
-});
-
-// Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-    constructor() { }
-    disconnect() { }
-    observe() { }
-    takeRecords() {
-        return [];
-    }
-    unobserve() { }
+// Mock global browser APIs
+global.localStorage = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  clear: jest.fn(),
+  removeItem: jest.fn(),
 };
 
-// Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-    constructor() { }
-    disconnect() { }
-    observe() { }
-    unobserve() { }
+global.navigator.getBattery = jest.fn().mockResolvedValue({
+  level: 1,
+  charging: true,
+  addEventListener: jest.fn(),
+});
+
+global.navigator.connection = {
+  effectiveType: '4g',
+  addEventListener: jest.fn(),
 };
 
-// Mock navigator.getBattery
-Object.defineProperty(navigator, 'getBattery', {
-    writable: true,
-    value: jest.fn().mockResolvedValue({
-        level: 0.8,
-        charging: false,
-        chargingTime: Infinity,
-        dischargingTime: 3600,
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-    }),
-});
-
-// Mock navigator.connection
-Object.defineProperty(navigator, 'connection', {
-    writable: true,
-    value: {
-        effectiveType: '4g',
-        downlink: 10,
-        rtt: 50,
-        saveData: false,
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-    },
-});
-
-// Mock navigator.geolocation
-Object.defineProperty(navigator, 'geolocation', {
-    writable: true,
-    value: {
-        getCurrentPosition: jest.fn(),
-        watchPosition: jest.fn(),
-        clearWatch: jest.fn(),
-    },
-});
-
-// Mock Web Speech API
-global.SpeechRecognition = class SpeechRecognition {
-    constructor() {
-        this.continuous = false;
-        this.interimResults = false;
-        this.lang = 'en-US';
-        this.onresult = null;
-        this.onerror = null;
-        this.onend = null;
-    }
-    start() { }
-    stop() { }
-    abort() { }
+global.IntersectionObserver = class {
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
 };
 
-global.webkitSpeechRecognition = global.SpeechRecognition;
-
-// Mock console methods to reduce noise in tests
-global.console = {
-    ...console,
-    log: jest.fn(),
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
+global.SpeechSynthesisUtterance = class {
+  constructor() {}
 };
 
-// Reset mocks before each test
-beforeEach(() => {
-    jest.clearAllMocks();
-    localStorage.clear();
-    sessionStorage.clear();
-});
+global.window.speechSynthesis = {
+  speak: jest.fn(),
+  getVoices: jest.fn().mockReturnValue([]),
+};
 
-// Clean up after each test
-afterEach(() => {
-    jest.restoreAllMocks();
-});
+// Mock faceapi
+global.faceapi = {
+  nets: {
+    tinyFaceDetector: { loadFromUri: jest.fn() },
+    faceLandmark68Net: { loadFromUri: jest.fn() },
+    faceRecognitionNet: { loadFromUri: jest.fn() },
+  },
+  detectAllFaces: jest.fn(),
+  detectSingleFace: jest.fn(),
+  matchDimensions: jest.fn(),
+  resizeResults: jest.fn(),
+  draw: {
+    drawDetections: jest.fn(),
+    drawFaceLandmarks: jest.fn(),
+  },
+  euclideanDistance: jest.fn(),
+  TinyFaceDetectorOptions: class {},
+};
+
+// Standard mocks for DOM
+window.scrollTo = jest.fn();
+window.alert = jest.fn();
+window.confirm = jest.fn().mockReturnValue(true);
+window.prompt = jest.fn();
+window.requestAnimationFrame = jest.fn((cb) => cb());

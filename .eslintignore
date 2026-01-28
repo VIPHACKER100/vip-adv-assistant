@@ -1,0 +1,9 @@
+node_modules/
+dist/
+libs/
+models/
+assets/
+*.min.js
+coverage/
+playwright-report/
+test-results/

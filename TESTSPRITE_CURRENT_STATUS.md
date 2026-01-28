@@ -6,12 +6,14 @@
 **Result**: TestSprite MCP not available in current session
 
 ### ✅ What's Configured:
+
 - ✅ API Key: Set in `.cursor/mcp.json`
 - ✅ TestSprite MCP: Installed globally
 - ✅ Server: Now running on port 8000
 - ✅ Test Files: 13 test cases ready
 
 ### ⚠️ What's Missing:
+
 - ❌ **TestSprite MCP Connection**: Not available (requires Cursor restart)
 - ❌ **Playwright Browsers**: Not installed (needed for direct execution)
 
@@ -22,6 +24,7 @@
 **Status**: Requires Cursor IDE restart
 
 **Steps**:
+
 1. **Restart Cursor IDE** (Close completely and reopen)
    - This loads the MCP configuration from `.cursor/mcp.json`
    - TestSprite MCP will connect automatically
@@ -35,6 +38,7 @@
      - Provide detailed results
 
 **Why This is Best**:
+
 - ✅ No local browser installation needed
 - ✅ Cloud-based execution (faster, more reliable)
 - ✅ Automatic report generation
@@ -45,10 +49,13 @@
 **Status**: Requires Playwright browser installation
 
 **Steps**:
+
 1. **Install Playwright Browsers**:
+
    ```powershell
    python -m playwright install chromium
    ```
+
    (Takes 2-5 minutes, downloads ~170MB)
 
 2. **Run Tests**:
@@ -60,6 +67,7 @@
 ## 📊 Test Suite Overview
 
 Your project has **13 test cases** covering:
+
 - Function execution (75+ functions)
 - Voice commands
 - Keyboard shortcuts
@@ -74,6 +82,7 @@ Your project has **13 test cases** covering:
 ## 🎯 Recommended Next Step
 
 **Use TestSprite MCP** (Option 1):
+
 1. Restart Cursor IDE
 2. After restart, ask: "Run tests using TestSprite"
 3. Review the comprehensive test report

@@ -1,59 +1,31 @@
 {
-    "compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "lib": [
-            "ES2022",
-            "DOM",
-            "DOM.Iterable"
-        ],
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "allowJs": true,
-        "checkJs": false,
-        "noEmit": true,
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "isolatedModules": true,
-        "allowSyntheticDefaultImports": true,
-        "types": [
-            "vite/client",
-            "jest",
-            "@testing-library/jest-dom"
-        ],
-        "baseUrl": ".",
-        "paths": {
-            "@/*": [
-                "./js/*"
-            ],
-            "@css/*": [
-                "./css/*"
-            ],
-            "@assets/*": [
-                "./assets/*"
-            ],
-            "@tests/*": [
-                "./tests/*"
-            ]
-        }
-    },
-    "include": [
-        "js/**/*",
-        "tests/**/*",
-        "*.config.js",
-        "*.config.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "build",
-        "coverage",
-        "playwright-report",
-        "test-results"
-    ]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./js/*"],
+      "@css/*": ["./css/*"],
+      "@assets/*": ["./assets/*"],
+      "@tests/*": ["./tests/*"]
+    }
+  },
+  "include": ["js/**/*", "tests/**/*", "*.config.js", "*.config.ts"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "playwright-report", "test-results"]
 }

@@ -36,12 +36,14 @@ Open [http://localhost:8000](http://localhost:8000) in your browser.
 ## 📝 Essential Commands
 
 ### Development
+
 ```bash
 npm run dev          # Start dev server (hot reload)
 npm start            # Alias for dev
 ```
 
 ### Testing
+
 ```bash
 npm test             # Run all tests
 npm run test:watch   # Watch mode
@@ -49,6 +51,7 @@ npm run test:e2e     # E2E tests
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint         # Check code
 npm run lint:fix     # Fix issues
@@ -56,6 +59,7 @@ npm run format       # Format code
 ```
 
 ### Building
+
 ```bash
 npm run build        # Production build
 npm run preview      # Preview build
@@ -82,6 +86,7 @@ VITE_ENABLE_VOICE_ACCESS=true
 ### 2. API Key Setup
 
 Get your OpenAI API key:
+
 1. Go to [platform.openai.com](https://platform.openai.com/)
 2. Create account / Sign in
 3. Navigate to API Keys
@@ -102,16 +107,19 @@ Get your OpenAI API key:
 ### 2. Try Core Features
 
 **Voice Commands:**
+
 - "What's the weather?"
 - "Set a reminder"
 - "Open automation"
 
 **AI Chat:**
+
 - Ask questions
 - Request function execution
 - Get help
 
 **Automation:**
+
 - Create workflows
 - Set triggers
 - Chain actions
@@ -127,11 +135,13 @@ Get your OpenAI API key:
 ## 🐳 Docker Quick Start
 
 ### Development
+
 ```bash
 docker-compose --profile dev up dev
 ```
 
 ### Production
+
 ```bash
 docker-compose up app
 ```
@@ -143,6 +153,7 @@ Access at [http://localhost:8000](http://localhost:8000)
 ## 🧪 Testing Quick Start
 
 ### Run Tests
+
 ```bash
 # All tests
 npm test
@@ -178,10 +189,11 @@ Run: `npm test`
 ### Local Network Access
 
 1. Find your IP address:
+
    ```bash
    # Windows
    ipconfig
-   
+
    # Mac/Linux
    ifconfig
    ```
@@ -236,12 +248,15 @@ npm run build
 ## 📚 Learn More
 
 ### Documentation
-- [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md) - Full modernization details
+
+- [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md) - Full
+  modernization details
 - [`UPGRADE_GUIDE.md`](./UPGRADE_GUIDE.md) - Upgrade from v6.2
 - [`TECHNICAL_DETAILS.md`](./TECHNICAL_DETAILS.md) - Technical docs
 - [`README.md`](./README.md) - Project overview
 
 ### Key Features
+
 - 75+ automated functions
 - Voice control & always-listening
 - AI chat with GPT-4
@@ -255,6 +270,7 @@ npm run build
 ## 🎨 Customization
 
 ### Change Theme
+
 ```javascript
 // In browser console
 localStorage.setItem('theme', 'dark'); // or 'light', 'auto'
@@ -262,9 +278,11 @@ location.reload();
 ```
 
 ### Modify Functions
+
 Edit `js/functions.js` to add/modify functions.
 
 ### Add Custom Styles
+
 Edit CSS files in `css/` directory.
 
 ---
@@ -272,6 +290,7 @@ Edit CSS files in `css/` directory.
 ## 🚢 Deployment
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
@@ -279,13 +298,16 @@ npm run build
 Output in `dist/` directory.
 
 ### Deploy with Docker
+
 ```bash
 docker build -t vip-ai-symphony .
 docker run -p 80:80 vip-ai-symphony
 ```
 
 ### Deploy to Hosting
+
 Upload `dist/` contents to:
+
 - Netlify
 - Vercel
 - GitHub Pages
@@ -297,6 +319,7 @@ Upload `dist/` contents to:
 ## 💡 Tips & Tricks
 
 ### Keyboard Shortcuts
+
 - `Ctrl+K` - Search
 - `Ctrl+J` - AI Chat
 - `Ctrl+M` - Voice Access
@@ -304,6 +327,7 @@ Upload `dist/` contents to:
 - `Ctrl+Shift+P` - Command Palette
 
 ### Developer Tools
+
 ```bash
 # Analyze bundle size
 npm run analyze
@@ -316,6 +340,7 @@ npm run validate
 ```
 
 ### Performance
+
 - Enable PWA for offline access
 - Use service worker caching
 - Lazy load heavy features
@@ -326,6 +351,7 @@ npm run validate
 ## 🆘 Getting Help
 
 ### Quick Links
+
 - [GitHub Issues](https://github.com/yourusername/vip-ai-symphony/issues)
 - [Documentation](./MODERNIZATION_COMPLETE.md)
 - [Technical Details](./TECHNICAL_DETAILS.md)
@@ -373,4 +399,5 @@ You now have a fully modernized, production-ready AI assistant with:
 
 ---
 
-**Need more details?** Check [`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md)
+**Need more details?** Check
+[`MODERNIZATION_COMPLETE.md`](./MODERNIZATION_COMPLETE.md)

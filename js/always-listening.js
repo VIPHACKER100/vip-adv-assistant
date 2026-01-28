@@ -14,7 +14,7 @@ window.alwaysListening = {
   wakeWord: 'hey symphony',
   backupWakeWord: 'hey assistant',
   isProcessing: false,
-  lastNeuralPulse: 0
+  lastNeuralPulse: 0,
 };
 
 const alwaysListening = window.alwaysListening;
@@ -157,7 +157,10 @@ function handleAlwaysListeningCommand(transcript, isFinal) {
   const lowerTranscript = transcript.toLowerCase();
 
   // Check for wake word
-  if (lowerTranscript.includes(alwaysListening.wakeWord) || lowerTranscript.includes(alwaysListening.backupWakeWord)) {
+  if (
+    lowerTranscript.includes(alwaysListening.wakeWord) ||
+    lowerTranscript.includes(alwaysListening.backupWakeWord)
+  ) {
     const now = Date.now();
     if (!alwaysListening.lastWakeToast || now - alwaysListening.lastWakeToast > 5000) {
       showToast('Neural Trigger', 'SYMPHONY_ACTIVATED', 'success');
@@ -170,10 +173,14 @@ function handleAlwaysListeningCommand(transcript, isFinal) {
 
     // Extract command after wake word
     let parts = lowerTranscript.split(alwaysListening.wakeWord);
-    if (parts.length === 1) parts = lowerTranscript.split(alwaysListening.backupWakeWord);
+    if (parts.length === 1) {
+      parts = lowerTranscript.split(alwaysListening.backupWakeWord);
+    }
 
     const commandToProcess = parts[parts.length - 1].trim();
-    if (commandToProcess.length === 0) return;
+    if (commandToProcess.length === 0) {
+      return;
+    }
 
     if (isFinal) {
       executeAlwaysListeningCommand(commandToProcess);
@@ -190,7 +197,9 @@ function handleAlwaysListeningCommand(transcript, isFinal) {
  * Execute command after validation
  */
 function executeAlwaysListeningCommand(command) {
-  if (alwaysListening.isProcessing) return;
+  if (alwaysListening.isProcessing) {
+    return;
+  }
 
   alwaysListening.isProcessing = true;
   alwaysListening.interactionCount++;
@@ -199,7 +208,9 @@ function executeAlwaysListeningCommand(command) {
   showCommandFeedback(command);
 
   // Track telemetry
-  if (window.performanceMonitor) window.performanceMonitor.trackVoiceCommand();
+  if (window.performanceMonitor) {
+    window.performanceMonitor.trackVoiceCommand();
+  }
 
   // Process command
   setTimeout(() => {
@@ -354,7 +365,9 @@ function updateAlwaysListeningUI(isActive) {
 
   if (voiceBtn) {
     voiceBtn.classList.toggle('always-listening-active', isActive);
-    voiceBtn.title = isActive ? 'PERSISTENT_LINK_ACTIVE (CTL+SHF+V)' : 'INITIALIZE_ACOUSTIC_LINK (CTL+SHF+V)';
+    voiceBtn.title = isActive
+      ? 'PERSISTENT_LINK_ACTIVE (CTL+SHF+V)'
+      : 'INITIALIZE_ACOUSTIC_LINK (CTL+SHF+V)';
   }
 
   if (orb) {
@@ -407,7 +420,9 @@ function showCommandFeedback(command) {
  */
 function showNeuralPulse() {
   const now = Date.now();
-  if (now - alwaysListening.lastNeuralPulse < 1000) return; // Throttling
+  if (now - alwaysListening.lastNeuralPulse < 1000) {
+    return;
+  } // Throttling
   alwaysListening.lastNeuralPulse = now;
 
   let pulse = document.getElementById('neuralPulseRing');

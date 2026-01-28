@@ -1,107 +1,56 @@
 /**
- * VIP AI SYMPHONY - Master Key Registry v6.0
+ * VIP AI SYMPHONY - Master Key Registry v7.0
  * Strategic Vector Navigation & Power-User Controls
+ * Optimized for platinum-tier keyboard orchestration
  */
 
 const shortcuts = {
   enabled: true,
   bindings: {
-    // Navigation
     'ctrl+h': () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-    'ctrl+k': () => openSearch(),
-    'ctrl+/': () => showShortcutsHelp(),
-
-    // Voice & Settings
-    'ctrl+m': () => toggleVoiceAccess(),
-    'ctrl+,': () => showModal('settings'),
-
-    // Automation
-    'ctrl+b': () => openAutomationBuilder(),
-
-    // Quick Actions
-    'ctrl+1': () => executeFunction('analyze_image'),
-    'ctrl+2': () => executeFunction('smart_reply'),
-    'ctrl+3': () => executeFunction('usage_analytics'),
-    'ctrl+4': () => executeFunction('secure_vault'),
-    'ctrl+5': () => executeFunction('focus_mode'),
-    'ctrl+6': () => executeFunction('control_smart_home'),
-
-    // Modal Control
-    'escape': () => closeModal(),
-
-    // Theme
-    'ctrl+shift+l': () => toggleTheme(),
-
-    // v5.0 Always-Listening & Command Center
-    'ctrl+shift+v': () => {
-      if (window.toggleAlwaysListening) {
-        window.toggleAlwaysListening();
-      }
-    },
-    'ctrl+shift+p': () => {
-      if (window.showCommandPalette) {
-        window.showCommandPalette();
-      }
+    'ctrl+k': () => window.openSearch?.(),
+    'ctrl+/': () => window.showShortcutsHelp?.(),
+    'ctrl+m': () => window.toggleVoiceAccess?.(),
+    'ctrl+,': () => window.showModal?.('settings'),
+    'ctrl+b': () => window.openAutomationBuilder?.(),
+    'ctrl+1': () => window.executeFunction?.('analyze_image'),
+    'ctrl+2': () => window.executeFunction?.('smart_reply'),
+    'ctrl+3': () => window.executeFunction?.('usage_analytics'),
+    'ctrl+p': () => window.showCommandPalette?.(),
+    'ctrl+shift+p': () => window.showCommandPalette?.(),
+    'ctrl+shift+v': () => window.toggleAlwaysListening?.(),
+    'ctrl+shift+l': () => window.toggleTheme?.(),
+    'escape': () => {
+      if (window.closeModal) window.closeModal();
+      if (window.closeSearch) window.closeSearch();
     }
+  },
+
+  init() {
+    document.addEventListener('keydown', (e) => {
+      if (!this.enabled) return;
+
+      const key = [];
+      if (e.ctrlKey) key.push('ctrl');
+      if (e.shiftKey) key.push('shift');
+      if (e.altKey) key.push('alt');
+      key.push(e.key.toLowerCase());
+
+      const combo = key.join('+');
+      if (this.bindings[combo]) {
+        e.preventDefault();
+        this.bindings[combo]();
+      }
+    });
+    console.log('⌨️ KEY_REGISTRY_7.0_ONLINE');
   }
 };
 
-// Initialize keyboard shortcuts
-function initKeyboardShortcuts() {
-  document.addEventListener('keydown', (e) => {
-    if (!shortcuts.enabled) return;
-
-    // Build key combination
-    const key = [];
-    if (e.ctrlKey) key.push('ctrl');
-    if (e.shiftKey) key.push('shift');
-    if (e.altKey) key.push('alt');
-    key.push(e.key.toLowerCase());
-
-    const combo = key.join('+');
-
-    // Execute if binding exists
-    if (shortcuts.bindings[combo]) {
-      e.preventDefault();
-      shortcuts.bindings[combo]();
-    }
-  });
-
-  console.log('⌨️ Keyboard shortcuts enabled');
-}
-
-// Show shortcuts help modal
 function showShortcutsHelp() {
   const modalContainer = document.getElementById('modalContainer');
   if (!modalContainer) return;
 
-  const shortcutGroups = {
-    'Navigation': {
-      'Ctrl + H': 'Go to top',
-      'Ctrl + K': 'Open search',
-      'Ctrl + /': 'Show shortcuts'
-    },
-    'Quick Actions': {
-      'Ctrl + 1-6': 'Execute quick action',
-      'Ctrl + M': 'Toggle voice access',
-      'Ctrl + B': 'Open automation builder',
-      'Ctrl + ,': 'Open settings'
-    },
-    'Controls': {
-      'Escape': 'Close modal',
-      'Ctrl + Shift + L': 'Toggle theme'
-    }
-  };
-
-  modalContainer.innerHTML = `
-    <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 650px; padding: 0; overflow: hidden;">
-        <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
-          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⌨️ SYMPHONY_KEY_REGISTRY</h2>
-          <button class="modal-close" onclick="closeModal()">×</button>
-        </div>
-        <div class="modal-body">
-          ${Object.entries({
+  const groups = {
     'KERNEL_VECTORS': {
       'Ctrl + H': 'ROOT_NAVIGATION',
       'Ctrl + K': 'OMNI_SEARCH_LINK',
@@ -118,35 +67,38 @@ function showShortcutsHelp() {
       'Ctrl + Shift + V': 'ALWAYS_LISTEN_MODE',
       'Ctrl + Shift + L': 'SHIFT_THEME_SPECTRUM'
     }
-  }).map(([group, shortcuts]) => `
-            <div class="glass-card-subtle" style="margin-bottom: var(--space-4); border: 1px solid var(--glass-border);">
-              <h4 style="margin-bottom: var(--space-3); color: var(--color-accent-400); font-size: 11px; letter-spacing: 1px;">${group}</h4>
-              <div style="display: grid; gap: var(--space-2);">
-                ${Object.entries(shortcuts).map(([key, desc]) => `
-                  <div class="flex-between" style="padding: var(--space-2); background: rgba(255,255,255,0.02); border-radius: var(--radius-md);">
-                    <span style="color: var(--text-secondary); font-size: 12px; font-family: var(--font-family-mono);">${desc}</span>
-                    <kbd style="padding: 2px 8px; background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: 4px; font-family: var(--font-family-mono); font-size: 10px; color: var(--color-accent-300);">${key}</kbd>
+  };
+
+  modalContainer.innerHTML = `
+    <div class="modal-overlay active" onclick="closeModal(event)">
+      <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 600px; padding: 0;">
+        <div class="modal-header" style="padding: var(--s6);">
+          <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">⌨️ KEY_REGISTRY_V7.0</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body" style="padding: var(--s6);">
+          ${Object.entries(groups).map(([group, keys]) => `
+            <div class="neural-glass" style="margin-bottom: var(--s4); padding: var(--s4);">
+              <div style="font-size: 10px; color: var(--color-primary); font-family: var(--font-family-mono); margin-bottom: 12px; letter-spacing: 1px;">${group}</div>
+              <div style="display: grid; gap: 8px;">
+                ${Object.entries(keys).map(([k, d]) => `
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; color: var(--text-dim);">${d}</span>
+                    <kbd style="background: var(--color-surface-900); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--glass-border); font-family: var(--font-family-mono); font-size: 10px; color: var(--color-primary);">${k}</kbd>
                   </div>
                 `).join('')}
               </div>
             </div>
           `).join('')}
-          
-          <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
-            <strong style="color: var(--text-primary);">💡 Tip:</strong>
-            <p style="margin-top: var(--space-2); color: var(--text-secondary);">
-              Press <kbd style="padding: 2px 6px; background: var(--bg-tertiary); border-radius: 4px;">Ctrl + /</kbd> anytime to see this help.
-            </p>
-          </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-glass" onclick="closeModal()">Close</button>
+        <div class="modal-footer" style="padding: var(--s6);">
+           <button class="btn-neural-primary" style="width: 100%;" onclick="closeModal()">ACKNOWLEDGE</button>
         </div>
       </div>
     </div>
   `;
 }
 
-// Export for global access
-window.initKeyboardShortcuts = initKeyboardShortcuts;
+window.keyboardShortcuts = shortcuts;
 window.showShortcutsHelp = showShortcutsHelp;
+window.initKeyboardShortcuts = () => shortcuts.init();
