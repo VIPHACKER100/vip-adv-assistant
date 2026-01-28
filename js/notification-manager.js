@@ -76,11 +76,11 @@ const notificationManager = {
       panel.className = 'sidebar-drawer neural-glass';
       panel.innerHTML = `
         <div class="drawer-header">
-          <div>
-            <h2 class="modal-title" style="font-size: 1.1rem;">📡 TELEMETRY_LOGS</h2>
-            <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">BUFFER: 0x${this.notifications.length.toString(16).toUpperCase()}</div>
+          <div class="header-titles">
+            <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">📡 TELEMETRY_LOGS</h2>
+            <div class="encryption-tag" style="margin-top:0">BUFFER: 0x${this.notifications.length.toString(16).toUpperCase()}</div>
           </div>
-          <button class="modal-close" onclick="notificationManager.closePanel()">&times;</button>
+          <button class="face-recognition-close" style="width:28px; height:28px; font-size:16px" onclick="notificationManager.closePanel()">&times;</button>
         </div>
         <div class="chat-chips">
           <button class="neural-chip active" id="f-all" onclick="notificationManager.filter('all')">ALL_FEEDS</button>
@@ -88,7 +88,7 @@ const notificationManager = {
           <button class="neural-chip" id="f-warning" onclick="notificationManager.filter('warning')">THREATS</button>
         </div>
         <div class="drawer-body" id="notificationList"></div>
-        <div class="chat-input-area" style="padding: var(--s4) var(--s6);">
+        <div class="chat-input-area">
           <button class="btn-neural-glass" style="flex: 1; font-size: 10px;" onclick="notificationManager.markAllRead()">ACK_ALL</button>
           <button class="btn-neural-glass" style="flex: 1; font-size: 10px;" onclick="notificationManager.clearAll()">PURGE</button>
         </div>
@@ -154,21 +154,21 @@ const notificationManager = {
 
     if (filtered.length === 0) {
       list.innerHTML = `
-        <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0.3; text-align: center;">
-          <div style="font-size: 3rem;">🛰️</div>
-          <div style="font-size: 10px; font-family: var(--font-family-mono); margin-top: 10px;">AWAITING_SIGNAL_INPUT</div>
+        <div class="empty-state">
+          <div class="empty-icon">🛰️</div>
+          <div class="empty-text">AWAITING_SIGNAL_INPUT</div>
         </div>
       `;
       return;
     }
 
     list.innerHTML = filtered.map(n => `
-      <div class="neural-glass animate-fade-in-up" style="padding: var(--s4); border-left: 3px solid var(--color-${n.type}); opacity: ${n.read ? '0.6' : '1'}; transition: 0.3s;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-           <span style="font-weight: 800; font-size: 11px; color: var(--text-main); font-family: var(--font-family-display);">${n.title.toUpperCase()}</span>
-           <span style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono);">${this.formatTime(n.time)}</span>
+      <div class="neural-glass telemetry-node ${n.type} ${n.read ? 'read' : ''} animate-fade-in-up">
+        <div class="telemetry-row">
+           <span class="telemetry-title">${n.title.toUpperCase()}</span>
+           <span class="telemetry-time">${this.formatTime(n.time)}</span>
         </div>
-        <div style="font-size: 12px; color: var(--text-dim); line-height: 1.4;">${n.message}</div>
+        <div class="telemetry-msg">${n.message}</div>
       </div>
     `).join('');
   },

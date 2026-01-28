@@ -70,6 +70,15 @@
   /* ===== Transitions ===== */
   --t-neural: 400ms cubic-bezier(0.22, 1, 0.36, 1);
   --t-bounce: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ===== Z-Index Stack ===== */
+  --z-below: -1;
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-fixed: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
 }
 
 /* Global Reset for Neural Flux */

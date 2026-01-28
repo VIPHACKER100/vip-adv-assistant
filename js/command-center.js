@@ -31,10 +31,11 @@ function registerCommandHandlers() {
     'search': { h: () => openSearch(), d: 'Initialize Omni-Search' },
     'hud': { h: () => toggleHUD(), d: 'Toggle telemetry overlay' },
     'chat': { h: () => chatManager.toggleChat(), d: 'Activate AI_HUB' },
-    'boost': { h: () => toggleBoostMode(), d: 'Initialize kernel boost' },
-    'theme': { h: () => toggleTheme(), d: 'Shift spectral interface' },
+    'spectrum': { h: () => toggleTheme(), d: 'Shift spectral interface' },
+    'telemetry': { h: () => performanceMonitor.showDashboard(), d: 'Open kernel analytics' },
     'face-id': { h: () => faceRecognition.open(), d: 'Initialize biometric verification' },
-    'optimize': { h: () => executeFunction('optimize_resources'), d: 'Execute memory purge' },
+    'neural': { h: () => window.cognitiveStream?.toggle?.(), d: 'Toggle cognitive data stream' },
+    'wipe': { h: () => performanceMonitor.resetMetrics(), d: 'Purge session telemetry' },
     'terminal': { h: () => console.log('Terminal ready'), d: 'Open kernel console' }
   };
 
@@ -107,10 +108,10 @@ function showCommandPalette() {
           </div>
           <div id="paletteResults" style="max-height: 400px; overflow-y: auto; display: grid; gap: 8px;">
             ${commands.map(cmd => `
-              <div class="palette-item glass-card-subtle" data-key="${cmd.key}" onclick="window.commandCenter.processCommand('${cmd.key}', 'palette'); closeModal();"
-                   style="padding: var(--space-4); border-left: 4px solid transparent; cursor: pointer; transition: 0.2s;">
-                <div style="font-weight: 800; font-family: var(--font-family-mono); color: var(--text-primary); font-size: 13px;">${cmd.key.toUpperCase()}</div>
-                <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">${cmd.description.toUpperCase()}</div>
+              <div class="palette-item neural-glass" data-key="${cmd.key}" onclick="window.commandCenter.processCommand('${cmd.key}', 'palette'); closeModal();"
+                   style="padding: var(--s4); cursor: pointer; transition: var(--t-neural); border-left: 4px solid transparent; margin-bottom: 8px;">
+                <div style="font-weight: 800; font-family: var(--font-family-mono); color: var(--color-primary); font-size: 13px;">${cmd.key.toUpperCase()}</div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px; letter-spacing: 1px;">${cmd.description.toUpperCase()}</div>
               </div>
             `).join('')}
           </div>

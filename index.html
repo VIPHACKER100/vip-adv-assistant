@@ -55,11 +55,11 @@
       <div class="header-blur"></div>
       <div class="header-content">
         <div class="logo">
-          <div class="card-icon" style="width: 32px; height: 32px; border-radius: 8px;">⚡</div>
+          <img src="assets/logo.png" alt="Symphony Logo" class="logo-img">
           <span class="logo-text">SYMPHONY <span
               style="opacity: 0.5; font-weight: 400; font-size: 0.8rem;">V7.0</span></span>
         </div>
-        <div style="display: flex; gap: var(--s3);">
+        <div class="icon-btn-group">
           <button class="icon-btn" onclick="openSearch()" aria-label="Search modules">🔍</button>
           <button class="icon-btn" onclick="chatManager.toggleChat()" aria-label="Open AI Gateway">💬</button>
           <button class="icon-btn" id="notificationBtn" onclick="notificationManager.togglePanel()"
@@ -67,7 +67,6 @@
             <span>🔔</span>
             <span id="notificationBadge" class="notification-badge">0</span>
           </button>
-
         </div>
       </div>
     </header>
@@ -99,7 +98,7 @@
         <div class="container">
           <div class="widget-stack">
             <div class="neural-glass status-widget">
-              <span style="font-size: 1.5rem;">🧠</span>
+              <img src="assets/brain_icon.png" alt="Brain" class="widget-icon">
               <div style="flex: 1;">
                 <div style="font-size: 0.75rem; color: var(--text-mute); text-transform: uppercase;">Cognitive_Load
                 </div>
@@ -112,7 +111,7 @@
             </div>
 
             <div class="neural-glass status-widget" style="border-left-color: var(--color-secondary);">
-              <span style="font-size: 1.5rem;">🔒</span>
+              <img src="assets/lock_icon.png" alt="Lock" class="widget-icon">
               <div style="flex: 1;">
                 <div style="font-size: 0.75rem; color: var(--text-mute); text-transform: uppercase;">Security_Level
                 </div>
@@ -128,8 +127,7 @@
       <!-- Quick Nodes -->
       <section class="section">
         <div class="container">
-          <h2 style="margin-bottom: var(--s6); font-size: 1.25rem; text-transform: uppercase; color: var(--text-mute);">
-            Target_Nodes / Fast_Recall</h2>
+          <h2 class="section-title">Target_Nodes / Fast_Recall</h2>
           <div class="node-grid" id="quickActionsGrid"></div>
         </div>
       </section>
@@ -137,8 +135,7 @@
       <!-- All Modules -->
       <section class="section" style="padding-bottom: var(--s20);">
         <div class="container">
-          <h2 style="margin-bottom: var(--s6); font-size: 1.25rem; text-transform: uppercase; color: var(--text-mute);">
-            Kernel_Vault / All_Modules</h2>
+          <h2 class="section-title">Kernel_Vault / All_Modules</h2>
           <div id="categoriesContainer"></div>
         </div>
       </section>
@@ -149,19 +146,24 @@
       <button class="tab-item active" id="tab-home" onclick="setMobileTabActive('tab-home')"
         aria-label="Home Dashboard">
         <span class="tab-icon">🏠</span>
+        <span class="tab-label">Home</span>
       </button>
       <button class="tab-item" id="tab-search" onclick="openSearch()" aria-label="Search">
         <span class="tab-icon">🔍</span>
+        <span class="tab-label">Search</span>
       </button>
-      <button class="tab-item" id="tab-voice" onclick="toggleVoiceAccess()" aria-label="Voice Activation"
-        style="background: var(--color-primary); border-radius: 50%; width: 56px; height: 56px; margin-top: -30px; border: 4px solid var(--color-foundation); color: var(--color-foundation); box-shadow: var(--shadow-neon-primary);">
-        <span class="tab-icon" style="font-size: 1.8rem;">🎤</span>
-      </button>
+      <div class="tab-voice-wrapper">
+        <button class="tab-item voice-fab" id="tab-voice" onclick="toggleVoiceAccess()" aria-label="Voice Activation">
+          <img src="assets/neural_mic_icon.png" alt="Mic" class="mic-icon">
+        </button>
+      </div>
       <button class="tab-item" id="tab-chat" onclick="chatManager.toggleChat()" aria-label="AI Chat">
         <span class="tab-icon">💬</span>
+        <span class="tab-label">Chat</span>
       </button>
       <button class="tab-item" id="tab-faceid" onclick="faceRecognition.open()" aria-label="Face Authentication">
         <span class="tab-icon">👤</span>
+        <span class="tab-label">Auth</span>
       </button>
     </nav>
 
@@ -183,6 +185,12 @@
   <!-- Global Containers -->
   <div id="modalContainer"></div>
   <div class="toast-container" id="toastContainer"></div>
+  <div id="neuralOrbContainer" class="neural-orb-container" onmousedown="window.startOrbDrag(event)"
+    ontouchstart="window.startOrbDrag(event)">
+    <div class="neural-orb" id="neuralOrb">
+      <div class="orb-inner"></div>
+    </div>
+  </div>
   <div id="hudOverlay" class="hud-overlay"></div>
 
   <!-- Core Scripts -->

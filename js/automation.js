@@ -260,45 +260,45 @@ function showRoutineDetails(routineId) {
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 600px; padding: 0; overflow: hidden;">
-        <div class="modal-header" style="background: rgba(0,0,0,0.2); padding: var(--space-6);">
-          <div style="display: flex; align-items: center; gap: var(--space-4);">
-            <div class="card-icon" style="width: 50px; height: 50px; font-size: 1.5rem; margin: 0; border-radius: 50%;">${routine.icon}</div>
-            <div>
-               <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 18px; letter-spacing: 1px;">${routine.name.toUpperCase()}</h2>
-               <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px; opacity: 0.7;">WORKFLOW_NODE_ID: ${routine.id}</div>
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: var(--s4);">
+            <div class="category-icon-orb" style="border-radius: 50%">${routine.icon}</div>
+            <div class="header-titles">
+               <h2 class="modal-title" style="font-size: 18px; letter-spacing: 2px;">${routine.name.toUpperCase()}</h2>
+               <div class="encryption-tag" style="margin-top:0">WORKFLOW_NODE_ID: ${routine.id}</div>
             </div>
           </div>
-          <button class="modal-close" onclick="closeModal()">&times;</button>
+          <button class="face-recognition-close" onclick="closeModal()">&times;</button>
         </div>
         
-        <div class="modal-body" style="padding: var(--space-8); background: var(--color-foundation); max-height: 70vh; overflow-y: auto;">
-          <p style="color: var(--text-dim); margin-bottom: var(--space-8); font-size: 14px; border-left: 2px solid var(--color-secondary); padding-left: var(--space-4);">
+        <div class="modal-body" style="padding: var(--s8);">
+          <p style="color: var(--text-dim); margin-bottom: var(--s8); font-size: 14px; border-left: 2px solid var(--color-secondary); padding-left: var(--s4);">
             ${routine.description}
           </p>
           
-          <div class="workflow-visualizer" style="position: relative; padding-left: 24px;">
-            <div class="workflow-line" style="position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary)); opacity: 0.3;"></div>
+          <div class="workflow-visualizer">
+            <div class="workflow-line"></div>
             
-            <div class="trigger-node" style="position: relative; margin-bottom: var(--space-8);">
-              <div class="node-dot" style="position: absolute; left: -21px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-primary); box-shadow: 0 0 10px var(--color-primary);"></div>
-              <div style="font-size: 10px; color: var(--text-mute); font-family: var(--font-family-mono); margin-bottom: 8px; letter-spacing: 1px;">INITIAL_TRIGGER</div>
-              <div class="neural-glass" style="padding: var(--space-3) var(--space-4); border-radius: 12px; display: inline-flex; align-items: center; gap: 8px;">
-                 <span style="font-size: 1.2rem;">⚡</span>
-                 <span style="font-weight: 800; font-size: 13px; color: var(--text-primary); text-transform: uppercase;">${routine.triggers.map((t) => formatTrigger(t)).join(' + ')}</span>
+            <div class="action-node">
+              <div class="node-dot"></div>
+              <div class="module-meta">INITIAL_TRIGGER</div>
+              <div class="neural-glass" style="padding: var(--s3) var(--s4); border-radius: 12px; display: inline-flex; align-items: center; gap: 8px;">
+                 <span style="font-size: 1.25rem;">⚡</span>
+                 <span style="font-weight: 800; font-size: 13px; color: var(--text-main); text-transform: uppercase;">${routine.triggers.map((t) => formatTrigger(t)).join(' + ')}</span>
               </div>
             </div>
 
-            <div class="action-sequence" style="display: grid; gap: var(--space-6);">
+            <div class="action-sequence">
               ${routine.actions
       .map(
         (action, index) => `
-                <div class="action-node animate-fade-in" style="position: relative; animation-delay: ${index * 0.1}s;">
-                  <div class="node-dot" style="position: absolute; left: -20px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-secondary); border: 2px solid var(--color-foundation);"></div>
-                  <div style="font-size: 9px; color: var(--text-mute); font-family: var(--font-family-mono); margin-bottom: 6px; letter-spacing: 1px;">MODULE_0x0${index + 1}</div>
-                  <div class="neural-glass" style="padding: var(--space-4); border-radius: 16px;">
+                <div class="action-node animate-fade-in" style="animation-delay: ${index * 0.1}s;">
+                  <div class="node-dot secondary"></div>
+                  <div class="module-meta">MODULE_0x0${index + 1}</div>
+                  <div class="neural-glass" style="padding: var(--s4); border-radius: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <span style="color: var(--text-primary); font-size: 14px; font-weight: 700;">${action.label}</span>
-                      <span class="badge badge-primary" style="font-size: 9px; opacity: 0.8;">SYNC_O_K</span>
+                      <span style="color: var(--text-main); font-size: 14px; font-weight: 700;">${action.label}</span>
+                      <span class="neural-badge" style="opacity: 0.8; font-size:8px">SYNC_O_K</span>
                     </div>
                   </div>
                 </div>
@@ -307,22 +307,22 @@ function showRoutineDetails(routineId) {
       .join('')}
             </div>
             
-            <div class="terminal-node" style="position: relative; margin-top: var(--space-8);">
-              <div class="node-dot" style="position: absolute; left: -21px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-success); box-shadow: 0 0 10px var(--color-success);"></div>
-              <div style="font-size: 10px; color: var(--text-mute); font-family: var(--font-family-mono); margin-bottom: 6px; letter-spacing: 1px;">TERMINAL_STATE</div>
+            <div class="action-node" style="margin-top: var(--s8);">
+              <div class="node-dot success"></div>
+              <div class="module-meta">TERMINAL_STATE</div>
               <div style="color: var(--color-success); font-weight: 800; font-size: 11px; letter-spacing: 2px;">ROUTINE_READY_FOR_EXEC</div>
             </div>
           </div>
         </div>
 
-        <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: var(--space-6);">
-          <button class="btn btn-neural-glass btn-sm" onclick="showAutomationBuilder()">CANCEL</button>
+        <div class="modal-footer">
+          <button class="btn-neural-glass" onclick="showAutomationBuilder()">CANCEL</button>
           <div style="flex: 1;"></div>
           ${isTemplate
-      ? `<button class="btn btn-neural-primary btn-sm" onclick="createFromTemplate('${routineId}')">INITIALIZE_NODE</button>`
-      : `<button class="btn btn-neural-glass btn-sm" onclick="toggleRoutine('${routineId}')">${routine.enabled ? 'ISOLATE' : 'RE_ACTIVATE'}</button>`
+      ? `<button class="btn-neural-primary" onclick="createFromTemplate('${routineId}')">INITIALIZE_NODE</button>`
+      : `<button class="btn-neural-glass" onclick="toggleRoutine('${routineId}')">${routine.enabled ? 'ISOLATE' : 'RE_ACTIVATE'}</button>`
     }
-          <button class="btn btn-neural-primary btn-sm" onclick="executeRoutine('${routineId}'); closeModal();">
+          <button class="btn-neural-primary" onclick="executeRoutine('${routineId}'); closeModal();">
             ▶️ EXECUTE_NOW
           </button>
         </div>
@@ -372,36 +372,36 @@ function showAutomationBuilder() {
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
       <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 900px; padding: 0; overflow: hidden;">
-        <div class="modal-header" style="background: rgba(0,0,0,0.2); padding: var(--s6);">
+        <div class="modal-header">
           <div style="display: flex; flex-direction: column;">
             <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">⚡ WORKFLOW_FORGE_v7</h2>
-            <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">ORCHESTRATION_ENGINE: ACTIVE</div>
+            <div class="encryption-tag" style="margin-top:0">ORCHESTRATION_ENGINE: ACTIVE</div>
           </div>
-          <button class="modal-close" onclick="closeModal()">×</button>
+          <button class="face-recognition-close" onclick="closeModal()">×</button>
         </div>
         
-        <div class="modal-body" style="padding: var(--s8); max-height: 70vh; overflow-y: auto;">
+        <div class="modal-body" style="padding: var(--s8);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s6);">
-            <h3 style="color: var(--text-main); font-size: 13px; letter-spacing: 1px; font-weight: 800;">SYNTHETIC_TEMPLATES</h3>
-            <button class="btn-neural-primary btn-sm" onclick="showCustomRoutineBuilder()" style="padding: 8px 16px; font-size: 11px;">➕ MANIFEST_NEW</button>
+            <h3 class="category-name" style="font-size: 13px;">SYNTHETIC_TEMPLATES</h3>
+            <button class="btn-neural-primary btn-sm" onclick="showCustomRoutineBuilder()">➕ MANIFEST_NEW</button>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s5);">
-            <div class="neural-glass hover-lift" onclick="showAIRoutineGenerator()" style="border: 1px dashed var(--color-primary); background: rgba(var(--color-primary-hue), 100%, 50%, 0.05); padding: var(--s5); cursor: pointer;">
+          <div class="automation-grid">
+            <div class="neural-glass automation-template ai-gen" onclick="showAIRoutineGenerator()">
                 <div style="font-size: 1.5rem; margin-bottom: 12px; filter: drop-shadow(0 0 8px var(--color-primary));">🧠</div>
                 <div style="font-weight: 800; color: var(--text-main); font-size: 14px;">NEURAL_LOGIC_GEN</div>
-                <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Describe a sequence and allow AI to synthesize the sub-modular logic.</div>
+                <div class="card-desc" style="margin-top: 4px;">Describe a sequence and allow AI to synthesize the sub-modular logic.</div>
                 <div style="margin-top: 16px;">
-                    <span class="badge badge-primary">AI_ORCHESTRATOR</span>
+                    <span class="neural-badge">AI_ORCHESTRATOR</span>
                 </div>
             </div>
             ${templates.map(t => `
-              <div class="neural-glass hover-lift" onclick="showRoutineDetails('${t.id}')" style="padding: var(--s5); cursor: pointer;">
+              <div class="neural-glass automation-template" onclick="showRoutineDetails('${t.id}')">
                 <div style="font-size: 1.5rem; margin-bottom: 12px;">${t.icon}</div>
                 <div style="font-weight: 800; color: var(--text-main); font-size: 14px;">${t.name.toUpperCase()}</div>
-                <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">${t.description}</div>
+                <div class="card-desc" style="margin-top: 4px;">${t.description}</div>
                 <div style="margin-top: 16px;">
-                  <span class="badge badge-accent" style="font-size: 9px;">${t.actions.length}_MODULES</span>
+                  <span class="neural-badge" style="background: var(--color-secondary);">${t.actions.length}_MODULES</span>
                 </div>
               </div>
             `).join('')}
@@ -409,19 +409,19 @@ function showAutomationBuilder() {
           
           ${automationState.routines.length > 0 ? `
             <div style="height: 1px; background: var(--glass-border); margin: var(--s10) 0;"></div>
-            <h3 style="margin-bottom: var(--s6); color: var(--text-main); font-size: 13px; letter-spacing: 1px; font-weight: 800;">ACTIVE_NODE_STREAMS</h3>
+            <h3 class="category-name" style="margin-bottom: var(--s6); font-size: 13px;">ACTIVE_NODE_STREAMS</h3>
             <div style="display: grid; gap: var(--s4);">
               ${automationState.routines.map(r => `
-                <div class="neural-glass flex-between hover-lift" style="cursor: pointer; padding: var(--s4); border-left: 3px solid ${r.enabled ? 'var(--color-primary)' : 'var(--text-mute)'};" onclick="showRoutineDetails('${r.id}')">
+                <div class="neural-glass routine-row ${r.enabled ? 'active' : ''}" onclick="showRoutineDetails('${r.id}')">
                   <div style="display: flex; align-items: center; gap: 16px;">
                     <span style="font-size: 1.5rem;">${r.icon}</span>
                     <div>
                       <div style="font-weight: 800; color: var(--text-main); font-size: 14px;">${r.name.toUpperCase()}</div>
-                      <div style="font-size: 10px; color: var(--text-dim); font-family: var(--font-family-mono);">${r.actions.length} STAGES_ACTIVE_PHASE</div>
+                      <div class="module-meta" style="margin-bottom:0">${r.actions.length} STAGES_ACTIVE_PHASE</div>
                     </div>
                   </div>
                   <div>
-                    <span class="badge badge-${r.enabled ? 'primary' : 'dim'}" style="font-size: 9px;">
+                    <span class="neural-badge ${r.enabled ? '' : 'badge-dim'}">
                       ${r.enabled ? 'KERNEL_ACTIVE' : 'ISOLATED'}
                     </span>
                   </div>
@@ -431,7 +431,7 @@ function showAutomationBuilder() {
           ` : ''}
         </div>
 
-        <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: var(--s6);">
+        <div class="modal-footer">
            <button class="btn-neural-glass" style="width: 100%;" onclick="closeModal()">DISMISS_ENGINE</button>
         </div>
       </div>

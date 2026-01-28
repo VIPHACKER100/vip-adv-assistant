@@ -8,18 +8,18 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: var(--nav-height);
+  padding-bottom: calc(var(--nav-height) + var(--s10));
+  mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
 }
 
 .app-background {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    circle at 50% 50%,
-    var(--color-surface-900) 0%,
-    var(--color-foundation) 100%
-  );
+  background: radial-gradient(circle at 50% 50%,
+      var(--color-surface-900) 0%,
+      var(--color-foundation) 100%);
   overflow: hidden;
 }
 
@@ -67,12 +67,48 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--s4);
+}
+
+.icon-btn-group {
+  display: flex;
+  gap: var(--s4);
+  align-items: center;
+}
+
+.header .icon-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-bright);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--text-main);
+  transition: var(--t-neural);
+  cursor: pointer;
+  box-shadow: var(--glass-shadow);
+}
+
+.header .icon-btn:active {
+  transform: scale(0.9);
+  background: var(--color-primary-dim);
+  border-color: var(--color-primary);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--s2);
+  gap: var(--s3);
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px var(--color-primary-glow));
 }
 
 .logo-text {
@@ -87,30 +123,37 @@
 /* Neural Mobile Navigation */
 .mobile-tab-bar {
   position: fixed;
-  bottom: var(--s4);
+  bottom: calc(var(--s4) + var(--safe-area-bottom));
   left: var(--s4);
   right: var(--s4);
-  height: 64px;
+  height: 72px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: var(--z-fixed);
-  padding-bottom: var(--safe-area-bottom);
-  border-radius: 32px;
-  /* Super rounded for mobile */
+  border-radius: 24px;
+  background: hsla(230, 25%, 8%, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--glass-border-bright) !important;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px hsla(0, 0%, 100%, 0.1);
+  overflow: visible !important;
 }
 
 .tab-item {
   position: relative;
-  width: 100%;
+  width: 64px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--s1);
+  gap: 4px;
   color: var(--text-mute);
   transition: var(--t-neural);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .tab-item.active {
@@ -118,13 +161,78 @@
 }
 
 .tab-icon {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1;
   transition: transform var(--t-bounce);
 }
 
+.tab-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.tab-item.active .tab-label {
+  opacity: 1;
+}
+
 .tab-item.active .tab-icon {
-  transform: translateY(-4px) scale(1.1);
-  text-shadow: var(--shadow-neon-primary);
+  transform: translateY(-4px);
+  text-shadow: 0 0 15px var(--color-primary-glow);
+  filter: drop-shadow(0 0 5px var(--color-primary));
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  width: 4px;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+/* Voice FAB Styling */
+.tab-voice-wrapper {
+  position: relative;
+  width: 72px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.voice-fab {
+  position: absolute;
+  top: -36px;
+  width: 68px !important;
+  height: 68px !important;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dim)) !important;
+  border-radius: 50% !important;
+  border: 5px solid var(--color-foundation) !important;
+  color: var(--color-foundation) !important;
+  box-shadow:
+    0 10px 25px var(--color-primary-glow),
+    0 0 40px var(--color-primary-glow),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3) !important;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voice-fab .mic-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.voice-fab:active .mic-icon {
+  transform: scale(0.9);
 }
 
 /* Floating Kernel Pill */

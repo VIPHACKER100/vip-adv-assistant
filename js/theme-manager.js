@@ -1,95 +1,66 @@
 /**
- * VIP AI SYMPHONY - Spectrum Orchestrator v6.0
- * Intelligent UI Chroma Shifting & Persistence Matrix
+ * VIP AI SYMPHONY - Strategic Spectrum Orchestrator v7.0
+ * Intelligent Neural UI Calibration & Chroma Shifting
  */
 
 const themeManager = {
-  current: localStorage.getItem('theme') || 'dark',
-
-  themes: {
-    dark: {
-      '--bg-primary': '#0F172A',
-      '--bg-secondary': '#1E293B',
-      '--bg-tertiary': '#334155',
-      '--text-primary': '#F1F5F9',
-      '--text-secondary': '#CBD5E1',
-      '--text-tertiary': '#94A3B8',
-    },
-    light: {
-      '--bg-primary': '#FFFFFF',
-      '--bg-secondary': '#F8FAFC',
-      '--bg-tertiary': '#F1F5F9',
-      '--text-primary': '#0F172A',
-      '--text-secondary': '#475569',
-      '--text-tertiary': '#64748B',
-    },
-  },
+  currentMode: localStorage.getItem('vip_theme_mode') || 'dark',
 
   init() {
-    this.apply(this.current);
-    this.watchSystemPreference();
+    this.applyMode(this.currentMode);
+    console.log('🌈 SPECTRUM_ORCHESTRATOR_ACTIVE');
   },
 
-  apply(theme) {
+  applyMode(mode) {
     const root = document.documentElement;
+    const isDark = mode === 'dark';
 
-    if (theme === 'auto') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      theme = prefersDark ? 'dark' : 'light';
+    // Smooth Transition Base Variables
+    if (isDark) {
+      root.style.setProperty('--color-foundation', 'hsl(230, 20%, 4%)');
+      root.style.setProperty('--color-surface-900', 'hsl(230, 15%, 8%)');
+      root.style.setProperty('--color-surface-800', 'hsl(230, 12%, 12%)');
+      root.style.setProperty('--text-main', 'hsl(0, 0%, 98%)');
+      root.style.setProperty('--text-dim', 'hsl(230, 10%, 70%)');
+      root.style.setProperty('--glass-bg', 'hsla(230, 15%, 10%, 0.6)');
+    } else {
+      root.style.setProperty('--color-foundation', 'hsl(230, 20%, 96%)');
+      root.style.setProperty('--color-surface-900', 'hsl(230, 15%, 92%)');
+      root.style.setProperty('--color-surface-800', 'hsl(230, 12%, 88%)');
+      root.style.setProperty('--text-main', 'hsl(230, 20%, 10%)');
+      root.style.setProperty('--text-dim', 'hsl(230, 10%, 30%)');
+      root.style.setProperty('--glass-bg', 'hsla(230, 15%, 95%, 0.6)');
     }
 
-    const colors = this.themes[theme];
-    if (colors) {
-      Object.entries(colors).forEach(([property, value]) => {
-        root.style.setProperty(property, value);
-      });
-    }
+    this.currentMode = mode;
+    localStorage.setItem('vip_theme_mode', mode);
 
-    this.current = theme;
-    localStorage.setItem('theme', theme);
-
-    // Update UI if settings modal is open
-    this.updateThemeUI();
-
-    // Track telemetry
-    if (window.performanceMonitor) {
-      window.performanceMonitor.trackThemeChange();
-    }
+    if (window.performanceMonitor) performanceMonitor.trackThemeChange();
   },
 
   toggle() {
-    const next = this.current === 'dark' ? 'light' : 'dark';
-    this.apply(next);
-    showToast('Spectrum Shift', `NODE_CALIBRATION: ${next.toUpperCase()}_MODE`, 'success');
-  },
-
-  watchSystemPreference() {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (this.current === 'auto') {
-        this.apply('auto');
-      }
-    });
-  },
-
-  updateThemeUI() {
-    const themeSelect = document.getElementById('themeSelect');
-    if (themeSelect) {
-      themeSelect.value = this.current;
+    const next = this.currentMode === 'dark' ? 'light' : 'dark';
+    this.applyMode(next);
+    if (window.showToast) {
+      window.showToast('Chroma Shift', `INTERFACE_CALIBRATED: ${next.toUpperCase()}_MODE`, 'success');
     }
   },
+
+  setHue(type, value) {
+    if (window.themeHub) {
+      if (type === 'primary') window.themeHub.setPrimaryHue(value);
+      else window.themeHub.setSecondaryHue(value);
+    } else {
+      document.documentElement.style.setProperty(`--color-${type}-hue`, value);
+      localStorage.setItem(`vip_theme_${type}_hue`, value);
+    }
+  }
 };
 
-// Toggle theme (for keyboard shortcut)
 function toggleTheme() {
   themeManager.toggle();
 }
 
-// Set theme from settings
-function setTheme(theme) {
-  themeManager.apply(theme);
-}
-
-// Export for global access
 window.themeManager = themeManager;
 window.toggleTheme = toggleTheme;
-window.setTheme = setTheme;
+

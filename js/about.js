@@ -4,74 +4,71 @@
  */
 
 const aboutData = {
-  version: '6.0.0',
-  codename: 'SYMPHONY PLATINUM',
-  releaseDate: '2026-01-25',
-  developer: 'VipHacker100',
-  engine: 'Symphony Kernel v6.0',
+  version: '7.0.0',
+  codename: 'NEURAL FLUX [PLATINUM]',
+  releaseDate: '2026-01-28',
+  developer: 'VIPHACKER100',
+  engine: 'SYMPHONY KERNEL v7.0_GENESIS',
   contributors: [
     'DeepMind Antigravity AI Agent',
     'OpenAI GPT-4o-mini',
     'Vanilla Web Infrastructure',
   ],
-  legal: 'SYMPHONY OS - Proprietary Research Build. All neural pathways verified.',
+  legal: 'SYMPHONY OS - NEURAL FLUX RESEARCH BUILD. PROPRIETARY PATHWAYS VERIFIED.',
 };
 
 function showAboutModal() {
   const modalContainer = document.getElementById('modalContainer');
-  if (!modalContainer) {
-    return;
-  }
+  if (!modalContainer) return;
 
   modalContainer.innerHTML = `
     <div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal modal-about" onclick="event.stopPropagation()">
-        <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-5);">
-          <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">💎 SYSTEM_GEN_INFO_v6.0</h2>
+      <div class="modal animate-slide-up" style="max-width: 500px; padding: 0; overflow: hidden; border: 1px solid var(--color-primary-glow);">
+        <div class="modal-header" style="background: rgba(0,0,0,0.3); padding: var(--s6);">
+          <div style="display: flex; flex-direction: column;">
+            <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">💎 SYSTEM_GEN_INFO_v7.0</h2>
+            <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">NODE: VERIFIED_PLATINUM</div>
+          </div>
           <button class="modal-close" onclick="closeModal()">×</button>
         </div>
-        <div class="modal-body text-center">
-          <img src="assets/logo.png" alt="VIP AI" class="about-logo animate-glow">
-          <h3 class="font-display" style="font-size: 1.5rem; margin: var(--space-4) 0 0;">VIP Assistant v${aboutData.version}</h3>
-          <div class="badge badge-accent" style="margin-bottom: var(--space-6);">${aboutData.codename}</div>
+
+        <div class="modal-body" style="padding: var(--s8); background: var(--color-foundation); text-align: center;">
+          <div class="neural-glass" style="width: 100px; height: 100px; margin: 0 auto var(--s6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; text-shadow: 0 0 20px var(--color-primary);">⚡</div>
           
-          <div class="about-stats-grid">
-            <div class="about-stat-item">
-              <span class="label">ENGINE</span>
-              <span class="value">${aboutData.engine}</span>
+          <h3 class="font-display" style="font-size: 1.5rem; margin-bottom: 4px;">VIP Assistant v${aboutData.version}</h3>
+          <div style="font-size: 10px; font-weight: 800; color: var(--color-primary); letter-spacing: 3px; margin-bottom: var(--s8);">${aboutData.codename}</div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: var(--s8);">
+            <div class="neural-glass" style="padding: 12px;">
+              <div style="font-size: 8px; color: var(--text-mute); letter-spacing: 1px; margin-bottom: 4px;">KERNEL_STRAT</div>
+              <div style="font-size: 11px; font-weight: 800;">${aboutData.engine}</div>
             </div>
-            <div class="about-stat-item">
-              <span class="label">RELEASE</span>
-              <span class="value">${aboutData.releaseDate}</span>
+            <div class="neural-glass" style="padding: 12px;">
+              <div style="font-size: 8px; color: var(--text-mute); letter-spacing: 1px; margin-bottom: 4px;">BUILD_DATE</div>
+              <div style="font-size: 11px; font-weight: 800;">${aboutData.releaseDate}</div>
             </div>
           </div>
 
-          <div class="about-section">
-            <h4>👨‍💻 Lead Developer</h4>
-            <p>${aboutData.developer}</p>
+          <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; border-left: 2px solid var(--color-primary);">
+            <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); margin-bottom: 8px;">CORE_CONTRIBUTORS::</div>
+            <div style="font-size: 12px; color: var(--text-dim); line-height: 1.8;">
+              ${aboutData.contributors.map(c => `• ${c}`).join('<br>')}
+            </div>
           </div>
 
-          <div class="about-section">
-            <h4>🤝 Core Contributors</h4>
-            <ul class="list-none" style="padding: 0; font-size: 14px; opacity: 0.8;">
-              ${aboutData.contributors.map((c) => `<li>${c}</li>`).join('')}
-            </ul>
-          </div>
-
-          <div class="about-footer-note" style="margin-top: 15px;">
+          <div style="margin-top: var(--s8); font-size: 10px; color: var(--text-mute); font-family: var(--font-family-mono); line-height: 1.5;">
             ${aboutData.legal}
-            <div style="margin-top: 10px;">
-              <a href="V6.1_QUICK_START.md" target="_blank" style="color: var(--color-accent-400); font-size: 12px; text-decoration: underline;">Open Quick Start Guide</a>
-            </div>
           </div>
         </div>
-        <div class="modal-footer" style="justify-content: center;">
-          <button class="btn btn-primary" onclick="window.open('https://github.com/viphacker100/vip-adv-assistant', '_blank')">GitHub Repository</button>
-          <button class="btn btn-glass" onclick="closeModal()">Close Panel</button>
+
+        <div class="modal-footer" style="padding: var(--s6); background: rgba(0,0,0,0.2); gap: 12px;">
+          <button class="btn-neural-glass" style="flex: 1;" onclick="window.open('https://github.com/viphacker100', '_blank')">SOURCE</button>
+          <button class="btn-neural-primary" style="flex: 1;" onclick="closeModal()">DISMISS</button>
         </div>
       </div>
     </div>
   `;
 }
+
 
 window.showAboutModal = showAboutModal;

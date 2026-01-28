@@ -1,24 +1,21 @@
 /**
- * VIP AI Symphony v6.2 - Mobile-First Platinum
+ * VIP AI Symphony v7.0 - "NEURAL FLUX"
  * Face Recognition & Biometric System
- * Optimized with parallel model loading (2-3x faster) and mobile-first UI
  */
+
 .face-recognition-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  inset: 0;
+  background: hsla(230, 20%, 4%, 0.95);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s var(--t-neural);
 }
 
 .face-recognition-modal.active {
@@ -27,83 +24,132 @@
 }
 
 .face-recognition-container {
-  position: relative;
-  max-width: 800px;
   width: 90%;
-  background: var(--glass-bg-strong);
-  border: 2px solid var(--glass-border);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-6);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  background: hsla(230, 15%, 8%, 0.8);
+  border: 1px solid var(--glass-border-bright);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), var(--shadow-neon-primary-dim);
 }
 
 .face-recognition-header {
+  padding: var(--s6);
+  background: hsla(0, 0%, 100%, 0.03);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-6);
+  align-items: flex-start;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .face-recognition-title {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  background: var(--gradient-vibrant);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-main);
+}
+
+.encryption-tag {
+  font-size: 9px;
+  color: var(--color-primary);
+  font-family: var(--font-family-mono);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--s2);
 }
 
 .face-recognition-close {
-  background: var(--glass-bg);
+  background: hsla(0, 0%, 100%, 0.05);
   border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: var(--font-size-xl);
+  transition: var(--t-neural);
 }
 
 .face-recognition-close:hover {
-  background: var(--glass-bg-strong);
+  background: var(--color-primary-dim);
+  border-color: var(--color-primary);
   transform: scale(1.1);
+}
+
+.face-recognition-body {
+  padding: var(--s6);
+}
+
+.face-recognition-status {
+  padding: var(--s4);
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  margin-bottom: var(--s6);
+}
+
+.status-icon-orb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 0 20px var(--color-primary-glow);
+}
+
+.status-title {
+  font-weight: 800;
+  color: var(--text-main);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-subtitle {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  opacity: 0.6;
+  letter-spacing: 1px;
+  margin-top: 2px;
 }
 
 .video-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 1 / 1;
   background: #000;
-  border-radius: var(--radius-xl);
+  border-radius: 24px;
   overflow: hidden;
-  margin-bottom: var(--space-4);
+  border: 1px solid var(--glass-border-bright);
 }
 
 #faceVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: contrast(1.1) brightness(1.1);
 }
 
 #faceCanvas {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 .scanning-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -118,10 +164,10 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--color-accent-400) 50%, transparent 100%);
-  box-shadow: 0 0 20px var(--color-accent-400);
-  animation: scan 2s linear infinite;
+  height: 4px;
+  background: linear-gradient(to bottom, transparent, var(--color-primary), transparent);
+  box-shadow: 0 0 15px var(--color-primary);
+  animation: scan 2.5s linear infinite;
 }
 
 @keyframes scan {
@@ -134,274 +180,135 @@
   }
 }
 
-.face-recognition-status {
-  text-align: center;
-  padding: var(--space-4);
-  background: var(--glass-bg);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--space-4);
-  border: 1px solid var(--glass-border);
-}
-
-.status-icon {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-2);
-  display: block;
-}
-
-.status-text {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin-bottom: var(--space-1);
-}
-
-.status-subtext {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
 .face-recognition-actions {
-  display: flex;
-  gap: var(--space-3);
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s4);
+  margin-top: var(--s6);
 }
 
-.face-recognition-info {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  margin-top: var(--space-4);
-}
-
-.info-item {
+.face-recognition-footer {
+  padding: var(--s4) var(--s6);
+  background: rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--border-primary);
+  border-top: 1px solid var(--glass-border);
 }
 
-.info-item:last-child {
-  border-bottom: none;
+.telemetry-group {
+  display: flex;
+  gap: var(--s6);
 }
 
-.info-label {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
+.telemetry-item {
+  text-align: left;
 }
 
-.info-value {
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
+.telemetry-label {
+  font-size: 8px;
+  color: var(--text-mute);
+  font-family: var(--font-family-mono);
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.telemetry-value {
+  font-weight: 800;
+  color: var(--color-primary);
+  font-size: 14px;
   font-family: var(--font-family-mono);
 }
 
-/* Recognition Success Animation */
-.recognition-success {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--glass-bg-strong);
-  border: 2px solid var(--color-success-500);
-  border-radius: var(--radius-xl);
-  padding: var(--space-8);
-  text-align: center;
-  box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
-  animation: successPulse 0.5s ease;
-  z-index: 10;
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 10px;
+  height: auto;
 }
 
-@keyframes successPulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
+/* Success Overlay */
+.recognition-success {
+  position: absolute;
+  inset: 0;
+  background: hsla(150, 100%, 10%, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fade-in 0.4s ease;
 }
 
 .recognition-success-icon {
-  font-size: 64px;
-  margin-bottom: var(--space-4);
+  width: 64px;
+  height: 64px;
+  background: var(--color-success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--color-foundation);
+  box-shadow: 0 0 30px var(--color-success);
+  margin-bottom: var(--s4);
 }
 
 .recognition-success-text {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-success-400);
-  margin-bottom: var(--space-2);
+  font-family: var(--font-family-display);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--color-success);
 }
 
 .recognition-success-name {
-  font-size: var(--font-size-xl);
-  color: var(--text-primary);
+  margin-top: var(--s2);
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
-/* Loading Animation */
-.loading-spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--glass-border);
-  border-top-color: var(--color-accent-400);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-left: var(--space-2);
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* ===== RESPONSIVE STYLES ===== */
-
-/* Responsive */
+/* Mobile Adjustments */
 @media (max-width: 768px) {
   .face-recognition-modal {
     align-items: flex-end;
-    padding: 0;
   }
 
   .face-recognition-container {
     width: 100%;
     max-width: 100%;
-    padding: var(--space-5);
-    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-    max-height: 90vh;
-    overflow-y: auto;
+    border-radius: 32px 32px 0 0;
+    animation: slide-up 0.5s var(--t-neural);
   }
 
   .face-recognition-header {
-    margin-bottom: var(--space-4);
+    padding: var(--s5);
   }
 
-  .face-recognition-title {
-    font-size: var(--font-size-lg);
+  .face-recognition-body {
+    padding: var(--s5);
   }
 
-  .face-recognition-close {
-    width: 44px;
-    height: 44px;
-    font-size: var(--font-size-2xl);
-  }
-
-  .video-container {
-    aspect-ratio: 3/4;
-    margin-bottom: var(--space-3);
-  }
-
-  .face-recognition-status {
-    padding: var(--space-3);
-    margin-bottom: var(--space-3);
-  }
-
-  .status-icon {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--space-1);
-  }
-
-  .status-text {
-    font-size: var(--font-size-base);
-  }
-
-  .status-subtext {
-    font-size: var(--font-size-xs);
-  }
-
-  .face-recognition-actions {
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .face-recognition-actions .btn {
-    width: 100%;
-    min-height: 48px;
-    font-size: var(--font-size-base);
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .face-recognition-info {
-    padding: var(--space-3);
-    margin-top: var(--space-3);
-  }
-
-  .info-item {
-    padding: var(--space-2) 0;
-  }
-
-  .info-label {
-    font-size: var(--font-size-xs);
-  }
-
-  .info-value {
-    font-size: var(--font-size-sm);
-  }
-
-  .recognition-success {
-    padding: var(--space-6);
-    width: 90%;
-  }
-
-  .recognition-success-icon {
-    font-size: 48px;
-    margin-bottom: var(--space-3);
-  }
-
-  .recognition-success-text {
-    font-size: var(--font-size-xl);
-  }
-
-  .recognition-success-name {
-    font-size: var(--font-size-lg);
+  .face-recognition-footer {
+    padding-bottom: calc(var(--s6) + var(--safe-area-bottom));
   }
 }
 
-/* Extra small screens (phones in portrait) */
-@media (max-width: 480px) {
-  .face-recognition-container {
-    padding: var(--space-4);
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
   }
 
-  .face-recognition-title {
-    font-size: var(--font-size-base);
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 
-  .face-recognition-close {
-    width: 40px;
-    height: 40px;
-  }
-
-  .status-icon {
-    font-size: var(--font-size-xl);
-  }
-
-  .face-recognition-actions .btn {
-    min-height: 44px;
-    font-size: var(--font-size-sm);
-  }
-
-  .recognition-success {
-    width: 95%;
-    padding: var(--space-4);
-  }
-
-  .recognition-success-icon {
-    font-size: 40px;
-  }
-
-  .recognition-success-text {
-    font-size: var(--font-size-lg);
-  }
-
-  .recognition-success-name {
-    font-size: var(--font-size-base);
+  to {
+    opacity: 1;
   }
 }

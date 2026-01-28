@@ -53,7 +53,7 @@ class FaceRecognitionManager {
         throw new Error('face-api.js library not loaded');
       }
 
-      const modelPath = '/assets/models';
+      const modelPath = 'assets/models';
       console.log('📦 Loading face recognition models from:', modelPath);
       this.updateStatus('🧠', 'LOADING_MODELS', 'Synchronizing Neural Weights...');
 
@@ -91,68 +91,68 @@ class FaceRecognitionManager {
   createUI() {
     const modalHTML = `
       <div class="face-recognition-modal" id="faceRecognitionModal">
-        <div class="modal animate-slide-up" style="max-width: 500px; padding: 0; overflow: hidden; border: 1px solid var(--color-primary-glow);">
-          <div class="modal-header" style="background: rgba(0,0,0,0.3); padding: var(--s6);">
-            <div style="display: flex; flex-direction: column;">
-              <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">🔐 BIOMETRIC_SHIELD_v7</h2>
-              <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">ENCRYPTION: AES_GCM_READY</div>
+        <div class="face-recognition-container animate-slide-up">
+          <div class="face-recognition-header">
+            <div class="header-titles">
+              <h2 class="face-recognition-title">🔐 BIOMETRIC_SHIELD_v7</h2>
+              <div class="encryption-tag">ENCRYPTION: AES_GCM_READY</div>
             </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="modal-close" onclick="faceRecognition.showHelp()" title="GUIDE" style="font-size: 14px;">?</button>
-              <button class="modal-close" onclick="faceRecognition.close()">×</button>
+            <div class="header-actions">
+              <button class="face-recognition-close" onclick="faceRecognition.showHelp()" title="GUIDE">?</button>
+              <button class="face-recognition-close" onclick="faceRecognition.close()">×</button>
             </div>
           </div>
 
-          <div class="modal-body" style="padding: var(--s6); background: var(--color-foundation);">
-            <div class="neural-glass" id="faceStatus" style="margin-bottom: var(--s6); padding: var(--s4); display: flex; align-items: center; gap: 16px;">
-              <div id="statusIcon" style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary-dim); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 0 15px var(--color-primary-glow);">👁️</div>
-              <div>
-                <div id="statusText" style="font-weight: 800; color: var(--text-main); font-size: 13px;">INITIALIZING_LINK</div>
-                <div id="statusSubtext" style="font-family: var(--font-family-mono); font-size: 9px; opacity: 0.6; letter-spacing: 1px;">AWAITING_CAMERA_HANDSHAKE...</div>
+          <div class="face-recognition-body">
+            <div class="face-recognition-status neural-glass" id="faceStatus">
+              <div id="statusIcon" class="status-icon-orb">👁️</div>
+              <div class="status-details">
+                <div id="statusText" class="status-title">INITIALIZING_LINK</div>
+                <div id="statusSubtext" class="status-subtitle">AWAITING_CAMERA_HANDSHAKE...</div>
               </div>
             </div>
 
-            <div class="video-container" style="position: relative; border-radius: 20px; border: 1px solid var(--glass-border); overflow: hidden; background: #000; aspect-ratio: 4/3;">
-              <video id="faceVideo" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) brightness(1.1);"></video>
-              <canvas id="faceCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%;"></canvas>
+            <div class="video-container">
+              <video id="faceVideo" autoplay muted playsinline></video>
+              <canvas id="faceCanvas"></canvas>
               <div class="scanning-overlay active" id="scanningOverlay">
-                <div class="scan-line" style="background: linear-gradient(to bottom, transparent, var(--color-primary), transparent); box-shadow: 0 0 15px var(--color-primary);"></div>
+                <div class="scan-line"></div>
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: var(--s6);">
+            <div class="face-recognition-actions">
               <button class="btn-neural-primary" id="startScanBtn" onclick="faceRecognition.startRecognition()">
-                <span>🔍</span> SCAN_BIO
+                🔍 SCAN_BIO
               </button>
               <button class="btn-neural-glass" id="registerBtn" onclick="faceRecognition.registerFace()">
-                <span>➕</span> REGISTER
+                ➕ REGISTER
               </button>
             </div>
           </div>
 
-          <div class="modal-footer" style="padding: var(--s4) var(--s6); background: rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; gap: 16px;">
-              <div style="text-align: center;">
-                <div style="font-size: 8px; color: var(--text-mute); font-family: var(--font-family-mono);">NODES</div>
-                <div id="registeredCount" style="font-weight: 800; color: var(--color-primary);">0</div>
+          <div class="face-recognition-footer">
+            <div class="telemetry-group">
+              <div class="telemetry-item">
+                <div class="telemetry-label">NODES</div>
+                <div id="registeredCount" class="telemetry-value">0</div>
               </div>
-              <div style="text-align: center;">
-                <div style="font-size: 8px; color: var(--text-mute); font-family: var(--font-family-mono);">CONFIDENCE</div>
-                <div id="confidenceValue" style="font-weight: 800; color: var(--color-secondary);">--</div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">CONFIDENCE</div>
+                <div id="confidenceValue" class="telemetry-value">--</div>
               </div>
             </div>
-            <button class="btn-neural-glass" style="padding: 6px 12px; font-size: 10px;" onclick="faceRecognition.clearRegisteredFaces()">WIPE_BIOMETRICS</button>
+            <button class="btn-neural-glass btn-sm" onclick="faceRecognition.clearRegisteredFaces()">WIPE_BIOMETRICS</button>
           </div>
         </div>
       </div>
     `;
-
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     this.video = document.getElementById('faceVideo');
     this.canvas = document.getElementById('faceCanvas');
     this.updateRegisteredCount();
   }
+
 
   /**
    * Safe toast notification

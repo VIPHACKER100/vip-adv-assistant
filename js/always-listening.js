@@ -1,9 +1,8 @@
 /**
- * Always-Listening Command System - SYMPHONY KERNEL v6.0
+ * VIP AI SYMPHONY - Neural Acoustic Link v7.0
  * Continuous acoustic monitoring and neural link persistence
  */
 
-// Always-listening state
 window.alwaysListening = {
   enabled: false,
   voiceRecognition: null,
@@ -19,64 +18,50 @@ window.alwaysListening = {
 
 const alwaysListening = window.alwaysListening;
 
-/**
- * Initialize always-listening system
- */
 function initAlwaysListening() {
-  console.log('🎧 Initializing Always-Listening System...');
+  console.log('🎧 INITIALIZING_ACOUSTIC_LINK_v7...');
 
-  // Check if voice recognition is supported
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    console.warn('Always-listening requires Speech Recognition API');
+    console.warn('Neural Acoustic Link requires Speech Recognition coverage');
     return false;
   }
 
-  // Initialize voice recognition
   alwaysListening.voiceRecognition = new SpeechRecognition();
   alwaysListening.voiceRecognition.continuous = true;
   alwaysListening.voiceRecognition.interimResults = true;
   alwaysListening.voiceRecognition.lang = 'en-US';
   alwaysListening.voiceRecognition.maxAlternatives = 3;
 
-  // Setup event handlers
   setupAlwaysListeningHandlers();
-
-  // Start keyboard command listener
   initKeyboardCommandListener();
-
-  // Start activity monitoring
   startActivityMonitoring();
 
-  console.log('✅ Always-Listening System initialized');
+  console.log('✅ ACOUSTIC_LINK_SYNCHRONIZED');
+  if (window.performanceMonitor) performanceMonitor.trackFunction();
   return true;
 }
 
-/**
- * Setup always-listening event handlers
- */
 function setupAlwaysListeningHandlers() {
   const recognition = alwaysListening.voiceRecognition;
 
   recognition.onstart = () => {
     alwaysListening.enabled = true;
     updateAlwaysListeningUI(true);
-    console.log('🎤 PERSISTENT_ACOUSTIC_LINK_ACTIVE');
+    console.log('🎤 PERSISTENT_ACOUSTIC_LINK: ACTIVE');
     if (window.cognitiveStream) {
-      window.cognitiveStream.addLine('> INFO: ACOUSTIC_GATEWAY_OPEN');
+      window.cognitiveStream.addLine('> ACOUSTIC_LINK: RESONANCE_LOCKED');
     }
   };
 
   recognition.onend = () => {
-    // Auto-restart if enabled
     if (alwaysListening.enabled) {
       alwaysListening.restartTimeout = setTimeout(() => {
         if (alwaysListening.enabled && !alwaysListening.isProcessing) {
           try {
             recognition.start();
-            console.log('🔄 Auto-restarted listening');
           } catch (e) {
-            console.warn('Auto-restart failed, retrying...', e);
+            console.warn('RESTART_FAULT: RETRYING_HANDSHAKE', e);
             setTimeout(() => recognition.start(), 1000);
           }
         }
@@ -92,376 +77,179 @@ function setupAlwaysListeningHandlers() {
 
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const transcriptPiece = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += transcriptPiece;
-      } else {
-        interimTranscript += transcriptPiece;
-      }
+      if (event.results[i].isFinal) finalTranscript += transcriptPiece;
+      else interimTranscript += transcriptPiece;
     }
 
-    if (finalTranscript.length > 0) {
-      handleAlwaysListeningCommand(finalTranscript.toLowerCase().trim(), true);
-    } else if (interimTranscript.length > 0) {
-      // Check for wake word in interim results for responsiveness
-      const lowerInterim = interimTranscript.toLowerCase();
-      if (lowerInterim.includes(alwaysListening.wakeWord)) {
-        handleAlwaysListeningCommand(lowerInterim.trim(), false);
-      }
+    if (finalTranscript) {
+      console.log(`🎤 FINAL_TRANSCRIPT: "${finalTranscript}"`);
+      handleAcousticInput(finalTranscript.toLowerCase());
     }
   };
 
   recognition.onerror = (event) => {
-    console.error('Always-listening error:', event.error);
-
-    // Handle specific errors
-    if (event.error === 'no-speech') {
-      // Normal - just continue listening
-      return;
-    }
-
-    if (event.error === 'aborted') {
-      // Recognition was stopped, restart if enabled
-      if (alwaysListening.enabled) {
-        setTimeout(() => {
-          try {
-            recognition.start();
-          } catch (e) {
-            console.warn('Restart after abort failed:', e);
-          }
-        }, 1000);
-      }
-      return;
-    }
-
-    // For other errors, show notification but keep trying
-    if (event.error !== 'not-allowed' && event.error !== 'audio-capture') {
-      showToast('Voice Error', `Error: ${event.error}. Retrying...`, 'warning');
-      setTimeout(() => {
-        if (alwaysListening.enabled) {
-          try {
-            recognition.start();
-          } catch (e) {
-            console.warn('Error recovery restart failed:', e);
-          }
-        }
-      }, 2000);
+    console.warn(`🎧 ACOUSTIC_LINK_ERROR: ${event.error}`);
+    if (event.error === 'not-allowed') {
+      alwaysListening.enabled = false;
+      updateAlwaysListeningUI(false);
     }
   };
 }
 
-/**
- * Handle commands from always-listening
- */
-function handleAlwaysListeningCommand(transcript, isFinal) {
-  alwaysListening.lastActivity = Date.now();
-  const lowerTranscript = transcript.toLowerCase();
+function handleAcousticInput(text) {
+  if (alwaysListening.isProcessing) return;
 
-  // Check for wake word
-  if (
-    lowerTranscript.includes(alwaysListening.wakeWord) ||
-    lowerTranscript.includes(alwaysListening.backupWakeWord)
-  ) {
-    const now = Date.now();
-    if (!alwaysListening.lastWakeToast || now - alwaysListening.lastWakeToast > 5000) {
-      showToast('Neural Trigger', 'SYMPHONY_ACTIVATED', 'success');
-      alwaysListening.lastWakeToast = now;
-      showNeuralPulse();
-      if (window.cognitiveStream) {
-        window.cognitiveStream.addLine('> SUCCESS: WAKE_WORD_MATCH_DETECTED');
-      }
+  const hasWakeWord = text.includes(alwaysListening.wakeWord) || text.includes(alwaysListening.backupWakeWord);
+
+  if (hasWakeWord) {
+    if (window.utils?.haptics) window.utils.haptics.impact('heavy');
+    alwaysListening.isProcessing = true;
+    showNeuralPulse();
+
+    const command = text
+      .replace(alwaysListening.wakeWord, '')
+      .replace(alwaysListening.backupWakeWord, '')
+      .trim();
+
+    if (command) {
+      console.log(`⚡ EXECUTING_COGNITIVE_DIRECTIVE: "${command}"`);
+      showCommandFeedback(command);
+      processAcousticDirective(command);
+    } else {
+      if (window.speak) window.speak('Acoustic link open. State your directive.');
     }
 
-    // Extract command after wake word
-    let parts = lowerTranscript.split(alwaysListening.wakeWord);
-    if (parts.length === 1) {
-      parts = lowerTranscript.split(alwaysListening.backupWakeWord);
-    }
-
-    const commandToProcess = parts[parts.length - 1].trim();
-    if (commandToProcess.length === 0) {
-      return;
-    }
-
-    if (isFinal) {
-      executeAlwaysListeningCommand(commandToProcess);
-    }
-    return;
-  }
-
-  if (isFinal) {
-    executeAlwaysListeningCommand(transcript);
+    setTimeout(() => { alwaysListening.isProcessing = false; }, 2000);
   }
 }
 
-/**
- * Execute command after validation
- */
-function executeAlwaysListeningCommand(command) {
-  if (alwaysListening.isProcessing) {
-    return;
-  }
-
-  alwaysListening.isProcessing = true;
-  alwaysListening.interactionCount++;
-
-  // Show visual feedback
-  showCommandFeedback(command);
-
-  // Track telemetry
-  if (window.performanceMonitor) {
-    window.performanceMonitor.trackVoiceCommand();
-  }
-
-  // Process command
-  setTimeout(() => {
-    processCommandInternal(command);
-    alwaysListening.isProcessing = false;
-
-    // Process queued commands
-    if (alwaysListening.commandQueue.length > 0) {
-      const nextCommand = alwaysListening.commandQueue.shift();
-      setTimeout(() => executeAlwaysListeningCommand(nextCommand), 500);
-    }
-  }, 100);
-}
-
-/**
- * Process command through multiple channels
- */
-function processCommandInternal(command) {
+function processAcousticDirective(command) {
   if (window.commandCenter && window.commandCenter.processCommand) {
-    window.commandCenter.processCommand(command, 'voice-always');
-  } else if (window.handleVoiceCommand) {
-    // Fallback for initialization race conditions
-    window.handleVoiceCommand(command);
-  } else {
-    console.warn('No command processor available for:', command);
+    window.commandCenter.processCommand(command, 'voice');
   }
 }
 
-/**
- * Initialize keyboard command listener
- */
-function initKeyboardCommandListener() {
-  let commandBuffer = '';
-  let bufferTimeout = null;
-
-  document.addEventListener('keydown', (e) => {
-    // Ignore if typing in input fields
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      return;
-    }
-
-    // Build command from key sequence
-    if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
-      commandBuffer += e.key.toLowerCase();
-
-      clearTimeout(bufferTimeout);
-      bufferTimeout = setTimeout(() => {
-        if (commandBuffer.length > 3) {
-          processCommandInternal(commandBuffer);
-        }
-        commandBuffer = '';
-      }, 2000);
-    }
-
-    // Special key combinations
-    if (e.ctrlKey && e.shiftKey && e.key === 'V') {
-      // Ctrl+Shift+V: Toggle always-listening
-      toggleAlwaysListening();
-    }
-  });
-}
-
-/**
- * Start activity monitoring
- */
-function startActivityMonitoring() {
-  setInterval(() => {
-    const timeSinceActivity = Date.now() - alwaysListening.lastActivity;
-
-    // If no activity for 5 minutes, show reminder
-    if (timeSinceActivity > 300000 && alwaysListening.enabled) {
-      showToast('Always-Listening Active', 'Say "hey assistant" or use voice commands', 'info');
-      alwaysListening.lastActivity = Date.now();
-    }
-  }, 60000); // Check every minute
-}
-
-/**
- * Toggle always-listening mode
- */
 function toggleAlwaysListening() {
-  if (!alwaysListening.voiceRecognition) {
-    const initialized = initAlwaysListening();
-    if (!initialized) {
-      showToast('Always-Listening', 'Voice recognition not available', 'error');
-      return;
-    }
-  }
-
-  if (alwaysListening.enabled) {
-    stopAlwaysListening();
-  } else {
-    startAlwaysListening();
-  }
+  if (alwaysListening.enabled) stopAlwaysListening();
+  else startAlwaysListening();
 }
 
-/**
- * Start always-listening
- */
 function startAlwaysListening() {
-  if (!alwaysListening.voiceRecognition) {
-    initAlwaysListening();
-  }
+  if (!alwaysListening.voiceRecognition) initAlwaysListening();
 
   try {
     alwaysListening.enabled = true;
     alwaysListening.voiceRecognition.start();
-    showToast('Always-Listening', '🎤 Now listening continuously', 'success');
+    if (window.showToast) window.showToast('Acoustic Link', '🎤 Persistent monitoring active', 'success');
     updateAlwaysListeningUI(true);
-
-    // Save preference
     localStorage.setItem('alwaysListeningEnabled', 'true');
   } catch (error) {
-    console.error('Failed to start always-listening:', error);
-    showToast('Always-Listening', 'Failed to start. Check microphone permissions.', 'error');
+    console.error('ACOUSTIC_LINK_FAULT:', error);
+    if (window.showToast) window.showToast('Link Error', 'Microphone handshake failed', 'error');
   }
 }
 
-/**
- * Stop always-listening
- */
 function stopAlwaysListening() {
   alwaysListening.enabled = false;
-
   if (alwaysListening.restartTimeout) {
     clearTimeout(alwaysListening.restartTimeout);
     alwaysListening.restartTimeout = null;
   }
-
   if (alwaysListening.voiceRecognition) {
-    try {
-      alwaysListening.voiceRecognition.stop();
-    } catch (e) {
-      console.warn('Error stopping recognition:', e);
-    }
+    try { alwaysListening.voiceRecognition.stop(); } catch (e) { }
   }
-
   updateAlwaysListeningUI(false);
-  showToast('Always-Listening', 'Stopped', 'info');
-
-  // Save preference
+  if (window.showToast) window.showToast('Acoustic Link', 'Monitoring terminated', 'info');
   localStorage.setItem('alwaysListeningEnabled', 'false');
 }
 
-/**
- * Update UI for always-listening state
- */
 function updateAlwaysListeningUI(isActive) {
-  // Update button
-  const voiceBtn = document.getElementById('voiceAccessBtn');
   const orb = document.getElementById('neuralOrb');
-
-  if (voiceBtn) {
-    voiceBtn.classList.toggle('always-listening-active', isActive);
-    voiceBtn.title = isActive
-      ? 'PERSISTENT_LINK_ACTIVE (CTL+SHF+V)'
-      : 'INITIALIZE_ACOUSTIC_LINK (CTL+SHF+V)';
-  }
-
-  if (orb) {
-    orb.classList.toggle('persistence-active', isActive);
-  }
+  if (orb) orb.classList.toggle('persistence-active', isActive);
 
   let statusIndicator = document.getElementById('alwaysListeningStatus');
   if (!statusIndicator) {
     statusIndicator = document.createElement('div');
     statusIndicator.id = 'alwaysListeningStatus';
     statusIndicator.className = 'always-listening-status';
+    statusIndicator.style.cssText = 'position:fixed; bottom:100px; left:50%; transform:translateX(-50%); font-size:9px; font-family:var(--font-family-mono); color:var(--color-primary); background:rgba(0,0,0,0.5); padding:4px 12px; border-radius:10px; border:1px solid var(--glass-border); pointer-events:none; opacity:0; transition:opacity 0.3s;';
     document.body.appendChild(statusIndicator);
   }
 
   if (isActive) {
-    statusIndicator.innerHTML = '<span class="pulse-dot"></span> SYMPHONY_LISTENING_ACTIVE';
-    statusIndicator.classList.add('active');
+    statusIndicator.innerHTML = '<span style="display:inline-block; width:6px; height:6px; background:var(--color-primary); border-radius:50%; margin-right:6px; animation:pulse 1.5s infinite;"></span> RESONANCE_ACTIVE';
+    statusIndicator.style.opacity = '1';
   } else {
-    statusIndicator.classList.remove('active');
-    statusIndicator.innerHTML = '';
+    statusIndicator.style.opacity = '0';
   }
 }
 
-/**
- * Show command feedback
- */
 function showCommandFeedback(command) {
-  // Create or update feedback element
   let feedback = document.getElementById('commandFeedback');
   if (!feedback) {
     feedback = document.createElement('div');
     feedback.id = 'commandFeedback';
-    feedback.className = 'command-feedback';
+    feedback.style.cssText = 'position:fixed; top:20%; left:50%; transform:translateX(-50%); font-size:2rem; font-family:var(--font-family-display); color:var(--text-main); text-shadow:0 0 20px var(--color-primary); pointer-events:none; z-index:10000; opacity:0; transition:all 0.4s;';
     document.body.appendChild(feedback);
   }
 
   feedback.textContent = `🎤 "${command}"`;
-  feedback.classList.add('show');
+  feedback.style.opacity = '1';
+  feedback.style.transform = 'translateX(-50%) translateY(-20px)';
 
-  // Trigger pulse for significant commands
   showNeuralPulse();
 
   setTimeout(() => {
-    feedback.classList.remove('show');
+    feedback.style.opacity = '0';
+    feedback.style.transform = 'translateX(-50%) translateY(0)';
   }, 2000);
 }
 
-/**
- * Show neural pulse visual effect
- */
 function showNeuralPulse() {
   const now = Date.now();
-  if (now - alwaysListening.lastNeuralPulse < 1000) {
-    return;
-  } // Throttling
+  if (now - alwaysListening.lastNeuralPulse < 1000) return;
   alwaysListening.lastNeuralPulse = now;
 
   let pulse = document.getElementById('neuralPulseRing');
   if (!pulse) {
     pulse = document.createElement('div');
     pulse.id = 'neuralPulseRing';
-    pulse.className = 'neural-pulse-ring';
+    pulse.style.cssText = 'position:fixed; inset:0; border:4px solid var(--color-primary); border-radius:50%; pointer-events:none; z-index:9998; opacity:0;';
     document.body.appendChild(pulse);
   }
 
-  // Restart animation
-  pulse.classList.remove('active');
-  void pulse.offsetWidth; // Trigger reflow
-  pulse.classList.add('active');
+  pulse.animate([
+    { transform: 'scale(0.1)', opacity: 0.8 },
+    { transform: 'scale(2)', opacity: 0 }
+  ], { duration: 1000, easing: 'ease-out' });
 }
 
-/**
- * Initialize on page load
- */
-document.addEventListener('DOMContentLoaded', () => {
-  // Check if always-listening was enabled previously
-  const wasEnabled = localStorage.getItem('alwaysListeningEnabled') === 'true';
+function initKeyboardCommandListener() {
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'V') {
+      toggleAlwaysListening();
+    }
+  });
+}
 
+function startActivityMonitoring() {
+  setInterval(() => {
+    if (alwaysListening.enabled && Date.now() - alwaysListening.lastActivity > 600000) {
+      console.log('💤 INACTIVITY_DETECTED: ENTERING_POWER_SAVE');
+    }
+  }, 60000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const wasEnabled = localStorage.getItem('alwaysListeningEnabled') === 'true';
   if (wasEnabled) {
-    // Wait a bit for page to fully load
     setTimeout(() => {
-      if (window.initAlwaysListening) {
-        initAlwaysListening();
-        setTimeout(() => {
-          if (window.startAlwaysListening) {
-            startAlwaysListening();
-          }
-        }, 1000);
-      }
+      initAlwaysListening();
+      setTimeout(() => startAlwaysListening(), 1000);
     }, 2000);
   }
 });
 
-// Export functions
 window.initAlwaysListening = initAlwaysListening;
 window.toggleAlwaysListening = toggleAlwaysListening;
 window.startAlwaysListening = startAlwaysListening;

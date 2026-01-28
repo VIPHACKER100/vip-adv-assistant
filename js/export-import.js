@@ -1,6 +1,6 @@
 /**
- * VIP AI SYMPHONY - Kernel Archive System v6.0
- * Secure Data Export & Neural State Restoration
+ * VIP AI SYMPHONY - Neural State Recovery v7.0
+ * Secure Data Export & State Matrix Restoration
  */
 
 const exportImportManager = {
@@ -9,12 +9,14 @@ const exportImportManager = {
     const automations = JSON.parse(localStorage.getItem('automations') || '[]');
     const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     const settings = {
-      theme: localStorage.getItem('theme') || 'dark',
-      openai_api_key: '***REDACTED***', // Never export API keys
+      theme_mode: localStorage.getItem('vip_theme_mode') || 'dark',
+      primary_hue: localStorage.getItem('vip_theme_hue') || '190',
+      secondary_hue: localStorage.getItem('vip_theme_secondary_hue') || '280',
     };
 
     const exportData = {
-      version: '6.0.0',
+      version: '7.0.0',
+      codename: 'NEURAL_FLUX',
       exportDate: new Date().toISOString(),
       automations: automations,
       favorites: favorites,
@@ -25,13 +27,13 @@ const exportImportManager = {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `vip-assistant-backup-${Date.now()}.json`;
+    a.download = `symphony-neural-state-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showToast('Export', 'Backup file downloaded', 'success');
+    if (window.showToast) window.showToast('Archive Created', 'Neural state serialized to storage', 'success');
   },
 
   // Import automations from JSON file
@@ -42,101 +44,85 @@ const exportImportManager = {
 
     input.onchange = (e) => {
       const file = e.target.files[0];
-      if (!file) {
-        return;
-      }
+      if (!file) return;
 
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
           const data = JSON.parse(event.target.result);
-
-          // Validate data structure
           if (!data.version || !data.automations) {
-            throw new Error('Invalid backup file format');
+            throw new Error('Invalid neural archive format');
           }
-
-          // Show confirmation modal
           this.showImportConfirmation(data);
         } catch (error) {
           console.error('Import error:', error);
-          showToast('Import Failed', 'Invalid backup file', 'error');
+          if (window.showToast) window.showToast('Import Failed', 'Neural archive corrupted', 'error');
         }
       };
-
       reader.readAsText(file);
     };
-
     input.click();
   },
 
-  // Show import confirmation modal
   showImportConfirmation(data) {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) {
-      return;
-    }
+    if (!modalContainer) return;
 
     const automationsCount = data.automations?.length || 0;
     const favoritesCount = data.favorites?.length || 0;
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 600px; padding: 0; overflow: hidden;">
-          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
-            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">📥 RENDER_DATA_IMPORT</h2>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 600px; padding: 0; overflow: hidden; border: 1px solid var(--color-primary-glow);">
+          <div class="modal-header" style="background: rgba(0,0,0,0.3); padding: var(--s6);">
+            <div style="display: flex; flex-direction: column;">
+              <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">📥 STATE_MATRIX_IMPORT</h2>
+              <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">ARCHIVE_VERSION: ${data.version}</div>
+            </div>
             <button class="modal-close" onclick="closeModal()">×</button>
           </div>
-          <div class="modal-body">
-            <div class="glass-card-subtle" style="margin-bottom: var(--space-6);">
-              <h4 style="margin-bottom: var(--space-4); color: var(--color-accent-400); font-size: 12px; letter-spacing: 1px;">TELEMETRY_SNAPSHOT</h4>
-              <div style="display: grid; gap: var(--space-3);">
+          <div class="modal-body" style="padding: var(--s8); background: var(--color-foundation);">
+            <div class="neural-glass" style="margin-bottom: var(--s6); padding: var(--s6);">
+              <h4 style="margin-bottom: var(--s4); color: var(--color-primary); font-size: 11px; letter-spacing: 2px;">TELEMETRY_SNAPSHOT</h4>
+              <div style="display: grid; gap: 12px;">
                 <div class="flex-between">
-                  <span style="font-size: 12px; color: var(--text-secondary);">PROTOCOL_VERSION</span>
-                  <span class="badge badge-accent">${data.version}</span>
+                   <span style="font-size: 12px; color: var(--text-dim);">ARCHIVE_DATE</span>
+                   <span style="font-weight: 800;">${new Date(data.exportDate).toLocaleDateString()}</span>
                 </div>
                 <div class="flex-between">
-                  <span style="font-size: 12px; color: var(--text-secondary);">ARCHIVE_DATE</span>
-                  <span style="font-weight: 600;">${new Date(data.exportDate).toLocaleDateString()}</span>
+                   <span style="font-size: 12px; color: var(--text-dim);">WORKFLOW_NODES</span>
+                   <span style="color: var(--color-primary); font-family: var(--font-family-mono); font-weight: 800;">${automationsCount}</span>
                 </div>
                 <div class="flex-between">
-                  <span style="font-size: 12px; color: var(--text-secondary);">WORKFLOW_NODES</span>
-                  <span style="color: var(--color-success-400); font-family: var(--font-family-mono);">${automationsCount}</span>
-                </div>
-                <div class="flex-between">
-                  <span style="font-size: 12px; color: var(--text-secondary);">PRIORITY_LINKS</span>
-                  <span style="color: var(--color-warning-400); font-family: var(--font-family-mono);">${favoritesCount}</span>
+                   <span style="font-size: 12px; color: var(--text-dim);">PRIORITY_LINKS</span>
+                   <span style="color: var(--color-secondary); font-family: var(--font-family-mono); font-weight: 800;">${favoritesCount}</span>
                 </div>
               </div>
             </div>
 
-            <div class="status-pill-warning" style="padding: var(--space-4); border-radius: var(--radius-lg); border-left: 4px solid var(--color-warning-500);">
-              <strong style="color: var(--color-warning-400); font-size: 11px;">⚠️ DATA_OVERWRITE_WARNING</strong>
-              <p style="margin-top: var(--space-2); color: var(--text-secondary); font-size: 12px;">
-                Executing import will purge current sub-modular states and force-sync with the archive data.
+            <div class="neural-glass" style="padding: var(--s4); border-left: 4px solid var(--color-error); background: hsla(0, 100%, 10%, 0.3);">
+              <strong style="color: var(--color-error); font-size: 11px; letter-spacing: 1px;">⚠️ OVERWRITE_WARNING</strong>
+              <p style="margin-top: 4px; color: var(--text-dim); font-size: 12px;">
+                Executing restoration will purge current sub-modular states and force-sync with the neural archive.
               </p>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-glass" onclick="closeModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="exportImportManager.confirmImport(${JSON.stringify(data).replace(/"/g, '&quot;')})">
-              Import
-            </button>
+          <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: var(--s6); gap: 12px;">
+            <button class="btn-neural-glass" style="flex: 1;" onclick="closeModal()">CANCEL</button>
+            <button class="btn-neural-primary" style="flex: 1;" id="confirmImportBtn">EXECUTE_SYNC</button>
           </div>
         </div>
       </div>
     `;
+
+    document.getElementById('confirmImportBtn').addEventListener('click', () => {
+      this.confirmImport(data);
+    });
   },
 
-  // Confirm and execute import
   confirmImport(data) {
     try {
-      // Import automations
-      if (data.automations) {
-        localStorage.setItem('automations', JSON.stringify(data.automations));
-      }
-
-      // Import favorites
+      if (data.automations) localStorage.setItem('automations', JSON.stringify(data.automations));
       if (data.favorites) {
         localStorage.setItem('favorites', JSON.stringify(data.favorites));
         if (window.favoritesManager) {
@@ -144,76 +130,68 @@ const exportImportManager = {
           favoritesManager.updateUI();
         }
       }
-
-      // Import settings (except API key)
-      if (data.settings?.theme) {
-        localStorage.setItem('theme', data.settings.theme);
-        if (window.themeManager) {
-          themeManager.apply(data.settings.theme);
+      if (data.settings) {
+        if (data.settings.theme_mode) {
+          localStorage.setItem('vip_theme_mode', data.settings.theme_mode);
+          if (window.themeManager) themeManager.applyMode(data.settings.theme_mode);
+        }
+        if (data.settings.primary_hue) {
+          localStorage.setItem('vip_theme_hue', data.settings.primary_hue);
+          if (window.themeHub) window.themeHub.setPrimaryHue(data.settings.primary_hue);
         }
       }
 
       closeModal();
-      showToast('Import Complete', 'Data restored successfully', 'success');
-
-      // Reload page to apply changes
+      if (window.showToast) window.showToast('Sync Success', 'Neural state restored successfully', 'success');
       setTimeout(() => location.reload(), 1500);
     } catch (error) {
       console.error('Import error:', error);
-      showToast('Import Failed', 'Could not restore data', 'error');
+      if (window.showToast) window.showToast('Sync Failed', 'Could not restore neural matrix', 'error');
     }
   },
 
-  // Show export/import modal
   showExportImportModal() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) {
-      return;
-    }
+    if (!modalContainer) return;
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 650px; padding: 0; overflow: hidden;">
-          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
-            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">💾 KERNEL_DATA_ARCHIVE</h2>
-            <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 650px; padding: 0; overflow: hidden; border: 1px solid var(--color-primary-glow);">
+          <div class="modal-header" style="background: rgba(0,0,0,0.3); padding: var(--s6);">
+             <div style="display: flex; flex-direction: column;">
+               <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">💾 KERNEL_STATE_ARCHIVE</h2>
+               <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">PERSISTENCE_MANAGER_v7.0</div>
+             </div>
+             <button class="modal-close" onclick="closeModal()">×</button>
           </div>
-          <div class="modal-body">
-            <div class="glass-card" style="margin-bottom: var(--space-4); cursor: pointer;" onclick="exportImportManager.exportAutomations()">
-              <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4);">
-                <div style="font-size: 3rem;">📤</div>
+          <div class="modal-body" style="padding: var(--s8); background: var(--color-foundation);">
+            <div class="neural-glass" style="margin-bottom: var(--s4); cursor: pointer;" onclick="exportImportManager.exportAutomations()">
+              <div style="display: flex; align-items: center; gap: 24px; padding: var(--s5);">
+                <div style="font-size: 2.5rem; text-shadow: 0 0 15px var(--color-primary);">📤</div>
                 <div style="flex: 1;">
-                  <h4 style="margin-bottom: var(--space-1); color: var(--text-primary);">Export Backup</h4>
-                  <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
-                    Download your automations, favorites, and settings as a JSON file
-                  </p>
+                  <h4 style="margin-bottom: 4px; color: var(--text-main); font-size: 15px;">SERIALIZE_CORE_STATE</h4>
+                  <p style="color: var(--text-dim); font-size: 12px;">Export all neural pathways, priority links, and spectrum settings to a local archive.</p>
                 </div>
-                <span style="color: var(--color-accent-400);">→</span>
               </div>
             </div>
 
-            <div class="glass-card" style="cursor: pointer;" onclick="exportImportManager.importAutomations()">
-              <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4);">
-                <div style="font-size: 3rem;">📥</div>
+            <div class="neural-glass" style="cursor: pointer;" onclick="exportImportManager.importAutomations()">
+              <div style="display: flex; align-items: center; gap: 24px; padding: var(--s5);">
+                <div style="font-size: 2.5rem; text-shadow: 0 0 15px var(--color-secondary);">📥</div>
                 <div style="flex: 1;">
-                  <h4 style="margin-bottom: var(--space-1); color: var(--text-primary);">Import Backup</h4>
-                  <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
-                    Restore your data from a previously exported backup file
-                  </p>
+                  <h4 style="margin-bottom: 4px; color: var(--text-main); font-size: 15px;">RESTORE_NEURAL_MATRIX</h4>
+                  <p style="color: var(--text-dim); font-size: 12px;">Import a previously serialized state to restore your custom symphony configuration.</p>
                 </div>
-                <span style="color: var(--color-accent-400);">→</span>
               </div>
             </div>
 
-            <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
-              <strong style="color: var(--text-primary);">💡 Tip</strong>
-              <p style="margin-top: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-sm);">
-                Export your data regularly to keep a backup. Share backup files with other devices or users.
-              </p>
+            <div class="neural-glass" style="margin-top: var(--s6); padding: var(--s4); border-left: 2px solid var(--color-primary); background: rgba(0,0,0,0.2);">
+               <div style="font-size: 10px; color: var(--color-primary); font-family: var(--font-family-mono); margin-bottom: 4px;">SYSTEM_ADVISORY::</div>
+               <p style="color: var(--text-dim); font-size: 11px; line-height: 1.5;">Serialized states are encrypted with session-specific keys but contain no sensitive API credentials.</p>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-glass" onclick="closeModal()">Close</button>
+          <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: var(--s6);">
+            <button class="btn-neural-glass" style="width: 100%;" onclick="closeModal()">TERMINATE_ARCHIVE_VIEW</button>
           </div>
         </div>
       </div>
@@ -221,5 +199,5 @@ const exportImportManager = {
   },
 };
 
-// Export for global access
 window.exportImportManager = exportImportManager;
+

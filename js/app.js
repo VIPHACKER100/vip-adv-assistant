@@ -798,12 +798,12 @@ class VIPApp {
     container.innerHTML = categories
       .map(
         (cat) => `
-            <div class="category-section animate-fade-in-up" style="margin-bottom: var(--s10);">
-                <div style="display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s6);">
-                    <div class="card-icon" style="background: var(--color-primary-dim); color: var(--color-primary);">${cat.icon}</div>
-                    <div>
-                        <h3 style="font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.1em;">${cat.name}</h3>
-                        <p style="font-size: 0.75rem; color: var(--text-mute);">${cat.description}</p>
+            <div class="category-section animate-fade-in-up">
+                <div class="category-header">
+                    <div class="category-icon-orb">${cat.icon}</div>
+                    <div class="category-info">
+                        <h3 class="category-name">${cat.name}</h3>
+                        <p class="category-desc">${cat.description}</p>
                     </div>
                 </div>
                 <div class="node-grid">
@@ -811,12 +811,14 @@ class VIPApp {
             .map(
               (f) => `
                         <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div class="card-icon">${f.icon}</div>
-                                ${f.badge ? `<span style="font-size: 0.6rem; padding: 2px 8px; background: var(--color-primary); color: var(--color-foundation); border-radius: 10px; font-weight: 800;">${f.badge}</span>` : ''}
+                            <div class="card-top">
+                                <div class="card-icon-nested">${f.icon}</div>
+                                ${f.badge ? `<span class="neural-badge">${f.badge}</span>` : ''}
                             </div>
-                            <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
-                            <p style="font-size: 0.7rem; opacity: 0.7;">${f.description}</p>
+                            <div class="card-content">
+                                <h3 class="card-title">${f.title}</h3>
+                                <p class="card-desc">${f.description}</p>
+                            </div>
                         </div>
                     `
             )
@@ -836,9 +838,9 @@ class VIPApp {
       quickGrid.innerHTML = popular
         .map(
           (f) => `
-                <div class="neural-glass neural-card" onclick="executeFunction('${f.id}')">
-                    <div class="card-icon" style="background: var(--color-secondary-glow); color: var(--color-secondary);">${f.icon}</div>
-                    <h3 style="font-size: 0.9rem; margin-top: var(--s2);">${f.title}</h3>
+                <div class="neural-glass neural-card quick-node" onclick="executeFunction('${f.id}')">
+                    <div class="card-icon-nested secondary">${f.icon}</div>
+                    <h3 class="card-title">${f.title}</h3>
                 </div>
             `
         )

@@ -1,5 +1,5 @@
 /**
- * VIP AI SYMPHONY - Key Synapse Editor v6.0
+ * VIP AI SYMPHONY - Neural Synapse Binder v7.0
  * Customized Strategic Vector Mapping & Input Configuration
  */
 
@@ -24,24 +24,24 @@ const shortcutEditor = {
   },
 
   setShortcut(action, shortcut) {
-    this.customShortcuts[action] = shortcut;
+    this.customShortcuts[action] = shortcut.toLowerCase();
     localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
 
-    // Update keyboard shortcuts
     if (window.shortcuts) {
       this.applyCustomShortcuts();
     }
+
+    if (window.performanceMonitor) performanceMonitor.trackFunction();
   },
 
   resetToDefaults() {
     this.customShortcuts = {};
     localStorage.setItem('customShortcuts', JSON.stringify(this.customShortcuts));
     this.applyCustomShortcuts();
-    showToast('Shortcuts Reset', 'Restored to default shortcuts', 'success');
+    if (window.showToast) window.showToast('Synapse Reset', 'Baseline vectors restored', 'success');
   },
 
   applyCustomShortcuts() {
-    // Rebuild shortcuts with custom bindings
     const newBindings = {};
 
     Object.entries(this.defaultShortcuts).forEach(([action]) => {
@@ -81,10 +81,8 @@ const shortcutEditor = {
       }
     });
 
-    // Add escape key
     newBindings['escape'] = () => closeModal();
 
-    // Update global shortcuts
     if (window.shortcuts) {
       window.shortcuts.bindings = newBindings;
     }
@@ -92,50 +90,44 @@ const shortcutEditor = {
 
   showEditor() {
     const modalContainer = document.getElementById('modalContainer');
-    if (!modalContainer) {
-      return;
-    }
+    if (!modalContainer) return;
 
     const actions = [
-      { id: 'search', name: 'Open Search', icon: '🔍' },
-      { id: 'voice', name: 'Toggle Voice', icon: '🎤' },
-      { id: 'automation', name: 'Automation Builder', icon: '⚡' },
-      { id: 'settings', name: 'Settings', icon: '⚙️' },
-      { id: 'help', name: 'Show Help', icon: '❓' },
-      { id: 'theme', name: 'Toggle Theme', icon: '🎨' },
-      { id: 'home', name: 'Scroll to Top', icon: '🏠' },
-      { id: 'favorites', name: 'Show Favorites', icon: '⭐' },
-      { id: 'recent', name: 'Recent Functions', icon: '🕒' },
-      { id: 'performance', name: 'Performance Dashboard', icon: '📊' },
+      { id: 'search', name: 'Omni Search', icon: '🔍' },
+      { id: 'voice', name: 'Neural Voice', icon: '🎤' },
+      { id: 'automation', name: 'Workflow Kernel', icon: '⚡' },
+      { id: 'theme', name: 'Spectral Shift', icon: '🎨' },
+      { id: 'favorites', name: 'Priority Links', icon: '⭐' },
+      { id: 'recent', name: 'Temporal Node History', icon: '🕒' },
+      { id: 'performance', name: 'Telemetry Dashboard', icon: '📊' },
     ];
 
     modalContainer.innerHTML = `
       <div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 720px; padding: 0; overflow: hidden;">
-          <div class="modal-header" style="background: rgba(0,0,0,0.1); padding: var(--space-6);">
-            <h2 class="modal-title" style="font-family: var(--font-family-display); font-size: 16px; letter-spacing: 1px;">⌨️ SYMPHONY_VECTOR_CONFIG</h2>
+        <div class="modal animate-slide-up" onclick="event.stopPropagation()" style="max-width: 750px; padding: 0; overflow: hidden; border: 1px solid var(--color-primary-glow);">
+          <div class="modal-header" style="background: rgba(0,0,0,0.3); padding: var(--s6);">
+            <div style="display: flex; flex-direction: column;">
+              <h2 class="modal-title" style="font-size: 1.1rem; letter-spacing: 2px;">⌨️ SYMPHONY_VECTOR_BINDER</h2>
+              <div style="font-size: 9px; color: var(--color-primary); font-family: var(--font-family-mono); letter-spacing: 1px;">CALIBRATE_INPUT_SYNAPSES</div>
+            </div>
             <button class="modal-close" onclick="closeModal()">×</button>
           </div>
-          <div class="modal-body">
-            <div style="margin-bottom: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-warning-500);">
-              <strong style="color: var(--color-warning-400);">⚠️ Note</strong>
-              <p style="margin-top: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-sm);">
-                Changes take effect immediately. Avoid conflicts with browser shortcuts.
-              </p>
+          <div class="modal-body" style="padding: var(--s8); background: var(--color-foundation); max-height: 70vh; overflow-y: auto;">
+            <div class="neural-glass" style="margin-bottom: var(--s6); padding: var(--s4); border-left: 4px solid var(--color-warning);">
+              <div style="font-size: 10px; color: var(--color-warning); font-family: var(--font-family-mono); margin-bottom: 4px;">SYSTEM_ADVISORY::</div>
+              <p style="color: var(--text-dim); font-size: 12px;">Changes take effect immediately across all neural endpoints. Avoid conflicts with browser-reserved sequences.</p>
             </div>
 
-            <div style="display: grid; gap: var(--space-3);">
-              ${actions
-                .map(
-                  (action) => `
-                <div class="glass-card-subtle" style="padding: var(--space-4);">
-                  <div style="display: flex; align-items: center; gap: var(--space-4);">
-                    <span style="font-size: 24px;">${action.icon}</span>
+            <div style="display: grid; gap: 12px;">
+              ${actions.map(action => `
+                <div class="neural-glass" style="padding: var(--s5);">
+                  <div style="display: flex; align-items: center; gap: 24px;">
+                    <span style="font-size: 24px; text-shadow: 0 0 10px var(--color-primary);">${action.icon}</span>
                     <div style="flex: 1;">
-                      <div style="font-weight: 800; color: var(--text-primary); font-size: 13px; letter-spacing: 0.5px;">
+                      <div style="font-weight: 800; color: var(--text-main); font-size: 13px; letter-spacing: 1px;">
                         ${action.name.toUpperCase()}
                       </div>
-                      <div style="font-size: 10px; color: var(--text-tertiary); margin-top: 4px; font-family: var(--font-family-mono);">
+                      <div style="font-size: 9px; color: var(--text-mute); margin-top: 4px; font-family: var(--font-family-mono);">
                         BASELINE: ${this.defaultShortcuts[action.id].toUpperCase()}
                       </div>
                     </div>
@@ -143,32 +135,17 @@ const shortcutEditor = {
                       type="text" 
                       class="input" 
                       value="${this.getShortcut(action.id)}"
-                      placeholder="ctrl+key"
-                      style="width: 140px; font-family: var(--font-family-mono); font-size: 11px; text-align: center; border-color: var(--glass-border);"
-                      onchange="shortcutEditor.setShortcut('${action.id}', this.value); showToast('Vector Synced', '${action.name} re-bound', 'success');"
+                      style="width: 160px; font-family: var(--font-family-mono); font-size: 11px; text-align: center; background: var(--color-foundation); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--color-primary);"
+                      onchange="shortcutEditor.setShortcut('${action.id}', this.value); if(window.showToast) showToast('Vector Synced', '${action.name} calibrated', 'success');"
                     >
                   </div>
                 </div>
-              `
-                )
-                .join('')}
-            </div>
-
-            <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--bg-secondary); border-radius: var(--radius-lg); border-left: 4px solid var(--color-accent-500);">
-              <strong style="color: var(--text-primary);">💡 Format Guide</strong>
-              <ul style="margin-top: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-sm); padding-left: var(--space-5);">
-                <li>Use lowercase: ctrl+k, alt+s, shift+f</li>
-                <li>Combine with +: ctrl+shift+p</li>
-                <li>Single keys: a, b, c (not recommended)</li>
-              </ul>
+              `).join('')}
             </div>
           </div>
-          <div class="modal-footer" style="background: rgba(0,0,0,0.1); padding: var(--space-5);">
-            <button class="btn btn-glass btn-sm" onclick="shortcutEditor.resetToDefaults(); shortcutEditor.showEditor();">
-              RESTORE_BASELINE
-            </button>
-            <div style="flex: 1;"></div>
-            <button class="btn btn-primary" onclick="closeModal()">COMMIT_CONFIG</button>
+          <div class="modal-footer" style="background: rgba(0,0,0,0.2); padding: var(--s6); gap: 12px;">
+            <button class="btn-neural-glass" style="flex: 1;" onclick="shortcutEditor.resetToDefaults(); shortcutEditor.showEditor();">RESTORE_BASELINE</button>
+            <button class="btn-neural-primary" style="flex: 1;" onclick="closeModal()">COMMIT_CONFIG</button>
           </div>
         </div>
       </div>
@@ -176,5 +153,5 @@ const shortcutEditor = {
   },
 };
 
-// Export for global access
 window.shortcutEditor = shortcutEditor;
+
